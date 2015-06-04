@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- DISCIPLINA -->
+    <string name="disciplines">Disciplinas</string>
+    <string name="hint_discipline_name">Nome da Disciplina</string>
+    <string name="new_discipline">Nova Disciplina</string>
+    <string name="add_discipline">Adicionar Disciplina</string>
+    
+    
+    <!-- ATIVIDADE -->
+    <string name="add_activity">Adicionar Atividade</string>
+    <string name="activitys">Atividades</string>
+    
+    <!-- PROVA -->
+    <string name="add_test">Adicionar Prova</string>
+    
+    <!-- DEDEMPENHO -->
+    <string name="performance">Desempenho</string>
+    
+    
+    <!-- GERAIS -->
+    <string name="app_name">aNotai</string>
+    <string name="invalid_name">Invalid name</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Salvar</string>
+
+</resources>
