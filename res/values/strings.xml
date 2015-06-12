@@ -6,23 +6,25 @@
     <string name="hint_discipline_name">Nome da Disciplina</string>
     <string name="new_discipline">Nova Disciplina</string>
     <string name="add_discipline">Adicionar Disciplina</string>
-    
-    
+
     <!-- ATIVIDADE -->
-    <string name="add_activity">Adicionar Trabalho</string>
-    <string name="activitys">Atividades</string>
-    
+    <string name="add_homework">Adicionar Trabalho</string>
+    <string name="tasks">Atividades</string>
+
     <!-- PROVA -->
     <string name="add_test">Adicionar Prova</string>
-    
+
     <!-- DEDEMPENHO -->
     <string name="performance">Desempenho</string>
-    
-    
+
     <!-- GERAIS -->
     <string name="app_name">aNotai</string>
     <string name="invalid_name">Invalid name</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
+    <string name="label_tasks">Atividades</string>
+    <string name="title_activity_tasks">TasksActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package es.view.anotai;
 
 import projeto.es.view.anotai.R;
+import projeto.es.view.anotai.TasksActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,17 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this, DisciplinesActivity.class);
                 startActivity(intent);
             }
+        });
+        
+        Button btTasks = (Button) findViewById(R.id.bt_tasks);
+        btTasks.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, TasksActivity.class);
+				startActivity(intent);
+			}
+        	
         });
     }
 }

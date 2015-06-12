@@ -45,7 +45,7 @@
         android:gravity="center_horizontal" >
 
         <Button
-            android:id="@+id/bt_add_activity"
+            android:id="@+id/bt_add_homework"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -54,11 +54,11 @@
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
             android:background="@android:color/holo_green_light"
-            android:text="@string/add_activity"
+            android:text="@string/add_homework"
             android:textColor="@android:color/white" />
 
         <Button
-            android:id="@+id/bt_activity"
+            android:id="@+id/bt_tasks"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -67,7 +67,7 @@
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
             android:background="@android:color/holo_green_light"
-            android:text="@string/activitys"
+            android:text="@string/tasks"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

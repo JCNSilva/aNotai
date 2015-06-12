@@ -24,7 +24,7 @@ public class DisciplinesActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.atctivity_disciplines);
+        setContentView(R.layout.activity_disciplines);
         
         // Recuperando a listview de disciplinas.
         lvDisciplines = (ListView) findViewById(R.id.list_disciplines);
