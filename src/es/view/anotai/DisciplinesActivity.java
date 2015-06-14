@@ -60,7 +60,9 @@ public class DisciplinesActivity extends Activity {
                                     Toast.LENGTH_LONG).show();
                         } else {
                             // Adiciona a disciplina na lista.
-                            disciplines.add(new Discipline(nome));
+                            Discipline discipline = new Discipline();
+                            discipline.setName(nome);
+                            disciplines.add(discipline);
                             
                             // Atualiza a lista.
                             loadList();

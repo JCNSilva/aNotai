@@ -1,10 +1,12 @@
 package es.model.anotai;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public abstract class Task {
 	
+    private long id;
 	private String name;
 	private String description;
 	private Calendar cadasterDate;
@@ -12,22 +14,31 @@ public abstract class Task {
 	private Priority priority;
 	private double grade;
 	
-	public Task(String name, Calendar deadlineDate, Priority priority, String description){
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM");
+	
+    public Task() {
+        setId(0);
+        name = "";
+        description = "";
+        cadasterDate = new GregorianCalendar();
+        deadlineDate = new GregorianCalendar();
+        priority = Priority.NORMAL;
+        grade = 0;
+    }
+	
+	public Task(long newId, String name, Calendar deadlineDate, Priority priority, String description){
 		if(name == null)
 			throw new IllegalArgumentException("Name can't be empty");
 		if(deadlineDate == null)
 			throw new IllegalArgumentException("Deadline date can't empty");
 		
+		this.setId(newId);
 		this.name = name;
 		this.description = description;
 		this.cadasterDate = new GregorianCalendar();
 		this.deadlineDate = deadlineDate;
 		this.priority = priority;
 		this.grade = 0.0;
-	}
-	
-	public Task(String name, Calendar deadlineDate, Priority priority){
-		this(name, deadlineDate, priority, "");
 	}
 	
 	public String getName() {
@@ -66,6 +77,14 @@ public abstract class Task {
 		return cadasterDate;
 	}
 	
+	public String getCadasterDateText() {
+	    return dateFormat.format(cadasterDate);
+	}
+	
+	public String getDeadlineDateText() {
+        return dateFormat.format(deadlineDate);
+    }
+	
 	public double getGrade() {
 		return grade;
 	}
@@ -74,5 +93,19 @@ public abstract class Task {
 		this.grade = grade;
 	}
 
-	public enum Priority {HIGH, NORMAL, LOW}
+	/**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public enum Priority {HIGH, NORMAL, LOW}
 }
