@@ -26,6 +26,16 @@ public class MainActivity extends Activity {
         addClickListenerTasks();
         addClickListenerExams();
         
+        Button btHomework = (Button) findViewById(R.id.bt_add_homework);
+        btHomework.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, HomeworkActivity.class);		
+				startActivity(intent);			
+			}
+		});
+        
         
     }
 
