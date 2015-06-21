@@ -1,8 +1,11 @@
-package projeto.es.view.anotai;
+package es.view.anotai;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import projeto.es.view.anotai.R;
+import projeto.es.view.anotai.R.id;
+import projeto.es.view.anotai.R.layout;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
