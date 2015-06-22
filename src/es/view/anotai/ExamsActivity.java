@@ -6,30 +6,32 @@ import java.util.Calendar;
 import java.util.List;
 
 import projeto.es.view.anotai.R;
-import projeto.es.view.anotai.R.id;
-import projeto.es.view.anotai.R.layout;
-import projeto.es.view.anotai.R.menu;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import es.main.anotai.AnotaiBroadcast;
 
 public class ExamsActivity extends Activity {
 	
 	private static final int DATE_DIALOG_ID = 100;
 	private static final int TIME_DIALOG_ID = 101;
 	private int day, month, year, hour, minute;
-	private EditText deadDate;
+	private EditText deadDate, examDescription;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,41 @@ public class ExamsActivity extends Activity {
 				
 			}
 		});
+		
+		examDescription = (EditText) findViewById(R.id.et_exam_description);
+		
+		Button btSaveExam = (Button) findViewById(R.id.bt_create_exam);
+		
+		btSaveExam.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                String description = examDescription.getText().toString();
+
+                Calendar caler1 = Calendar.getInstance();
+                caler1.set(year, month, day - 2, hour, minute);
+                
+                Calendar caler2 = Calendar.getInstance();
+                caler2.set(year, month, day - 1, hour, minute);
+                
+                calendar.set(year, month, day, hour, minute);
+
+                notifyIn(caler1, description);     
+                notifyIn(caler2, description);
+                notifyIn(calendar, description);
+            }
+
+            private void notifyIn(Calendar calendar, String description) {
+                Intent myIntent = new Intent(ExamsActivity.this, AnotaiBroadcast.class);
+                myIntent.putExtra("description_exam", description);
+                
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(ExamsActivity.this, 0, myIntent,0);
+                
+                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                
+                alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            }
+        });
 	}
 	
 	@Override
@@ -134,9 +171,9 @@ public class ExamsActivity extends Activity {
 		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select);
         
         String[] array_disciplines = {
-        		"Português", "Matemática", "História", "Geografia",
-        		"Física", "Química", "Biologia", "Ed. Física",
-        		"Inglês", "Espanhol", "Sociologia", "Filosofia"
+        		"Portuguï¿½s", "Matemï¿½tica", "Histï¿½ria", "Geografia",
+        		"Fï¿½sica", "Quï¿½mica", "Biologia", "Ed. Fï¿½sica",
+        		"Inglï¿½s", "Espanhol", "Sociologia", "Filosofia"
         };
         
         List<String> disciplines = new ArrayList<String>(Arrays.asList(array_disciplines));
