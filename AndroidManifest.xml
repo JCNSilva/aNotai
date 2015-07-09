@@ -27,8 +27,12 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".TasksActivity"
+            android:name="es.view.anotai.TasksActivity"
             android:label="@string/title_activity_tasks" >
+        </activity>
+        <activity
+            android:name="es.view.anotai.ExamsActivity"
+            android:label="@string/title_activity_exams" >
         </activity>
     </application>
 

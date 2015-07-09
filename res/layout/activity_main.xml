@@ -12,7 +12,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/bt_add_test"
+            android:id="@+id/bt_add_exam"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"

@@ -26,5 +26,8 @@
     <string name="title_activity_tasks">TasksActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_exams">ExamsActivity</string>
+    <string name="data">Data:</string>
+    <string name="exam_placeholder">Quais os assuntos da prova?</string>
 
 </resources>

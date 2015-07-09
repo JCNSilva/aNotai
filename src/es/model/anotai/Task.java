@@ -64,6 +64,10 @@ public abstract class Task {
 	public void setDeadlineDate(Calendar deadlineDate) {
 		this.deadlineDate = deadlineDate;
 	}
+	
+	public void setCadasterDate(Calendar cadasterDate) {
+		this.cadasterDate = cadasterDate;
+	}
 
 	public Priority getPriority() {
 		return priority;
@@ -91,6 +95,10 @@ public abstract class Task {
 
 	public void setGrade(double grade) {
 		this.grade = grade;
+	}
+	
+	public String getPriorityText(){
+		return priority.toString().toLowerCase();
 	}
 
 	/**

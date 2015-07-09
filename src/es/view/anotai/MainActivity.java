@@ -1,7 +1,6 @@
 package es.view.anotai;
 
 import projeto.es.view.anotai.R;
-import projeto.es.view.anotai.TasksActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,5 +35,19 @@ public class MainActivity extends Activity {
 			}
         	
         });
+        
+        Button btAddExams = (Button) findViewById(R.id.bt_add_exam);
+        btAddExams.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, ExamsActivity.class);
+				startActivity(intent);
+				
+			}
+        	
+        });
+        
+        
     }
 }

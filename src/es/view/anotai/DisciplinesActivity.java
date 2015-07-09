@@ -7,6 +7,7 @@ import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import es.adapter.anotai.DisciplineAdapter;
+import es.database.anotai.DisciplinePersister;
 import es.model.anotai.Discipline;
 
 public class DisciplinesActivity extends Activity {
@@ -60,8 +62,16 @@ public class DisciplinesActivity extends Activity {
                                     Toast.LENGTH_LONG).show();
                         } else {
                             // Adiciona a disciplina na lista.
-                            Discipline discipline = new Discipline();
+                            /*Discipline discipline = new Discipline();
                             discipline.setName(nome);
+                            disciplines.add(discipline);*/
+                        	
+                        	DisciplinePersister persister = new DisciplinePersister(v.getContext());
+                        	Discipline discipline = new Discipline();
+                            discipline.setName(nome);
+                            discipline.setTeacher("");
+                            persister.create(discipline);
+                            Log.d(STORAGE_SERVICE, persister.retrieveAll().get(0).getName());
                             disciplines.add(discipline);
                             
                             // Atualiza a lista.

@@ -37,7 +37,7 @@ public class Classmate {
         phoneNumbers.add(number);
     }
 
-    public void rmeovePhoneNumber(Integer number) {
+    public void removePhoneNumber(Integer number) {
         phoneNumbers.remove(number);
     }
 
