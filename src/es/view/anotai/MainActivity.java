@@ -13,9 +13,53 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_main);
         
-        Button btDisciplines = (Button) findViewById(R.id.bt_disciplines); 
+        addClickListenerDisciplines();
+        addClickListenerTasks();
+        addClickListenerExams();
+        
+        Button btHomework = (Button) findViewById(R.id.bt_add_homework);
+        btHomework.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, HomeworkActivity.class);		
+				startActivity(intent);			
+			}
+		});
+        
+        
+    }
+
+	private void addClickListenerExams() {
+		Button btExams = (Button) findViewById(R.id.bt_add_exam);
+        btExams.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, ExamsActivity.class);		
+				startActivity(intent);
+			}
+		});
+	}
+
+	private void addClickListenerTasks() {
+		Button btTasks = (Button) findViewById(R.id.bt_tasks);
+        btTasks.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, TasksActivity.class);
+				startActivity(intent);
+			}        	
+        });
+ 
+	}
+
+	private void addClickListenerDisciplines() {
+		Button btDisciplines = (Button) findViewById(R.id.bt_disciplines); 
         btDisciplines.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -24,30 +68,5 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        
-        Button btTasks = (Button) findViewById(R.id.bt_tasks);
-        btTasks.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, TasksActivity.class);
-				startActivity(intent);
-			}
-        	
-        });
-        
-        Button btAddExams = (Button) findViewById(R.id.bt_add_exam);
-        btAddExams.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, ExamsActivity.class);
-				startActivity(intent);
-				
-			}
-        	
-        });
-        
-        
-    }
+	}
 }

@@ -6,14 +6,19 @@ import java.util.Calendar;
 import java.util.List;
 
 import projeto.es.view.anotai.R;
+import projeto.es.view.anotai.R.id;
+import projeto.es.view.anotai.R.layout;
+import projeto.es.view.anotai.R.menu;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,24 +29,66 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import es.main.anotai.AnotaiBroadcast;
 
-public class ExamsActivity extends Activity {
+public class HomeworkActivity extends Activity {
 	
 	private static final int DATE_DIALOG_ID = 100;
 	private static final int TIME_DIALOG_ID = 101;
+	private static final int PICK_CONTACT = 1;
 	private int day, month, year, hour, minute;
-	private EditText deadDate, examDescription;
+	private EditText deadDate;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.activity_exams);
+		setContentView(R.layout.activity_homework);
 		
 		povoateDiscSpinner();
+		setClickListenerDeadlineDate();
 		
-		deadDate = (EditText) findViewById(R.id.et_deadline_date);
+		Button btAddClassmate = (Button) findViewById(R.id.bt_add_classmate);
+		btAddClassmate.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent pickContact = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
+				pickContact.setType(Phone.CONTENT_TYPE);
+				startActivityForResult(pickContact, PICK_CONTACT);				
+			}
+		});
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(requestCode){
+		case PICK_CONTACT:
+			if(resultCode == RESULT_OK){
+				// Get the URI that points to the selected contact
+	            Uri contactUri = data.getData();
+	            // We only need the NUMBER column, because there will be only one row in the result
+	            String[] projection = {Phone.DISPLAY_NAME, Phone.NUMBER};
+
+	            Cursor cursor = getContentResolver()
+	                    .query(contactUri, projection, null, null, null);
+	            cursor.moveToFirst();
+
+	            // Retrieve the phone number from the NUMBER column
+	            int column = cursor.getColumnIndex(Phone.NUMBER);
+	            String number = cursor.getString(column);
+	            
+	         // Retrieve the phone number from the DISPLAY_NAME column
+	            int columnDN = cursor.getColumnIndex(Phone.DISPLAY_NAME);
+	            String name = cursor.getString(columnDN);
+	            Log.d("", name);
+	            Log.d("", number);
+	            
+	            
+			}
+		}
+	}
+
+	private void setClickListenerDeadlineDate() {
+		deadDate = (EditText) findViewById(R.id.et_deadline_date_ah);
 		final Calendar calendar = Calendar.getInstance();
 		
 		day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -65,41 +112,6 @@ public class ExamsActivity extends Activity {
 				
 			}
 		});
-		
-		examDescription = (EditText) findViewById(R.id.et_exam_description);
-		
-		Button btSaveExam = (Button) findViewById(R.id.bt_create_exam);
-		
-		btSaveExam.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                String description = examDescription.getText().toString();
-
-                Calendar caler1 = Calendar.getInstance();
-                caler1.set(year, month, day - 2, hour, minute);
-                
-                Calendar caler2 = Calendar.getInstance();
-                caler2.set(year, month, day - 1, hour, minute);
-                
-                calendar.set(year, month, day, hour, minute);
-
-                notifyIn(caler1, description);     
-                notifyIn(caler2, description);
-                notifyIn(calendar, description);
-            }
-
-            private void notifyIn(Calendar calendar, String description) {
-                Intent myIntent = new Intent(ExamsActivity.this, AnotaiBroadcast.class);
-                myIntent.putExtra("description_exam", description);
-                
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(ExamsActivity.this, 0, myIntent,0);
-                
-                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-                
-                alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
-            }
-        });
 	}
 	
 	@Override
@@ -147,11 +159,28 @@ public class ExamsActivity extends Activity {
 			showDialog(TIME_DIALOG_ID);
 		}
 	};
+	
+	private void povoateDiscSpinner() {
+		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select_ah);
+        
+        String[] array_disciplines = {
+        		"Português", "Matemática", "História", "Geografia",
+        		"Física", "Química", "Biologia", "Ed. Física",
+        		"Inglês", "Espanhol", "Sociologia", "Filosofia"
+        };
+        
+        List<String> disciplines = new ArrayList<String>(Arrays.asList(array_disciplines));
+        
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, disciplines);  
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        
+        spDisciplines.setAdapter(dataAdapter);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.exams, menu);
+		getMenuInflater().inflate(R.menu.homework, menu);
 		return true;
 	}
 
@@ -165,22 +194,5 @@ public class ExamsActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-	
-	private void povoateDiscSpinner() {
-		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select);
-        
-        String[] array_disciplines = {
-        		"Portuguï¿½s", "Matemï¿½tica", "Histï¿½ria", "Geografia",
-        		"Fï¿½sica", "Quï¿½mica", "Biologia", "Ed. Fï¿½sica",
-        		"Inglï¿½s", "Espanhol", "Sociologia", "Filosofia"
-        };
-        
-        List<String> disciplines = new ArrayList<String>(Arrays.asList(array_disciplines));
-        
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, disciplines);  
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        
-        spDisciplines.setAdapter(dataAdapter);
 	}
 }
