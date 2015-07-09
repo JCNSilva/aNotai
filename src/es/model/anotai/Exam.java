@@ -12,8 +12,8 @@ public class Exam extends Task{
         id = 0;
     }
     
-	public Exam(long newId, String name, Calendar deadlineDate, Priority priority, String subject) {
-		super(newId, name, deadlineDate, priority, subject);
+	public Exam(long newId, String subject, Calendar deadlineDate, Priority priority) {
+		super(newId, subject, deadlineDate, priority);
 		setId(newId);
 	}
 

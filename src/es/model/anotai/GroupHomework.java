@@ -15,9 +15,9 @@ public class GroupHomework extends Task {
         group = new HashSet<Classmate>();
     }
 
-    public GroupHomework(long newId, String name, Calendar deadlineDate,
-            Priority priority, String description, Classmate... mates) {
-        super(newId, name, deadlineDate, priority, description);
+    public GroupHomework(long newId, String description, Calendar deadlineDate,
+            Priority priority, Classmate... mates) {
+        super(newId, description, deadlineDate, priority);
         this.group = new HashSet<Classmate>(Arrays.asList(mates));
         setId(newId);
     }

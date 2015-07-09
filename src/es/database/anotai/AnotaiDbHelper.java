@@ -1,18 +1,7 @@
 package es.database.anotai;
 
-import java.nio.channels.ClosedByInterruptException;
-
-import es.model.anotai.Classmate;
-import es.model.anotai.Discipline;
-import es.model.anotai.Exam;
-import es.model.anotai.GroupHomework;
-import es.model.anotai.IndividualHomework;
-import es.model.anotai.Task;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class AnotaiDbHelper extends SQLiteOpenHelper {
@@ -64,9 +53,6 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     public static final String TASKENTRY_COLUMN_ID = "_id";
 
     /** The Constant COLUMN_NAME. */
-    //public static final String TASKENTRY_COLUMN_NAME = "name";
-
-    /** The Constant COLUMN_NAME. */
     public static final String TASKENTRY_COLUMN_DESCRIPTION = "description";
 
     /** The Constant COLUMN_CADASTER_DATE. */
@@ -90,7 +76,6 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_TASK = "CREATE TABLE "
             + TASKENTRY_TABLE_NAME + "(" 
     		+ TASKENTRY_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
-//            + TASKENTRY_COLUMN_NAME + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_DESCRIPTION + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_CADASTER_DATE + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_DEADLINE_DATE + " TEXT NOT NULL, "
@@ -102,7 +87,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
             + DISCIPLINEENTRY_TABLE_NAME + " ("+ DISCIPLINEENTRY_COLUMN_ID +") "
             + "ON DELETE CASCADE ON UPDATE CASCADE);";
 
-    /** The Constant SQL_DELETE_EMERGENCY_TABLE. */
+    /** The Constant SQL_DELETE_TASK_TABLE. */
     private static final String SQL_DELETE_TASK_TABLE = "DROP TABLE IF EXISTS "
             + TASKENTRY_TABLE_NAME + ";";
     
@@ -167,65 +152,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
             + PHONENUMBERS_TABLE_NAME + ";";
     
     
-    
-    //---------------------------------------------------------------------------------------
-    /** The Constant TABLE_NAME. */
-    public static final String INDIVIDUALHOMEWORK_TABLE_NAME = "individualHomeWorkTable";
-
-    /** The Constant COLUMN_ID_TASK. */
-    public static final String INDIVIDUALHOMEWORK_COLUMN_ID_TASK = "id_task";
-
-    /** The Constant SQL_CREATE_INDIVIDUAL_HOME_WORK. */
-    private static final String SQL_CREATE_INDIVIDUAL_HOME_WORK = "CREATE TABLE "
-            + INDIVIDUALHOMEWORK_TABLE_NAME
-            + "("
-            + INDIVIDUALHOMEWORK_COLUMN_ID_TASK
-            + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT)";
-
-    /** The Constant SQL_DELETE_EMERGENCY_TABLE. */
-    private static final String SQL_DELETE_INDIVIDUAL_HOME_WORK_TABLE = "DROP TABLE IF EXISTS "
-            + INDIVIDUALHOMEWORK_TABLE_NAME;
-    
-    
-    
-    //---------------------------------------------------------------------------------------
-
-    /** The Constant TABLE_NAME. */
-    public static final String GROUPHOMEWORK_TABLE_NAME = "groupHomeWorkTable";
-
-    /** The Constant COLUMN_ID_TASK. */
-    public static final String GROUPHOMEWORK_COLUMN_ID_TASK = "_id";
-
-    /** The Constant SQL_CREATE_INDIVIDUAL_HOME_WORK. */
-    private static final String SQL_CREATE_GROUP_HOME_WORK = "CREATE TABLE "
-            + GROUPHOMEWORK_TABLE_NAME + "(" + GROUPHOMEWORK_COLUMN_ID_TASK
-            + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT)";
-
-    /** The Constant SQL_DELETE_EMERGENCY_TABLE. */
-    private static final String SQL_DELETE_GROUP_HOME_WORK_TABLE = "DROP TABLE IF EXISTS "
-            + GROUPHOMEWORK_TABLE_NAME;
-    
-    
-    
-    //--------------------------------------------------------------------------------------
-
-    /** The Constant TABLE_NAME. */
-    public static final String EXAM_TABLE_NAME = "examTable";
-
-    /** The Constant COLUMN_ID_TASK. */
-    public static final String EXAM_COLUMN_ID_TASK = "id_task";
-
-    /** The Constant SQL_CREATE_EXAM. */
-    private static final String SQL_CREATE_EXAM = "CREATE TABLE "
-            + EXAM_TABLE_NAME + "(" + EXAM_COLUMN_ID_TASK
-            + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT)";
-
-    /** The Constant SQL_DELETE_EMERGENCY_TABLE. */
-    private static final String SQL_DELETE_EXAM_TABLE = "DROP TABLE IF EXISTS "
-            + EXAM_TABLE_NAME;   
-    
-    
-    //----------------------------------------------------------------------------------
+  //---------------------------------------------------------------------------DONE
 
     public AnotaiDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -252,9 +179,6 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
         dbHelper.execSQL(SQL_CREATE_DISCIPLINE_TABLE);
         dbHelper.execSQL(SQL_CREATE_TASK);
         dbHelper.execSQL(SQL_CREATE_CLASSMATE);
-        /*dbHelper.execSQL(SQL_CREATE_EXAM);
-        dbHelper.execSQL(SQL_CREATE_INDIVIDUAL_HOME_WORK);
-        dbHelper.execSQL(SQL_CREATE_GROUP_HOME_WORK);*/
         dbHelper.execSQL(SQL_CREATE_PHONE_NUMBERS);
     }
 
@@ -269,9 +193,6 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
             int newVersion) {
         dbHelper.execSQL(SQL_DELETE_DISCIPLINE_TABLE);
         dbHelper.execSQL(SQL_DELETE_CLASSMATE_TABLE);
-//        dbHelper.execSQL(SQL_DELETE_EXAM_TABLE);
-//        dbHelper.execSQL(SQL_DELETE_GROUP_HOME_WORK_TABLE);
-//        dbHelper.execSQL(SQL_DELETE_INDIVIDUAL_HOME_WORK_TABLE);
         dbHelper.execSQL(SQL_DELETE_TASK_TABLE);
         dbHelper.execSQL(SQL_DELETE_PHONE_NUMBERS_TABLE);
         onCreate(dbHelper);
@@ -292,104 +213,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     
  
 
-    /*public final long addDiscipline(final Discipline discipline) {
-        final SQLiteDatabase dbHelper = getWritableDatabase();
-        final ContentValues valuesDiscipline = new ContentValues();
-
-        valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_NAME, discipline.getName());
-        valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_TEACHER,
-                discipline.getTeacher());
-
-        final long disciplineId = dbHelper.insert(DISCIPLINEENTRY_TABLE_NAME,
-                null, valuesDiscipline);
-
-        discipline.setId(disciplineId);
-
-        for (final Task task : discipline.getTasks()) {
-
-            final ContentValues valuesTask = new ContentValues();
-            valuesTask.put(TASKENTRY_COLUMN_ID, task.getId());
-            valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, discipline.getId());
-            valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, task.getDescription());
-            valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE,
-                    task.getCadasterDateText());
-            valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE,
-                    task.getDeadlineDateText());
-            valuesTask.put(TASKENTRY_COLUMN_GRADE, task.getGrade());
-            // valuesTask.put(TASKENTRY_COLUMN_PRIORITY, task.getPriority());
-            // TODO Encontrar uma maneira de armazenar tarefas com prioridade.
-
-            final long taskID = dbHelper.insert(TASKENTRY_TABLE_NAME, null,
-                    valuesTask);
-
-            task.setId(taskID);
-
-            if (task instanceof IndividualHomework) {
-                final ContentValues vIndividualWork = new ContentValues();
-
-                vIndividualWork.put(INDIVIDUALHOMEWORK_COLUMN_ID_TASK,
-                        task.getId());
-
-                final long individualWorkID = dbHelper.insert(
-                        INDIVIDUALHOMEWORK_TABLE_NAME, null, vIndividualWork);
-
-                ((IndividualHomework) task).setId(individualWorkID);
-            }
-
-            if (task instanceof Exam) {
-                final ContentValues valuesExam = new ContentValues();
-                valuesExam.put(EXAM_COLUMN_ID_TASK, task.getId());
-
-                final long examID = dbHelper.insert(
-                        INDIVIDUALHOMEWORK_TABLE_NAME, null, valuesExam);
-
-                ((Exam) task).setId(examID);
-            }
-
-            if (task instanceof GroupHomework) {
-                final ContentValues valuesGroupWork = new ContentValues();
-                valuesDiscipline
-                        .put(GROUPHOMEWORK_COLUMN_ID_TASK, task.getId());
-
-                final long groupWorkID = dbHelper.insert(
-                        GROUPHOMEWORK_TABLE_NAME, null, valuesGroupWork);
-
-                ((GroupHomework) task).setId(groupWorkID);
-
-                for (final Classmate classmate : ((GroupHomework) task)
-                        .getGroup()) {
-                    final ContentValues valuesClassmate = new ContentValues();
-                    valuesClassmate.put(CLASSMATEENTRY_COLUMN_ID,
-                            classmate.getId());
-                    valuesClassmate.put(CLASSMATEENTRY_COLUMN_ID_TASK,
-                            task.getId());
-                    valuesClassmate.put(CLASSMATEENTRY_COLUMN_NAME,
-                            classmate.getName());
-
-                    final long classmateID = dbHelper.insert(
-                            CLASSMATEENTRY_TABLE_NAME, null, valuesClassmate);
-
-                    classmate.setId(classmateID);
-
-                    for (final String numPhone : classmate.getPhoneNumbers()) {
-                        final ContentValues valuesPhoneNumbers = new ContentValues();
-                        valuesPhoneNumbers.put(
-                                PHONENUMBERS_COLUMN_ID_CLASSMATE,
-                                classmate.getId());
-                        valuesPhoneNumbers.put(
-                                PHONENUMBERS_COLUMN_PHONE_NUMBER, numPhone);
-
-                        dbHelper.insert(PHONENUMBERS_TABLE_NAME, null,
-                                valuesPhoneNumbers);
-                    }
-                }
-            }
-        }
-
-        CloseDB();
-
-        return disciplineId;
-    }
+    /*
 
     private void CloseDB() {
         final SQLiteDatabase dbHelper = getReadableDatabase();

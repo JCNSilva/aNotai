@@ -7,7 +7,6 @@ import java.util.GregorianCalendar;
 public abstract class Task {
 	
     private long id;
-	private String name;
 	private String description;
 	private Calendar cadasterDate;
 	private Calendar deadlineDate;
@@ -18,7 +17,6 @@ public abstract class Task {
 	
     public Task() {
         setId(0);
-        name = "";
         description = "";
         cadasterDate = new GregorianCalendar();
         deadlineDate = new GregorianCalendar();
@@ -26,14 +24,11 @@ public abstract class Task {
         grade = 0;
     }
 	
-	public Task(long newId, String name, Calendar deadlineDate, Priority priority, String description){
-		if(name == null)
-			throw new IllegalArgumentException("Name can't be empty");
+	public Task(long newId, String description, Calendar deadlineDate, Priority priority){
 		if(deadlineDate == null)
 			throw new IllegalArgumentException("Deadline date can't empty");
 		
 		this.setId(newId);
-		this.name = name;
 		this.description = description;
 		this.cadasterDate = new GregorianCalendar();
 		this.deadlineDate = deadlineDate;
@@ -41,14 +36,6 @@ public abstract class Task {
 		this.grade = 0.0;
 	}
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getDescription() {
 		return description;
 	}

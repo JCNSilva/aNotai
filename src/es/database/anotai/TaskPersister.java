@@ -77,10 +77,13 @@ public class TaskPersister implements AbstractPersister<Task> {
 	@Override
 	public void update(Task target) {
 		ContentValues values = new ContentValues();
+		
 		values.put(TASKENTRY_COLUMN_DESCRIPTION, target.getDescription());
+		values.put(TASKENTRY_COLUMN_CADASTER_DATE, target.getCadasterDateText());
 		values.put(TASKENTRY_COLUMN_DEADLINE_DATE, target.getDeadlineDateText());
 		values.put(TASKENTRY_COLUMN_PRIORITY, target.getPriorityText());
 		values.put(TASKENTRY_COLUMN_GRADE, target.getGrade());
+		values.put(TASKENTRY_COLUMN_ID_DISCIPLINE, 0); //FIXME pegar id correta
 		
 		if (target instanceof Exam) {
 			values.put(TASKENTRY_COLUMN_SUBCLASS, 
@@ -91,10 +94,26 @@ public class TaskPersister implements AbstractPersister<Task> {
 		} else {
 			values.put(TASKENTRY_COLUMN_SUBCLASS,
 					GroupHomework.class.getSimpleName().toLowerCase(Locale.US));
-			//TODO add grupo
+			
+			GroupHomework gHomework = (GroupHomework) target;
+			for(Classmate classmate: gHomework.getGroup()){
+				
+				ContentValues valuesClassmates = new ContentValues();
+				valuesClassmates.put(CLASSMATEENTRY_COLUMN_ID_TASK, 0); //FIXME pegar id correta
+				valuesClassmates.put(CLASSMATEENTRY_COLUMN_NAME, classmate.getName());
+				valuesClassmates.put(CLASSMATEENTRY_COLUMN_ID, 0); //FIXME pegar id correta
+				
+				for(String number: classmate.getPhoneNumbers()){
+					ContentValues valuesNumbers = new ContentValues();
+					valuesNumbers.put(PHONENUMBERS_COLUMN_ID_CLASSMATE, 0); //FIXME pegar id correta
+					valuesNumbers.put(PHONENUMBERS_COLUMN_PHONE_NUMBER, number);
+					valuesNumbers.put(PHONENUMBERS_COLUMN_ID, 0); //FIXME pegar id correta
+					db.insert(PHONENUMBERS_TABLE_NAME, null, valuesNumbers);
+				}
+				
+				db.insert(CLASSMATEENTRY_TABLE_NAME, null, valuesClassmates);
+			}
 		}
-		
-		values.put(TASKENTRY_COLUMN_ID_DISCIPLINE, 0); //FIXME pegar id correta
 		
 		db.insert(TASKENTRY_TABLE_NAME, null, values);
 		
@@ -146,7 +165,19 @@ public class TaskPersister implements AbstractPersister<Task> {
 			target.setGrade(cursorTask.getDouble(6));
 		}
 		
-		//TODO pegar tasks
+		//Caso a Tarefa seja um trabalho em grupo, é preciso adicionar os membros do grupo
+		if(target instanceof GroupHomework){
+			GroupHomework myHomework = (GroupHomework) target;
+			
+			/*Cursor cursorMembers = db.query(CLASSMATEENTRY_TABLE_NAME, columns, "_id = " + id, null, null, null, null);
+			
+			if(cursorTask.getCount() > 0){
+				cursorTask.moveToFirst();
+			}*/
+			
+			target = myHomework;
+			
+		}
 		
 		return target;
 	}
@@ -166,7 +197,7 @@ public class TaskPersister implements AbstractPersister<Task> {
 	 * @param dateFormat
 	 * @return
 	 */
-		private Calendar createCalendar(String dateFormat){
+	private Calendar createCalendar(String dateFormat){
 		if(dateFormat == null){
 			throw new IllegalArgumentException("Null String can not be converted");
 		}
