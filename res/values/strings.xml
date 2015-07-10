@@ -33,5 +33,8 @@
     <string name="ask_description">Adicione uma descrição</string>
     <string name="label_title">Título:</string>
     <string name="label_date">Data:</string>
+    
+    <drawable name="actionbar_background">#81F7BE</drawable>
+    <color name="color_title">#FFFFFF</color>
 
 </resources>

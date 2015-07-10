@@ -20,7 +20,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
-            android:background="@android:color/holo_green_light"
+            android:background="@drawable/button_generic"
             android:text="@string/add_test"
             android:textColor="@android:color/white" />
 
@@ -33,7 +33,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
-            android:background="@android:color/holo_green_light"
+            android:background="@drawable/button_generic"
             android:text="@string/disciplines"
             android:textColor="@android:color/white" />
     </LinearLayout>
@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_horizontal" >
+        android:gravity="center" >
 
         <Button
             android:id="@+id/bt_add_homework"
@@ -53,7 +53,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
-            android:background="@android:color/holo_green_light"
+            android:background="@drawable/button_generic"
             android:text="@string/add_homework"
             android:textColor="@android:color/white" />
 
@@ -66,7 +66,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
-            android:background="@android:color/holo_green_light"
+            android:background="@drawable/button_generic"
             android:text="@string/tasks"
             android:textColor="@android:color/white" />
     </LinearLayout>
@@ -79,7 +79,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:background="@android:color/holo_green_light"
+        android:background="@drawable/button_generic"
         android:text="@string/performance"
         android:textColor="@android:color/white" />
 
