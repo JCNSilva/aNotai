@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.model.anotai.Discipline;
+import es.model.anotai.Task;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,12 +13,14 @@ import android.database.sqlite.SQLiteDatabase;
 public class DisciplinePersister implements AbstractPersister<Discipline> {
 	
 	private SQLiteDatabase db;
+	private Context context;
 	
 	private static final String TABLE_NAME = "disciplineTable";
 	
 	public DisciplinePersister(Context context){
 		AnotaiDbHelper helper = new AnotaiDbHelper(context);
 		db = helper.getWritableDatabase();
+		this.context = context;
 	}
 
 	@Override
@@ -59,30 +62,27 @@ public class DisciplinePersister implements AbstractPersister<Discipline> {
 			target.setTeacher(cursorDisc.getString(2));
 		}
 		
-		//TODO pegar tasks
+		//Pegar tasks
+		TaskPersister taskPersister = new TaskPersister(this.context);
+		List<Task> tasks = taskPersister.retrieveAll(target);
+		target.setTasks(tasks);
 		
 		return target;
 	}
+	
 
 	@Override
 	public List<Discipline> retrieveAll() {
 		List<Discipline> list = new ArrayList<Discipline>();
-		String[] columns = {"_id, name, teacher"};
-		
-		Cursor cursor = db.query(TABLE_NAME, columns, null, null, null, null, "name ASC");
+		Cursor cursor = db.query(TABLE_NAME, new String[]{"_id"}, null, null, null, null, null);
 		
 		if(cursor.getCount() > 0){
 			cursor.moveToFirst();
 			
 			do{
-				
-				Discipline target = new Discipline();
-				target.setId(cursor.getLong(0));
-				target.setName(cursor.getString(1));
-				target.setTeacher(cursor.getString(2));
-				//TODO pegar tasks
-				list.add(target);
-				
+				long idDiscipline = cursor.getLong(0);
+				Discipline target = retrieveById(idDiscipline);
+				list.add(target);				
 			} while(cursor.moveToNext());
 		}
 		

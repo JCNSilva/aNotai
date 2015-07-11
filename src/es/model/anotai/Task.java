@@ -3,6 +3,7 @@ package es.model.anotai;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public abstract class Task {
 	
@@ -13,7 +14,7 @@ public abstract class Task {
 	private Priority priority;
 	private double grade;
 	
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD HH:MM");
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
     public Task() {
         setId(0);
@@ -85,7 +86,7 @@ public abstract class Task {
 	}
 	
 	public String getPriorityText(){
-		return priority.toString().toLowerCase();
+		return priority.toString().toLowerCase(Locale.US);
 	}
 
 	/**
