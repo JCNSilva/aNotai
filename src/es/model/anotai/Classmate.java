@@ -1,12 +1,14 @@
 package es.model.anotai;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Classmate {
+public class Classmate implements Serializable {
 
-    private long id;
+	private static final long serialVersionUID = -6608657167323953692L;
+	private long id;
     private String name;
     private Set<String> phoneNumbers;
 

@@ -4,12 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/new_exam"
+        android:textColor="@color/color_big_text"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
     <Spinner
         android:id="@+id/sp_discipline_select"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:prompt="@string/discipline_select"
-        android:hint="@string/discipline_select"/>
+        android:layout_marginTop="10dp"
+        android:hint="@string/discipline_select"
+        android:prompt="@string/discipline_select" />
 
     <EditText
         android:id="@+id/et_deadline_date"
@@ -24,14 +35,21 @@
         android:id="@+id/et_exam_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/text_field"
         android:ems="10"
-        android:inputType="textMultiLine"
-        android:hint="@string/ask_description" />
+        android:hint="@string/ask_description"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/bt_create_exam"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_generic"
+        android:text="@string/save"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

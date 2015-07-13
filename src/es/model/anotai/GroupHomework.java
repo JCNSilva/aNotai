@@ -1,13 +1,15 @@
 package es.model.anotai;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GroupHomework extends Task {
+public class GroupHomework extends Task implements Serializable{
 
-    private long id;
+    private static final long serialVersionUID = -288792196911274116L;
+	private long id;
     private Set<Classmate> group;
 
     public GroupHomework() {

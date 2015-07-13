@@ -5,82 +5,107 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
-
-    <LinearLayout
+    
+    <LinearLayout 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/bt_add_test"
-            android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.5">
+        
+        <TextView 
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/button_generic"
-            android:text="@string/add_test"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/bt_disciplines"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/button_generic"
-            android:text="@string/disciplines"
-            android:textColor="@android:color/white" />
+            android:text="@string/next_activity"
+            android:textStyle="bold"
+            android:textSize="26sp"
+            android:textColor="@color/color_big_text"/>
+        
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center" >
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical"
+        android:layout_gravity="end" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/bt_add_test"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.5"
+                android:text="@string/add_test"
+                android:background="@drawable/button_generic"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/bt_disciplines"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_generic"
+                android:text="@string/disciplines"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/bt_add_homework"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_generic"
+                android:text="@string/add_homework"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/bt_tasks"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_generic"
+                android:text="@string/tasks"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/bt_add_homework"
-            android:layout_width="0dp"
+            android:id="@+id/bt_performance"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:layout_weight="0.5"
             android:background="@drawable/button_generic"
-            android:text="@string/add_homework"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/bt_tasks"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="0.5"
-            android:background="@drawable/button_generic"
-            android:text="@string/tasks"
+            android:text="@string/performance"
             android:textColor="@android:color/white" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/bt_performance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/button_generic"
-        android:text="@string/performance"
-        android:textColor="@android:color/white" />
 
 </LinearLayout>

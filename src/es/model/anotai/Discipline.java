@@ -1,11 +1,13 @@
 package es.model.anotai;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Discipline {
+public class Discipline implements Serializable{
 
-    private long id;
+	private static final long serialVersionUID = -7503016405761927822L;
+	private long id;
     private String name;
     private String teacher;
     private List<Task> tasks;

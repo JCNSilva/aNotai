@@ -6,9 +6,14 @@ import java.util.List;
 import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,6 +30,8 @@ public class DisciplinesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disciplines);
+        
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         
         // Recuperando a listview de disciplinas.
         lvDisciplines = (ListView) findViewById(R.id.list_disciplines);
@@ -82,11 +89,34 @@ public class DisciplinesActivity extends Activity {
                 dialog.show();
             }
         });
+        
+        lvDisciplines.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// Passar a disciplina clicada na intent que vai a tela da disciplina
+				Intent intent = new Intent(DisciplinesActivity.this, DisciplineActivity.class);
+				intent.putExtra("discipline", disciplines.get(position));
+				startActivity(intent);
+			}
+		});
     }
     
     private void loadList() {
         adapter = new DisciplineAdapter(DisciplinesActivity.this, disciplines);
         lvDisciplines.setAdapter(adapter);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
     }
 
 }

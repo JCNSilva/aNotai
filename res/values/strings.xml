@@ -13,9 +13,11 @@
     <string name="tasks">Atividades</string>
     <string name="group_homework">Atividade em grupo</string>
     <string name="add_classmate">Adicionar contato</string>
+    <string name="next_activity">Proxíma Atividade</string>
 
     <!-- PROVA -->
     <string name="add_test">Adicionar Prova</string>
+    <string name="new_exam">Nova Prova</string>
 
     <!-- DESEMPENHO -->
     <string name="performance">Desempenho</string>
@@ -36,5 +38,6 @@
     
     <drawable name="actionbar_background">#81F7BE</drawable>
     <color name="color_title">#FFFFFF</color>
+    <color name="color_big_text">#6E6E6E</color>
 
 </resources>

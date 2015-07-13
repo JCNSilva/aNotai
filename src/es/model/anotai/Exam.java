@@ -1,9 +1,12 @@
 package es.model.anotai;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Exam extends Task{
+public class Exam extends Task implements Serializable{
     
+    private static final long serialVersionUID = 8260604436524623802L;
+	
     /** The id. */
     private long id;
     

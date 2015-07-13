@@ -1,41 +1,31 @@
 package es.view.anotai;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import es.adapter.anotai.TaskAdapter;
+import es.model.anotai.Discipline;
 import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.ListView;
-import es.adapter.anotai.TaskAdapter;
-import es.model.anotai.Task;
 
-public class TasksActivity extends Activity {
+public class DisciplineActivity extends Activity {
+	private Discipline discipline;
 	
-	private List<Task> tasks = new ArrayList<Task>();
-	private ListView lvTasks;
-	private TaskAdapter adapter;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
-		//Recupera estado salvo
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_discipline);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		Bundle extras = getIntent().getExtras();
+		discipline = (Discipline) extras.get("discipline");
 		
-		//Seleciona xml correspondente à View
-		setContentView(R.layout.activity_tasks);
+		ListView listView = (ListView) findViewById(R.id.list_tasks);
 		
-		//Recupera elementos
-		lvTasks = (ListView) findViewById(R.id.list_tasks);
-		
-		//Adiciona adapter para linkar a listView ao xml dos elementos da lista
-		adapter = new TaskAdapter(TasksActivity.this, tasks);
-		lvTasks.setAdapter(adapter);
-		
+		TaskAdapter adapter = new TaskAdapter(DisciplineActivity.this, discipline.getTasks());
+		listView.setAdapter(adapter);
 	}
 	
 	@Override
