@@ -13,6 +13,7 @@ public abstract class Task {
 	private Calendar deadlineDate;
 	private Priority priority;
 	private double grade;
+	private Discipline discipline;
 	
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 	
@@ -87,6 +88,10 @@ public abstract class Task {
 	
 	public String getPriorityText(){
 		return priority.toString().toLowerCase(Locale.US);
+	}
+	
+	public Discipline getDiscipline(){
+		return discipline;
 	}
 
 	/**

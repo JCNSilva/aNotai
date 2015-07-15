@@ -10,7 +10,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     private static AnotaiDbHelper instance;
 
     /** The database version constant DATABASE_VERSION. */
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
 
     /** The database file name constant DATABASE_NAME. */
     public static final String DATABASE_NAME = "Anotai.db";

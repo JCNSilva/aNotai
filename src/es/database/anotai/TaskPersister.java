@@ -41,7 +41,7 @@ public class TaskPersister implements AbstractPersister<Task> {
 		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, target.getDeadlineDateText());
 		valuesTask.put(TASKENTRY_COLUMN_PRIORITY, target.getPriorityText());
 		valuesTask.put(TASKENTRY_COLUMN_GRADE, target.getGrade());
-		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, 0); //FIXME pegar id correta
+		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, target.getDiscipline().getId());
 		
 		if (target instanceof Exam) {
 			valuesTask.put(TASKENTRY_COLUMN_SUBCLASS, 
@@ -52,28 +52,30 @@ public class TaskPersister implements AbstractPersister<Task> {
 		} else {
 			valuesTask.put(TASKENTRY_COLUMN_SUBCLASS,
 					GroupHomework.class.getSimpleName().toLowerCase(Locale.US));
-			
+		}
+		
+		db.insert(TASKENTRY_TABLE_NAME, null, valuesTask);	
+		
+		//Se o trabalho for em grupo, precisamos adicionar os membros do grupo e seus telefones
+		if (target instanceof GroupHomework){
 			GroupHomework gHomework = (GroupHomework) target;
 			for(Classmate classmate: gHomework.getGroup()){
 				
 				ContentValues valuesClassmates = new ContentValues();
-				valuesClassmates.put(CLASSMATEENTRY_COLUMN_ID_TASK, 0); //FIXME pegar id correta
+				valuesClassmates.put(CLASSMATEENTRY_COLUMN_ID_TASK, getLastIdOnTable(TASKENTRY_TABLE_NAME));
 				valuesClassmates.put(CLASSMATEENTRY_COLUMN_NAME, classmate.getName());
-				//valuesClassmates.put(CLASSMATEENTRY_COLUMN_ID, 0); //FIXME pegar id correta
+				db.insert(CLASSMATEENTRY_TABLE_NAME, null, valuesClassmates);
 				
 				for(String number: classmate.getPhoneNumbers()){
 					ContentValues valuesNumbers = new ContentValues();
-					valuesNumbers.put(PHONENUMBERS_COLUMN_ID_CLASSMATE, 0); //FIXME pegar id correta
+					valuesNumbers.put(PHONENUMBERS_COLUMN_ID_CLASSMATE, getLastIdOnTable(CLASSMATEENTRY_TABLE_NAME));
 					valuesNumbers.put(PHONENUMBERS_COLUMN_PHONE_NUMBER, number);
-					//valuesNumbers.put(PHONENUMBERS_COLUMN_ID, 0); //FIXME pegar id correta
 					db.insert(PHONENUMBERS_TABLE_NAME, null, valuesNumbers);
 				}
-				
-				db.insert(CLASSMATEENTRY_TABLE_NAME, null, valuesClassmates);
 			}
 		}
 		
-		db.insert(TASKENTRY_TABLE_NAME, null, valuesTask);	
+		
 	}
 	
 	
@@ -284,6 +286,17 @@ public class TaskPersister implements AbstractPersister<Task> {
 		}
 		
 		return newPriority;
+	}
+	
+	private long getLastIdOnTable(String tableName){
+ 		Cursor cursorId = db.query("sqlite_sequence", new String[]{"seq"}, "name = " + tableName, null, null, null, null);
+ 		long id = -1;
+ 		
+ 		if(cursorId.getCount() > 0){
+ 			id = cursorId.getLong(0);
+ 		}
+ 		
+ 		return id;
 	}
 
 
