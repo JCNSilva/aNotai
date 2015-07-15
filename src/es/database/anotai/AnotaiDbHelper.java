@@ -210,17 +210,4 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
             int newVersion) {
         onUpgrade(dbHelper, oldVersion, newVersion);
     }
-    
- 
-
-    /*
-
-    private void CloseDB() {
-        final SQLiteDatabase dbHelper = getReadableDatabase();
-        if (dbHelper != null && dbHelper.isOpen()) {
-            dbHelper.close();
-
-        }
-    }*/
-
 }
