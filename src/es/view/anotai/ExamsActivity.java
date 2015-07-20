@@ -15,6 +15,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,23 +76,40 @@ public class ExamsActivity extends Activity {
 		btSaveExam.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View v) {
-                String description = examDescription.getText().toString();
-
-                Calendar caler1 = Calendar.getInstance();
-                caler1.set(year, month, day - 2, hour, minute);
-                
-                Calendar caler2 = Calendar.getInstance();
-                caler2.set(year, month, day - 1, hour, minute);
-                
-                calendar.set(year, month, day, hour, minute);
-
-                notifyIn(caler1, description);     
-                notifyIn(caler2, description);
-                notifyIn(calendar, description);
+            public void onClick(View v) {            	
+            	Calendar calExam = Calendar.getInstance();
+            	calExam.set(year, month, day);
+            	
+            	if (calExam.after(calendar)) {
+            		createNotifications();
+            	}
             }
 
-            private void notifyIn(Calendar calendar, String description) {
+			private void createNotifications() {
+				String description = examDescription.getText().toString();
+
+				Calendar calendar1 = Calendar.getInstance();
+				calendar1.set(year, month, day - 1, hour, minute);
+
+				calendar.set(year, month, day, hour, minute);
+
+				notifyIn(calendar, description);
+
+				if (calendar.get(Calendar.DAY_OF_YEAR) < calendar1
+						.get(Calendar.DAY_OF_YEAR)) {
+					notifyIn(calendar1, description);
+				} else {
+					Calendar calendar2 = Calendar.getInstance();
+					calendar2.set(year, month, day - 2, hour, minute);
+
+					if (calendar.get(Calendar.DAY_OF_YEAR) < calendar2
+							.get(Calendar.DAY_OF_YEAR)) {
+						notifyIn(calendar2, description);
+					}
+				}
+			}
+
+			private void notifyIn(Calendar calendar, String description) {
                 Intent myIntent = new Intent(ExamsActivity.this, AnotaiBroadcast.class);
                 myIntent.putExtra("description_exam", description);
                 
