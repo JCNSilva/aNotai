@@ -19,7 +19,7 @@ import es.model.anotai.IndividualHomework;
 import es.model.anotai.Task;
 import es.model.anotai.Task.Priority;
 
-public class TaskPersister implements AbstractPersister<Task> {
+public class TaskPersister{
 
 	private SQLiteDatabase db;
 	private Context context;
@@ -32,8 +32,11 @@ public class TaskPersister implements AbstractPersister<Task> {
 	
 	
 	
-	@Override
-	public void create(Task newTask) {
+	public void create(Task newTask, Discipline disc) {
+		if(newTask == null  || disc == null){
+			return;
+		}
+		
 		ContentValues valuesTask = new ContentValues();
 		
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, newTask.getDescription());
@@ -41,7 +44,7 @@ public class TaskPersister implements AbstractPersister<Task> {
 		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, newTask.getDeadlineDateText());
 		valuesTask.put(TASKENTRY_COLUMN_PRIORITY, newTask.getPriorityText());
 		valuesTask.put(TASKENTRY_COLUMN_GRADE, newTask.getGrade());
-		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, newTask.getDiscipline().getId());
+		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, disc.getId());
 		
 		if (newTask instanceof Exam) {
 			valuesTask.put(TASKENTRY_COLUMN_SUBCLASS, 
@@ -54,7 +57,8 @@ public class TaskPersister implements AbstractPersister<Task> {
 					GroupHomework.class.getSimpleName().toLowerCase(Locale.US));
 		}
 		
-		db.insert(TASKENTRY_TABLE_NAME, null, valuesTask);	
+		long idNewTask = db.insert(TASKENTRY_TABLE_NAME, null, valuesTask);
+		newTask.setId(idNewTask);
 		
 		//Se o trabalho for em grupo, precisamos adicionar os membros do grupo e seus telefones
 		if (newTask instanceof GroupHomework){
@@ -62,13 +66,14 @@ public class TaskPersister implements AbstractPersister<Task> {
 			for(Classmate classmate: gHomework.getGroup()){
 				
 				ContentValues valuesClassmates = new ContentValues();
-				valuesClassmates.put(CLASSMATEENTRY_COLUMN_ID_TASK, getLastIdOnTable(TASKENTRY_TABLE_NAME));
+				valuesClassmates.put(CLASSMATEENTRY_COLUMN_ID_TASK, idNewTask);
 				valuesClassmates.put(CLASSMATEENTRY_COLUMN_NAME, classmate.getName());
-				db.insert(CLASSMATEENTRY_TABLE_NAME, null, valuesClassmates);
+				long idNewClassmate = db.insert(CLASSMATEENTRY_TABLE_NAME, null, valuesClassmates);
+				classmate.setId(idNewClassmate);
 				
 				for(String number: classmate.getPhoneNumbers()){
 					ContentValues valuesNumbers = new ContentValues();
-					valuesNumbers.put(PHONENUMBERS_COLUMN_ID_CLASSMATE, getLastIdOnTable(CLASSMATEENTRY_TABLE_NAME));
+					valuesNumbers.put(PHONENUMBERS_COLUMN_ID_CLASSMATE, idNewClassmate);
 					valuesNumbers.put(PHONENUMBERS_COLUMN_PHONE_NUMBER, number);
 					db.insert(PHONENUMBERS_TABLE_NAME, null, valuesNumbers);
 				}
@@ -80,8 +85,11 @@ public class TaskPersister implements AbstractPersister<Task> {
 	
 	
 
-	@Override
-	public void update(Task taskUpdated) {
+	public int update(Task taskUpdated, Discipline disc) {
+		if(taskUpdated == null  || disc == null){
+			return 0;
+		}
+		
 		ContentValues valuesTask = new ContentValues();
 		
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, taskUpdated.getDescription());
@@ -89,7 +97,7 @@ public class TaskPersister implements AbstractPersister<Task> {
 		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, taskUpdated.getDeadlineDateText());
 		valuesTask.put(TASKENTRY_COLUMN_PRIORITY, taskUpdated.getPriorityText());
 		valuesTask.put(TASKENTRY_COLUMN_GRADE, taskUpdated.getGrade());
-		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, taskUpdated.getDiscipline().getId());
+		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, disc.getId());
 		
 		if (taskUpdated instanceof Exam) {
 			valuesTask.put(TASKENTRY_COLUMN_SUBCLASS, 
@@ -102,7 +110,7 @@ public class TaskPersister implements AbstractPersister<Task> {
 					GroupHomework.class.getSimpleName().toLowerCase(Locale.US));
 		}
 		
-		db.update(TASKENTRY_TABLE_NAME, valuesTask, "_id = " + taskUpdated.getId(), null);
+		int rowsAffected = db.update(TASKENTRY_TABLE_NAME, valuesTask, "_id = " + taskUpdated.getId(), null);
 		
 		//Se o trabalho for em grupo, precisamos adicionar os membros do grupo e seus telefones
 		if (taskUpdated instanceof GroupHomework){
@@ -122,19 +130,20 @@ public class TaskPersister implements AbstractPersister<Task> {
 				}
 			}
 		}
+		
+		return rowsAffected;
 	}
 	
 	
 
-	@Override
 	public void delete(Task target) {
-		db.delete(TASKENTRY_TABLE_NAME, "_id = " + target.getId(), null);
+		if(target != null){
+			db.delete(TASKENTRY_TABLE_NAME, "_id = " + target.getId(), null);
+		}
 	}
 	
 	
 	
-
-	@Override
 	public Task retrieveById(long idTask) {
 		Task target = null;
 		String[] columns = {
@@ -215,7 +224,6 @@ public class TaskPersister implements AbstractPersister<Task> {
 	}
 	
 	
-	@Override
 	public List<Task> retrieveAll() {
 		return retrieveAll(null);		
 	}
@@ -243,26 +251,28 @@ public class TaskPersister implements AbstractPersister<Task> {
 		
 		return tasks;
 	}
+	
+	public void close() throws Exception {
+		if(db == null || !db.isOpen()) {
+			throw new Exception("Database is not present or open");
+		}
+		
+		db.close();		
+	}
 
 	
-	
-	/**Cria Calendar a partir de String. Atenção: A String deve ter a forma dd/MM/yyyy
-	 * 
-	 * @param dateFormat
-	 * @return
-	 */
+	/* Expected format: dd/MM/yyyy hh:mm */
 	private Calendar createCalendar(String dateFormat){
 		if(dateFormat == null){
 			throw new IllegalArgumentException("Null String can not be converted");
-		}
-		if(!dateFormat.matches("\\d{2}/[0&&[1-9]][1&&[0-2]]/\\d{4}")){
-			throw new IllegalArgumentException("String does not match expected format");
 		}
 		
 		Calendar myCalendar = Calendar.getInstance();
 		myCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateFormat.substring(0, 2)));
 		myCalendar.set(Calendar.MONTH, Integer.parseInt(dateFormat.substring(3, 5)) - 1);
-		myCalendar.set(Calendar.YEAR, Integer.parseInt(dateFormat.substring(6)));
+		myCalendar.set(Calendar.YEAR, Integer.parseInt(dateFormat.substring(6, 10)));
+		myCalendar.set(Calendar.HOUR, Integer.parseInt(dateFormat.substring(11, 13)));
+		myCalendar.set(Calendar.MINUTE, Integer.parseInt(dateFormat.substring(14, 16)));
 		
 		return myCalendar;
 	}
@@ -276,30 +286,14 @@ public class TaskPersister implements AbstractPersister<Task> {
 		
 		Priority newPriority = null;
 		
-		if(priority.equals("HIGH")){
+		if(priority.equalsIgnoreCase("HIGH")){
 			newPriority = Priority.HIGH;
-		} else if(priority.equals("NORMAL")){
+		} else if(priority.equalsIgnoreCase("NORMAL")){
 			newPriority = Priority.NORMAL;
-		} else if(priority.equals("LOW")){
+		} else if(priority.equalsIgnoreCase("LOW")){
 			newPriority = Priority.LOW;
 		}
 		
 		return newPriority;
 	}
-	
-	private long getLastIdOnTable(String tableName){
- 		Cursor cursorId = db.query("sqlite_sequence", new String[]{"seq"}, "name = " + tableName, null, null, null, null);
- 		long id = -1;
- 		
- 		if(cursorId.getCount() > 0){
- 			id = cursorId.getLong(0);
- 		}
- 		
- 		return id;
-	}
-
-
-
-	
-
 }

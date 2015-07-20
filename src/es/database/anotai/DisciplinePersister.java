@@ -3,12 +3,12 @@ package es.database.anotai;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.model.anotai.Discipline;
-import es.model.anotai.Task;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import es.model.anotai.Discipline;
+import es.model.anotai.Task;
 
 public class DisciplinePersister implements AbstractPersister<Discipline> {
 	
@@ -25,25 +25,52 @@ public class DisciplinePersister implements AbstractPersister<Discipline> {
 
 	@Override
 	public void create(Discipline target) {
-		ContentValues values = new ContentValues();
-		values.put("name", target.getName());
-		values.put("teacher", target.getTeacher());
-		
-		db.insert(TABLE_NAME, null, values);
+		if(target != null) {
+			ContentValues values = new ContentValues();
+			values.put("name", target.getName());
+			values.put("teacher", target.getTeacher());
+			
+			long lastId = db.insert(TABLE_NAME, null, values);
+			target.setId(lastId);
+			
+			TaskPersister taskPersister = new TaskPersister(this.context);
+			for(Task task: target.getTasks()){
+				int numTasksUpdated = taskPersister.update(task, target);
+				if(numTasksUpdated == 0){
+					taskPersister.create(task, target);
+				}
+			}
+		}
 	}
 
 	@Override
-	public void update(Discipline target) {
-		ContentValues values = new ContentValues();
-		values.put("name", target.getName());
-		values.put("teacher", target.getTeacher());
+	public int update(Discipline target) {
+		int disciplinesUpdated = 0;
 		
-		db.update(TABLE_NAME, values, "_id = " + target.getId(), null);		
+		if(target != null) {
+			ContentValues values = new ContentValues();
+			values.put("name", target.getName());
+			values.put("teacher", target.getTeacher());
+			
+			disciplinesUpdated = db.update(TABLE_NAME, values, "_id = " + target.getId(), null);
+			
+			TaskPersister taskPersister = new TaskPersister(this.context);
+			for(Task task: target.getTasks()){
+				int numTasksUpdated = taskPersister.update(task, target);
+				if(numTasksUpdated == 0){
+					taskPersister.create(task, target);
+				}
+			}
+		}	
+		
+		return disciplinesUpdated;
 	}
 
 	@Override
 	public void delete(Discipline target) {
-		db.delete(TABLE_NAME, "_id = " + target.getId(), null);
+		if(target != null) {
+			db.delete(TABLE_NAME, "_id = " + target.getId(), null);
+		}
 	}
 
 	@Override
@@ -87,6 +114,16 @@ public class DisciplinePersister implements AbstractPersister<Discipline> {
 		}
 		
 		return list;
+	}
+	
+
+	@Override
+	public void close() throws Exception {
+		if(db == null || !db.isOpen()) {
+			throw new Exception("Database is not present or open");
+		}
+		
+		db.close();		
 	}
 	
 	

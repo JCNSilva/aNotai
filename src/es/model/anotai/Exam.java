@@ -4,24 +4,15 @@ import java.util.Calendar;
 
 public class Exam extends Task{
     
-    /** The id. */
-    private long id;
-    
     public Exam() {
         super();
-        id = 0;
     }
     
-	public Exam(long newId, String subject, Calendar deadlineDate, Priority priority) {
-		super(newId, subject, deadlineDate, priority);
-		setId(newId);
+    public Exam(String subject, Calendar deadlineDate, Priority priority) {
+		super(subject, deadlineDate, priority);
 	}
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
+    
+	public Exam(final long newId, String subject, Calendar deadlineDate, Priority priority) {
+		super(newId, subject, deadlineDate, priority);
+	}
 }

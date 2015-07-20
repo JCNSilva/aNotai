@@ -11,21 +11,21 @@ public class Discipline {
     private List<Task> tasks;
 
     public Discipline() {
-        id = 0;
-        name = "";
-        teacher = "";
-        tasks = new ArrayList<Task>();
+        this(0,"","");
+    }
+    
+    public Discipline(String name, String teacher) {
+        this(0, name, teacher);
     }
 
-    public Discipline(final long newId, String name, String teacher,
-            List<Task> tasks) {
+    public Discipline(final long newId, String name, String teacher) {
         if (name == null)
             throw new IllegalArgumentException("Name can't be empty");
 
         this.setId(newId);
         this.name = name;
         this.teacher = teacher;
-        this.setTasks(tasks);
+        this.setTasks(new ArrayList<Task>());
     }
 
     public long getId() {
@@ -75,4 +75,26 @@ public class Discipline {
 
         this.tasks = tasks;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj){
+    	if(!(obj instanceof Discipline)){
+    		return false;
+    	}
+    	
+    	Discipline other = (Discipline) obj;
+    	return this.name.equals(other.getName()) &&
+    			this.teacher.equals(other.getTeacher());
+    }
+    
+    
 }

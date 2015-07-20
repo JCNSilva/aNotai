@@ -13,20 +13,18 @@ public abstract class Task {
 	private Calendar deadlineDate;
 	private Priority priority;
 	private double grade;
-	private Discipline discipline;
 	
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
 	
     public Task() {
-        setId(0);
-        description = "";
-        cadasterDate = new GregorianCalendar();
-        deadlineDate = new GregorianCalendar();
-        priority = Priority.NORMAL;
-        grade = 0;
+    	this(0, "", new GregorianCalendar(), Priority.NORMAL);
     }
+    
+    public Task(String description, Calendar deadlineDate, Priority priority){
+		this(0, description, deadlineDate, priority);
+	}
 	
-	public Task(long newId, String description, Calendar deadlineDate, Priority priority){
+	public Task(final long newId, String description, Calendar deadlineDate, Priority priority){
 		if(deadlineDate == null)
 			throw new IllegalArgumentException("Deadline date can't empty");
 		
@@ -71,11 +69,11 @@ public abstract class Task {
 	}
 	
 	public String getCadasterDateText() {
-	    return dateFormat.format(cadasterDate);
+	    return dateFormat.format(cadasterDate.getTime());
 	}
 	
 	public String getDeadlineDateText() {
-        return dateFormat.format(deadlineDate);
+        return dateFormat.format(deadlineDate.getTime());
     }
 	
 	public double getGrade() {
@@ -90,20 +88,10 @@ public abstract class Task {
 		return priority.toString().toLowerCase(Locale.US);
 	}
 	
-	public Discipline getDiscipline(){
-		return discipline;
-	}
-
-	/**
-     * @return the id
-     */
-    public long getId() {
+	public long getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(long id) {
         this.id = id;
     }
