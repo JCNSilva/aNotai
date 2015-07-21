@@ -5,14 +5,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import projeto.es.view.anotai.R;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -26,7 +22,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import es.main.anotai.AnotaiBroadcast;
+import es.utils.anotai.NotificationUtils;
+import projeto.es.view.anotai.R;
 
 public class ExamsActivity extends Activity {
 	
@@ -80,44 +77,12 @@ public class ExamsActivity extends Activity {
             	Calendar calExam = Calendar.getInstance();
             	calExam.set(year, month, day);
             	
-            	if (calExam.after(calendar)) {
-            		createNotifications();
-            	}
-            }
-
-			private void createNotifications() {
-				String description = examDescription.getText().toString();
-
-				Calendar calendar1 = Calendar.getInstance();
-				calendar1.set(year, month, day - 1, hour, minute);
-
-				calendar.set(year, month, day, hour, minute);
-
-				notifyIn(calendar, description);
-
-				if (calendar.get(Calendar.DAY_OF_YEAR) < calendar1
-						.get(Calendar.DAY_OF_YEAR)) {
-					notifyIn(calendar1, description);
-				} else {
-					Calendar calendar2 = Calendar.getInstance();
-					calendar2.set(year, month, day - 2, hour, minute);
-
-					if (calendar.get(Calendar.DAY_OF_YEAR) < calendar2
-							.get(Calendar.DAY_OF_YEAR)) {
-						notifyIn(calendar2, description);
-					}
+				if (calExam.after(calendar)) {
+					String description = examDescription.getText().toString();
+					NotificationUtils.createNotifications(calendar, day, month, year, hour, minute, ExamsActivity.this,
+							description);
+					Log.i("ExamsActivity", "setou a notificação");
 				}
-			}
-
-			private void notifyIn(Calendar calendar, String description) {
-                Intent myIntent = new Intent(ExamsActivity.this, AnotaiBroadcast.class);
-                myIntent.putExtra("description_exam", description);
-                
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(ExamsActivity.this, 0, myIntent,0);
-                
-                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-                
-                alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
             }
         });
 	}

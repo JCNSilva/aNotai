@@ -27,6 +27,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import es.utils.anotai.NotificationUtils;
 
 public class HomeworkActivity extends Activity {
 	
@@ -44,7 +45,10 @@ public class HomeworkActivity extends Activity {
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		povoateDiscSpinner();
-		setClickListenerDeadlineDate();
+		
+		final Calendar calendar = Calendar.getInstance();
+		
+		setClickListenerDeadlineDate(calendar);
 		
 		Button btAddClassmate = (Button) findViewById(R.id.bt_add_classmate);
 		btAddClassmate.setOnClickListener(new OnClickListener() {
@@ -54,6 +58,26 @@ public class HomeworkActivity extends Activity {
 				Intent pickContact = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
 				pickContact.setType(Phone.CONTENT_TYPE);
 				startActivityForResult(pickContact, PICK_CONTACT);				
+			}
+		});
+		
+		final EditText homeWorkDescription = (EditText) findViewById(R.id.et_homework_description);
+		
+		Button btSave = (Button) findViewById(R.id.bt_create_homework);
+		btSave.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Calendar calExam = Calendar.getInstance();
+            	calExam.set(year, month, day);
+            	
+				if (calExam.after(calendar)) {
+					String description = homeWorkDescription.getText().toString();
+					// createNotifications();
+					NotificationUtils.createNotifications(calendar, day, month, year, hour, minute, HomeworkActivity.this,
+							description);
+					Log.i("ExamsActivity", "setou a notificação");
+				}
 			}
 		});
 	}
@@ -87,9 +111,9 @@ public class HomeworkActivity extends Activity {
 		}
 	}
 
-	private void setClickListenerDeadlineDate() {
+	private void setClickListenerDeadlineDate(Calendar calendar) {
 		deadDate = (EditText) findViewById(R.id.et_deadline_date_ah);
-		final Calendar calendar = Calendar.getInstance();
+		
 		
 		day = calendar.get(Calendar.DAY_OF_MONTH);
 		month = calendar.get(Calendar.MONTH);
