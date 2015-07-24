@@ -8,11 +8,13 @@ public class IndividualHomework extends Task {
         super();
     }
     
-    public IndividualHomework(String description, Calendar deadlineDate, Priority priority) {
-		super(description, deadlineDate, priority);
+    public IndividualHomework(Discipline discipline, String description, 
+    		Calendar deadlineDate, Priority priority) {
+		super(discipline, description, deadlineDate, priority);
 	}
     
-	public IndividualHomework(long newId, String description, Calendar deadlineDate, Priority priority) {
-		super(newId, description, deadlineDate, priority);
+	public IndividualHomework(long newId, Discipline discipline, String description,
+			Calendar deadlineDate, Priority priority) {
+		super(newId, discipline, description, deadlineDate, priority);
 	}
 }

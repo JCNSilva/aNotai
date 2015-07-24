@@ -14,15 +14,15 @@ public class GroupHomework extends Task {
     	this.group = new HashSet<Classmate>();
     }
 
-    public GroupHomework(String description, Calendar deadlineDate,
+    public GroupHomework(Discipline discipline, String description, Calendar deadlineDate,
             Priority priority, List<Classmate> mates) {
-        super(description, deadlineDate, priority);
+        super(discipline, description, deadlineDate, priority);
         this.group = new HashSet<Classmate>(mates);
     }
     
-    public GroupHomework(long newId, String description, Calendar deadlineDate,
+    public GroupHomework(long newId, Discipline discipline, String description, Calendar deadlineDate,
             Priority priority, Classmate... mates) {
-        super(newId, description, deadlineDate, priority);
+        super(newId, discipline, description, deadlineDate, priority);
         this.group = new HashSet<Classmate>(Arrays.asList(mates));
     }
 

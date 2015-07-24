@@ -10,14 +10,13 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     private static AnotaiDbHelper instance;
 
     /** The database version constant DATABASE_VERSION. */
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 10;
 
     /** The database file name constant DATABASE_NAME. */
     public static final String DATABASE_NAME = "Anotai.db";
     
     
-    
-    //-------------------------------------------------------------------------DONE
+  //------------------------- TABLE disciplineTable ---------------------------
 
     /** The Constant TABLE_NAME. */
     public static final String DISCIPLINEENTRY_TABLE_NAME = "disciplineTable";
@@ -30,6 +29,9 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
 
     /** The Constant COLUMN_TEACHER_NAME. */
     public static final String DISCIPLINEENTRY_COLUMN_TEACHER = "teacher";
+    
+    /** The Constant COLUMN_ID_TASK. */
+    public static final String DISCIPLINEENTRY_COLUMN_ID_TASK = "id_task";
 
     /** The Constant SQL_CREATE_DISCIPLINE_TABLE. */
     private static final String SQL_CREATE_DISCIPLINE_TABLE = "CREATE TABLE "
@@ -40,11 +42,10 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
 
     /** The Constant SQL_DELETE_DISCIPLINE_TABLE. */
     private static final String SQL_DELETE_DISCIPLINE_TABLE = "DROP TABLE IF EXISTS "
-            + DISCIPLINEENTRY_TABLE_NAME + ";";
+            + DISCIPLINEENTRY_TABLE_NAME + ";";    
     
     
-    
-    //------------------------------------------------------------------------
+  //---------------------------- TABLE taskTable ------------------------------
 
     /** The Constant TABLE_NAME. */
     public static final String TASKENTRY_TABLE_NAME = "taskTable";
@@ -67,10 +68,11 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     /** The Constant COLUMN_GRADE. */
     public static final String TASKENTRY_COLUMN_GRADE = "grade";
 
+    /** The Constant COLUMN_SUBCLASS. */
+    public static final String TASKENTRY_COLUMN_SUBCLASS = "subclass";
+    
     /** The Constant COLUMN_ID_DISCIPLINE. */
     public static final String TASKENTRY_COLUMN_ID_DISCIPLINE = "id_discipline";
-    
-    public static final String TASKENTRY_COLUMN_SUBCLASS = "subclass";
 
     /** The Constant SQL_CREATE_TASK. */
     public static final String SQL_CREATE_TASK = "CREATE TABLE "
@@ -80,11 +82,11 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
             + TASKENTRY_COLUMN_CADASTER_DATE + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_DEADLINE_DATE + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_PRIORITY + " TEXT NOT NULL, "
-            + TASKENTRY_COLUMN_GRADE + " TEXT NOT NULL, "
-            + TASKENTRY_COLUMN_ID_DISCIPLINE + " INTEGER NOT NULL, "
+            + TASKENTRY_COLUMN_GRADE + " REAL NOT NULL, "
             + TASKENTRY_COLUMN_SUBCLASS + " TEXT NOT NULL, "
-            + "FOREIGN KEY (" + TASKENTRY_COLUMN_ID_DISCIPLINE + ") REFERENCES " 
-            + DISCIPLINEENTRY_TABLE_NAME + " ("+ DISCIPLINEENTRY_COLUMN_ID +") "
+            + TASKENTRY_COLUMN_ID_DISCIPLINE + " INTEGER NOT NULL, "
+            + "FOREIGN KEY (" + TASKENTRY_COLUMN_ID_DISCIPLINE + ") REFERENCES "
+            +  DISCIPLINEENTRY_TABLE_NAME+ " (" + DISCIPLINEENTRY_COLUMN_ID + ") " 
             + "ON DELETE CASCADE ON UPDATE CASCADE);";
 
     /** The Constant SQL_DELETE_TASK_TABLE. */
@@ -92,8 +94,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
             + TASKENTRY_TABLE_NAME + ";";
     
     
-    
-    //-----------------------------------------------------------------------------
+    //-------------------------- TABLE classmateTable ---------------------------
 
     /** The Constant TABLE_NAME. */
     public static final String CLASSMATEENTRY_TABLE_NAME = "classmateTable";
@@ -123,7 +124,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     
     
     
-    //---------------------------------------------------------------------------DONE
+    //------------------------ TABLE phoneNumbersTable ----------------------------
 
     /** The Constant TABLE_NAME. */
     public static final String PHONENUMBERS_TABLE_NAME = "phoneNumbersTable";

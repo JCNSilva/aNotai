@@ -1,5 +1,7 @@
 package es.database.anotai;
 
+import static es.database.anotai.AnotaiDbHelper.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,38 +10,27 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import es.model.anotai.Discipline;
-import es.model.anotai.Task;
 
 public class DisciplinePersister implements AbstractPersister<Discipline> {
 	
 	private SQLiteDatabase db;
-	private Context context;
 	
 	private static final String TABLE_NAME = "disciplineTable";
 	
 	public DisciplinePersister(Context context){
 		AnotaiDbHelper helper = new AnotaiDbHelper(context);
 		db = helper.getWritableDatabase();
-		this.context = context;
 	}
 
 	@Override
 	public void create(Discipline target) {
 		if(target != null) {
 			ContentValues values = new ContentValues();
-			values.put("name", target.getName());
-			values.put("teacher", target.getTeacher());
+			values.put(DISCIPLINEENTRY_COLUMN_NAME, target.getName());
+			values.put(DISCIPLINEENTRY_COLUMN_TEACHER, target.getTeacher());
 			
 			long lastId = db.insert(TABLE_NAME, null, values);
 			target.setId(lastId);
-			
-			TaskPersister taskPersister = new TaskPersister(this.context);
-			for(Task task: target.getTasks()){
-				int numTasksUpdated = taskPersister.update(task, target);
-				if(numTasksUpdated == 0){
-					taskPersister.create(task, target);
-				}
-			}
 		}
 	}
 
@@ -49,18 +40,10 @@ public class DisciplinePersister implements AbstractPersister<Discipline> {
 		
 		if(target != null) {
 			ContentValues values = new ContentValues();
-			values.put("name", target.getName());
-			values.put("teacher", target.getTeacher());
+			values.put(DISCIPLINEENTRY_COLUMN_NAME, target.getName());
+			values.put(DISCIPLINEENTRY_COLUMN_TEACHER, target.getTeacher());
 			
 			disciplinesUpdated = db.update(TABLE_NAME, values, "_id = " + target.getId(), null);
-			
-			TaskPersister taskPersister = new TaskPersister(this.context);
-			for(Task task: target.getTasks()){
-				int numTasksUpdated = taskPersister.update(task, target);
-				if(numTasksUpdated == 0){
-					taskPersister.create(task, target);
-				}
-			}
 		}	
 		
 		return disciplinesUpdated;
@@ -76,7 +59,11 @@ public class DisciplinePersister implements AbstractPersister<Discipline> {
 	@Override
 	public Discipline retrieveById(long id) {
 		Discipline target = null;
-		String[] columns = {"_id", "name", "teacher"};
+		String[] columns = {
+				DISCIPLINEENTRY_COLUMN_ID,
+				DISCIPLINEENTRY_COLUMN_NAME,
+				DISCIPLINEENTRY_COLUMN_TEACHER
+		};
 		
 		Cursor cursorDisc = db.query(TABLE_NAME, columns, "_id = " + id, null, null, null, null);
 		
@@ -88,11 +75,6 @@ public class DisciplinePersister implements AbstractPersister<Discipline> {
 			target.setName(cursorDisc.getString(1));
 			target.setTeacher(cursorDisc.getString(2));
 		}
-		
-		//Pegar tasks
-		TaskPersister taskPersister = new TaskPersister(this.context);
-		List<Task> tasks = taskPersister.retrieveAll(target);
-		target.setTasks(tasks);
 		
 		return target;
 	}

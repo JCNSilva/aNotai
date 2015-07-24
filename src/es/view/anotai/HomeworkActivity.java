@@ -6,9 +6,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import projeto.es.view.anotai.R;
-import projeto.es.view.anotai.R.id;
-import projeto.es.view.anotai.R.layout;
-import projeto.es.view.anotai.R.menu;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;

@@ -19,32 +19,36 @@ import es.model.anotai.IndividualHomework;
 import es.model.anotai.Task;
 import es.model.anotai.Task.Priority;
 
-public class TaskPersister{
+public class TaskPersister implements AbstractPersister<Task>{
 
 	private SQLiteDatabase db;
-	private Context context;
 	
 	public TaskPersister(Context context){
 		AnotaiDbHelper helper = new AnotaiDbHelper(context);
 		db = helper.getWritableDatabase();
-		this.context = context;
 	}
 	
 	
 	
-	public void create(Task newTask, Discipline disc) {
-		if(newTask == null  || disc == null){
+	public void create(Task newTask) {
+		if(newTask == null){
 			return;
 		}
 		
-		ContentValues valuesTask = new ContentValues();
+		//Adicionamos as informações da disciplina relacionada à tarefa
+		ContentValues valuesDiscipline = new ContentValues();
+		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_NAME, newTask.getDiscipline().getName());
+		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_TEACHER, newTask.getDiscipline().getTeacher());
+		long idNewDiscipline = db.insert(DISCIPLINEENTRY_TABLE_NAME, null, valuesDiscipline); //FIXME: E se a disciplina já existir?
+		newTask.getDiscipline().setId(idNewDiscipline);
 		
+		ContentValues valuesTask = new ContentValues();
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, newTask.getDescription());
 		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, newTask.getCadasterDateText());
 		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, newTask.getDeadlineDateText());
 		valuesTask.put(TASKENTRY_COLUMN_PRIORITY, newTask.getPriorityText());
 		valuesTask.put(TASKENTRY_COLUMN_GRADE, newTask.getGrade());
-		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, disc.getId());
+		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, idNewDiscipline);
 		
 		if (newTask instanceof Exam) {
 			valuesTask.put(TASKENTRY_COLUMN_SUBCLASS, 
@@ -59,6 +63,8 @@ public class TaskPersister{
 		
 		long idNewTask = db.insert(TASKENTRY_TABLE_NAME, null, valuesTask);
 		newTask.setId(idNewTask);
+		
+		
 		
 		//Se o trabalho for em grupo, precisamos adicionar os membros do grupo e seus telefones
 		if (newTask instanceof GroupHomework){
@@ -85,19 +91,17 @@ public class TaskPersister{
 	
 	
 
-	public int update(Task taskUpdated, Discipline disc) {
-		if(taskUpdated == null  || disc == null){
+	public int update(Task taskUpdated) {
+		if(taskUpdated == null){
 			return 0;
 		}
 		
 		ContentValues valuesTask = new ContentValues();
-		
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, taskUpdated.getDescription());
 		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, taskUpdated.getCadasterDateText());
 		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, taskUpdated.getDeadlineDateText());
 		valuesTask.put(TASKENTRY_COLUMN_PRIORITY, taskUpdated.getPriorityText());
 		valuesTask.put(TASKENTRY_COLUMN_GRADE, taskUpdated.getGrade());
-		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, disc.getId());
 		
 		if (taskUpdated instanceof Exam) {
 			valuesTask.put(TASKENTRY_COLUMN_SUBCLASS, 
@@ -111,6 +115,12 @@ public class TaskPersister{
 		}
 		
 		int rowsAffected = db.update(TASKENTRY_TABLE_NAME, valuesTask, "_id = " + taskUpdated.getId(), null);
+		
+		//Adicionamos as informações da disciplina relacionada à tarefa
+		ContentValues valuesDiscipline = new ContentValues();
+		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_NAME, taskUpdated.getDiscipline().getName());
+		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_TEACHER, taskUpdated.getDiscipline().getTeacher());
+		db.update(DISCIPLINEENTRY_TABLE_NAME, valuesDiscipline, "_id = " + taskUpdated.getDiscipline().getId(), null);
 		
 		//Se o trabalho for em grupo, precisamos adicionar os membros do grupo e seus telefones
 		if (taskUpdated instanceof GroupHomework){
@@ -153,33 +163,59 @@ public class TaskPersister{
 				TASKENTRY_COLUMN_CADASTER_DATE,
 				TASKENTRY_COLUMN_DEADLINE_DATE,
 				TASKENTRY_COLUMN_PRIORITY,
-				TASKENTRY_COLUMN_GRADE				
+				TASKENTRY_COLUMN_GRADE,	
+				TASKENTRY_COLUMN_ID_DISCIPLINE
 		};
 		
 		Cursor cursorTask = db.query(TASKENTRY_TABLE_NAME, columns, 
 				"_id = " + idTask, null, null, null, null);
 		
-		if(cursorTask.getCount() > 0){
-			cursorTask.moveToFirst();
-			
-			//Decide qual o tipo de tarefa a ser criada
-			String type = cursorTask.getString(0);
-			if(type.equals("exam")) {
-				target = new Exam();
-			} else if(type.equals("grouphomework")) {
-				target = new GroupHomework();
-			} else if (type.equals("individualhomework")) {
-				target = new IndividualHomework();
-			}
-				
-			//Adiciona informações da tarefa
-			target.setId(cursorTask.getLong(1));
-			target.setDescription(cursorTask.getString(2));
-			target.setCadasterDate(createCalendar(cursorTask.getString(3)));
-			target.setDeadlineDate(createCalendar(cursorTask.getString(4)));
-			target.setPriority(retrievePriority(cursorTask.getString(5)));
-			target.setGrade(cursorTask.getDouble(6));
+		if(cursorTask.getCount() < 0){
+			return null;
 		}
+	
+		cursorTask.moveToFirst();
+		
+		//Decide qual o tipo de tarefa a ser criada
+		String type = cursorTask.getString(0);
+		if(type.equals("exam")) {
+			target = new Exam();
+		} else if(type.equals("grouphomework")) {
+			target = new GroupHomework();
+		} else if (type.equals("individualhomework")) {
+			target = new IndividualHomework();
+		} else {
+			throw new RuntimeException("Undefined type on database");
+		}
+			
+		//Adiciona informações da tarefa
+		target.setId(cursorTask.getLong(1));
+		target.setDescription(cursorTask.getString(2));
+		target.setCadasterDate(createCalendar(cursorTask.getString(3)));
+		target.setDeadlineDate(createCalendar(cursorTask.getString(4)));
+		target.setPriority(retrievePriority(cursorTask.getString(5)));
+		target.setGrade(cursorTask.getDouble(6));
+		
+		//Adiciona as informações referentes à Disciplina
+		long idDiscipline = cursorTask.getLong(7);
+		Discipline disc = new Discipline();
+		String[] columnsDiscipline = {
+				DISCIPLINEENTRY_COLUMN_ID,
+				DISCIPLINEENTRY_COLUMN_NAME,
+				DISCIPLINEENTRY_COLUMN_TEACHER
+		};
+		
+		Cursor cursorDiscipline = db.query(DISCIPLINEENTRY_TABLE_NAME, columnsDiscipline, 
+				"_id = " + idDiscipline, null, null, null, null);
+		
+		if(cursorDiscipline.getCount() > 0){
+			cursorDiscipline.moveToFirst();
+			disc.setId(cursorDiscipline.getLong(0));
+			disc.setName(cursorDiscipline.getString(1));
+			disc.setTeacher(cursorDiscipline.getString(2));
+		}
+		
+		target.setDiscipline(disc);		
 		
 		//Caso a Tarefa seja um trabalho em grupo, adiciona os membros do grupo
 		if(target instanceof GroupHomework){
@@ -230,7 +266,7 @@ public class TaskPersister{
 	
 	
 	public List<Task> retrieveAll(Discipline discipline) {
-		Cursor cursorTasks;
+		Cursor cursorTasks = null;
 		if(discipline == null){
 			cursorTasks = db.query(TASKENTRY_TABLE_NAME, new String[]{TASKENTRY_COLUMN_ID},
 					null, null, null, null, null);

@@ -1,14 +1,11 @@
 package es.model.anotai;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Discipline {
 
     private long id;
     private String name;
     private String teacher;
-    private List<Task> tasks;
 
     public Discipline() {
         this(0,"","");
@@ -25,7 +22,6 @@ public class Discipline {
         this.setId(newId);
         this.name = name;
         this.teacher = teacher;
-        this.setTasks(new ArrayList<Task>());
     }
 
     public long getId() {
@@ -54,29 +50,7 @@ public class Discipline {
         this.name = name;
     }
 
-    /**
-     * @return the tasks
-     */
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void addTask(Task task) {
-        tasks.add(task);
-    }
-
-    /**
-     * @param tasks
-     *            the tasks to set
-     */
-    public void setTasks(List<Task> tasks) {
-        if (tasks == null)
-            throw new IllegalArgumentException("Tasks can't be null");
-
-        this.tasks = tasks;
-    }
-
-	@Override
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

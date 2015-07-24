@@ -61,15 +61,8 @@ public class DisciplinesActivity extends Activity {
                                     getResources().getString(R.string.invalid_name),
                                     Toast.LENGTH_LONG).show();
                         } else {
-                            // Adiciona a disciplina na lista.
-                            /*Discipline discipline = new Discipline();
-                            discipline.setName(nome);
-                            disciplines.add(discipline);*/
-                        	
-                        	DisciplinePersister persister = new DisciplinePersister(v.getContext());
-                        	Discipline discipline = new Discipline();
-                            discipline.setName(nome);
-                            discipline.setTeacher("");
+                            DisciplinePersister persister = new DisciplinePersister(v.getContext());
+                        	Discipline discipline = new Discipline(nome, "");
                             persister.create(discipline);
                             Log.d(STORAGE_SERVICE, persister.retrieveAll().get(0).getName());
                             disciplines.add(discipline);
