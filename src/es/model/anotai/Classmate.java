@@ -21,7 +21,7 @@ public class Classmate {
     
     public Classmate(final long id, String name, List<String> phoneNumbers) {
     	this.id = id;
-        this.name = name;
+        this.setName(name);
         this.phoneNumbers = new HashSet<String>(phoneNumbers);
     }
 
@@ -30,6 +30,9 @@ public class Classmate {
     }
 
     public void setName(String name) {
+    	if(name == null){
+    		throw new IllegalArgumentException("Name can't be null");
+    	}
         this.name = name;
     }
 

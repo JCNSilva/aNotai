@@ -10,7 +10,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     private static AnotaiDbHelper instance;
 
     /** The database version constant DATABASE_VERSION. */
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
 
     /** The database file name constant DATABASE_NAME. */
     public static final String DATABASE_NAME = "Anotai.db";
@@ -79,8 +79,8 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
             + TASKENTRY_TABLE_NAME + "(" 
     		+ TASKENTRY_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
             + TASKENTRY_COLUMN_DESCRIPTION + " TEXT NOT NULL, "
-            + TASKENTRY_COLUMN_CADASTER_DATE + " TEXT NOT NULL, "
-            + TASKENTRY_COLUMN_DEADLINE_DATE + " TEXT NOT NULL, "
+            + TASKENTRY_COLUMN_CADASTER_DATE + " INTEGER NOT NULL, "
+            + TASKENTRY_COLUMN_DEADLINE_DATE + " INTEGER NOT NULL, "
             + TASKENTRY_COLUMN_PRIORITY + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_GRADE + " REAL NOT NULL, "
             + TASKENTRY_COLUMN_SUBCLASS + " TEXT NOT NULL, "
@@ -181,6 +181,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
         dbHelper.execSQL(SQL_CREATE_TASK);
         dbHelper.execSQL(SQL_CREATE_CLASSMATE);
         dbHelper.execSQL(SQL_CREATE_PHONE_NUMBERS);
+        dbHelper.execSQL("PRAGMA foreign_keys = ON"); //Activate support on foreign keys constraints
     }
 
     /*

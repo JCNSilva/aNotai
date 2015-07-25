@@ -15,9 +15,12 @@ public class Discipline {
         this(0, name, teacher);
     }
 
+    //TODO refactor
     public Discipline(final long newId, String name, String teacher) {
         if (name == null)
-            throw new IllegalArgumentException("Name can't be empty");
+            throw new IllegalArgumentException("Name can't be null");
+        if (teacher == null)
+            throw new IllegalArgumentException("Teacher can't be null");
 
         this.setId(newId);
         this.name = name;

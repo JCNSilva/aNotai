@@ -3,7 +3,7 @@ package es.database.anotai;
 import static es.database.anotai.AnotaiDbHelper.*;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,6 +26,7 @@ public class TaskPersister implements AbstractPersister<Task>{
 	public TaskPersister(Context context){
 		AnotaiDbHelper helper = new AnotaiDbHelper(context);
 		db = helper.getWritableDatabase();
+		db.execSQL("PRAGMA foreign_keys = ON"); //Activate support on foreign keys constraints);
 	}
 	
 	
@@ -39,13 +40,21 @@ public class TaskPersister implements AbstractPersister<Task>{
 		ContentValues valuesDiscipline = new ContentValues();
 		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_NAME, newTask.getDiscipline().getName());
 		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_TEACHER, newTask.getDiscipline().getTeacher());
-		long idNewDiscipline = db.insert(DISCIPLINEENTRY_TABLE_NAME, null, valuesDiscipline); //FIXME: E se a disciplina já existir?
-		newTask.getDiscipline().setId(idNewDiscipline);
+		
+		//Caso a disciplina já exista 
+		int rowsAffected = db.update(DISCIPLINEENTRY_TABLE_NAME, valuesDiscipline, "_id = " + newTask.getDiscipline().getId(), null);
+		long idNewDiscipline = newTask.getDiscipline().getId(); 
+		
+		//Caso a disciplina ainda não exista
+		if(rowsAffected == 0) {
+			idNewDiscipline = db.insert(DISCIPLINEENTRY_TABLE_NAME, null, valuesDiscipline); 
+			newTask.getDiscipline().setId(idNewDiscipline);
+		}
 		
 		ContentValues valuesTask = new ContentValues();
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, newTask.getDescription());
-		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, newTask.getCadasterDateText());
-		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, newTask.getDeadlineDateText());
+		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, newTask.getCadasterDateMillis());
+		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, newTask.getDeadlineDateMillis());
 		valuesTask.put(TASKENTRY_COLUMN_PRIORITY, newTask.getPriorityText());
 		valuesTask.put(TASKENTRY_COLUMN_GRADE, newTask.getGrade());
 		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, idNewDiscipline);
@@ -98,8 +107,8 @@ public class TaskPersister implements AbstractPersister<Task>{
 		
 		ContentValues valuesTask = new ContentValues();
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, taskUpdated.getDescription());
-		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, taskUpdated.getCadasterDateText());
-		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, taskUpdated.getDeadlineDateText());
+		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, taskUpdated.getCadasterDateMillis());
+		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, taskUpdated.getDeadlineDateMillis());
 		valuesTask.put(TASKENTRY_COLUMN_PRIORITY, taskUpdated.getPriorityText());
 		valuesTask.put(TASKENTRY_COLUMN_GRADE, taskUpdated.getGrade());
 		
@@ -120,7 +129,14 @@ public class TaskPersister implements AbstractPersister<Task>{
 		ContentValues valuesDiscipline = new ContentValues();
 		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_NAME, taskUpdated.getDiscipline().getName());
 		valuesDiscipline.put(DISCIPLINEENTRY_COLUMN_TEACHER, taskUpdated.getDiscipline().getTeacher());
-		db.update(DISCIPLINEENTRY_TABLE_NAME, valuesDiscipline, "_id = " + taskUpdated.getDiscipline().getId(), null);
+		
+		//Tenta dar update na disciplina. Se ela não existir no banco de dados, persiste a mesma.
+		int discUpdated = db.update(DISCIPLINEENTRY_TABLE_NAME, valuesDiscipline, "_id = " + taskUpdated.getDiscipline().getId(), null);
+		if(discUpdated == 0){
+			long idnewDisc = db.insert(DISCIPLINEENTRY_TABLE_NAME, null, valuesDiscipline);
+			taskUpdated.getDiscipline().setId(idnewDisc);
+		}
+		
 		
 		//Se o trabalho for em grupo, precisamos adicionar os membros do grupo e seus telefones
 		if (taskUpdated instanceof GroupHomework){
@@ -191,8 +207,15 @@ public class TaskPersister implements AbstractPersister<Task>{
 		//Adiciona informações da tarefa
 		target.setId(cursorTask.getLong(1));
 		target.setDescription(cursorTask.getString(2));
-		target.setCadasterDate(createCalendar(cursorTask.getString(3)));
-		target.setDeadlineDate(createCalendar(cursorTask.getString(4)));
+		
+		GregorianCalendar cadaster = new GregorianCalendar();
+		cadaster.setTimeInMillis(cursorTask.getLong(3));
+		target.setCadasterDate(cadaster);
+		
+		GregorianCalendar deadline = new GregorianCalendar();
+		deadline.setTimeInMillis(cursorTask.getLong(4));
+		target.setDeadlineDate(deadline);
+		
 		target.setPriority(retrievePriority(cursorTask.getString(5)));
 		target.setGrade(cursorTask.getDouble(6));
 		
@@ -294,26 +317,7 @@ public class TaskPersister implements AbstractPersister<Task>{
 		}
 		
 		db.close();		
-	}
-
-	
-	/* Expected format: dd/MM/yyyy hh:mm */
-	private Calendar createCalendar(String dateFormat){
-		if(dateFormat == null){
-			throw new IllegalArgumentException("Null String can not be converted");
-		}
-		
-		Calendar myCalendar = Calendar.getInstance();
-		myCalendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateFormat.substring(0, 2)));
-		myCalendar.set(Calendar.MONTH, Integer.parseInt(dateFormat.substring(3, 5)) - 1);
-		myCalendar.set(Calendar.YEAR, Integer.parseInt(dateFormat.substring(6, 10)));
-		myCalendar.set(Calendar.HOUR, Integer.parseInt(dateFormat.substring(11, 13)));
-		myCalendar.set(Calendar.MINUTE, Integer.parseInt(dateFormat.substring(14, 16)));
-		
-		return myCalendar;
-	}
-		
-		
+	}		
 		
 	private Priority retrievePriority(String priority) {
 		if(priority == null){

@@ -32,11 +32,12 @@ public abstract class Task {
 		if(discipline == null)
 			throw new IllegalArgumentException("A task must be related with a discipline");
 		
+		
 		this.setId(newId);
-		this.discipline = discipline;
-		this.description = description;
+		this.setDiscipline(discipline);
+		this.setDescription(description);
 		this.cadasterDate = new GregorianCalendar();
-		this.deadlineDate = deadlineDate;
+		this.setDeadlineDate(deadlineDate);
 		this.priority = priority;
 		this.grade = 0.0;
 	}
@@ -46,6 +47,8 @@ public abstract class Task {
 	}
 	
 	public void setDiscipline(Discipline newDiscipline){
+		if(newDiscipline == null)
+			throw new IllegalArgumentException("A task must be related with a discipline");
 		this.discipline = newDiscipline;
 	}
 	
@@ -54,6 +57,8 @@ public abstract class Task {
 	}
 
 	public void setDescription(String description) {
+		if(description == null)
+			throw new IllegalArgumentException("Description can be empty but null is not allowed");
 		this.description = description;
 	}
 
@@ -62,6 +67,8 @@ public abstract class Task {
 	}
 
 	public void setDeadlineDate(Calendar deadlineDate) {
+		if(deadlineDate == null)
+			throw new IllegalArgumentException("Deadline date can't empty");
 		this.deadlineDate = deadlineDate;
 	}
 	
@@ -85,9 +92,17 @@ public abstract class Task {
 	    return dateFormat.format(cadasterDate.getTime());
 	}
 	
+	public long getCadasterDateMillis() {
+		return cadasterDate.getTimeInMillis();
+	}
+	
 	public String getDeadlineDateText() {
         return dateFormat.format(deadlineDate.getTime());
     }
+	
+	public long getDeadlineDateMillis() {
+		return deadlineDate.getTimeInMillis();
+	}
 	
 	public double getGrade() {
 		return grade;
@@ -106,8 +121,38 @@ public abstract class Task {
     }
 
     public void setId(long id) {
+    	if(id < 0)
+			throw new IllegalArgumentException("Id can't be negative. Value found: " + id);
         this.id = id;
     }
 
-    public enum Priority {HIGH, NORMAL, LOW}
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((cadasterDate == null) ? 0 : cadasterDate.hashCode());
+		result = prime * result
+				+ ((deadlineDate == null) ? 0 : deadlineDate.hashCode());
+		result = prime * result
+				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result
+				+ ((discipline == null) ? 0 : discipline.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj){
+	if(!(obj instanceof Task)){
+		return false;
+	}
+	
+	Task other = (Task) obj;
+	return 	this.discipline.equals(other.discipline) &&
+			this.description.equals(other.description) &&
+			this.cadasterDate.equals(other.cadasterDate) &&
+			this.deadlineDate.equals(other.deadlineDate);
+	}
+
+	public enum Priority {HIGH, NORMAL, LOW}
 }

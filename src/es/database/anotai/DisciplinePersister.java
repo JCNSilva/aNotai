@@ -20,6 +20,7 @@ public class DisciplinePersister implements AbstractPersister<Discipline> {
 	public DisciplinePersister(Context context){
 		AnotaiDbHelper helper = new AnotaiDbHelper(context);
 		db = helper.getWritableDatabase();
+		db.execSQL("PRAGMA foreign_keys = ON"); //Activate support on foreign keys constraints);
 	}
 
 	@Override
