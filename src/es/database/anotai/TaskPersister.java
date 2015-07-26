@@ -123,7 +123,6 @@ public class TaskPersister implements AbstractPersister<Task>{
 					GroupHomework.class.getSimpleName().toLowerCase(Locale.US));
 		}
 		
-		int rowsAffected = db.update(TASKENTRY_TABLE_NAME, valuesTask, "_id = " + taskUpdated.getId(), null);
 		
 		//Adicionamos as informações da disciplina relacionada à tarefa
 		ContentValues valuesDiscipline = new ContentValues();
@@ -137,6 +136,9 @@ public class TaskPersister implements AbstractPersister<Task>{
 			taskUpdated.getDiscipline().setId(idnewDisc);
 		}
 		
+		//Persistimos a Tarefa
+		valuesTask.put(TASKENTRY_COLUMN_ID_DISCIPLINE, taskUpdated.getDiscipline().getId());
+		int rowsAffected = db.update(TASKENTRY_TABLE_NAME, valuesTask, "_id = " + taskUpdated.getId(), null);
 		
 		//Se o trabalho for em grupo, precisamos adicionar os membros do grupo e seus telefones
 		if (taskUpdated instanceof GroupHomework){
@@ -221,7 +223,6 @@ public class TaskPersister implements AbstractPersister<Task>{
 		
 		//Adiciona as informações referentes à Disciplina
 		long idDiscipline = cursorTask.getLong(7);
-		Discipline disc = new Discipline();
 		String[] columnsDiscipline = {
 				DISCIPLINEENTRY_COLUMN_ID,
 				DISCIPLINEENTRY_COLUMN_NAME,
@@ -231,6 +232,7 @@ public class TaskPersister implements AbstractPersister<Task>{
 		Cursor cursorDiscipline = db.query(DISCIPLINEENTRY_TABLE_NAME, columnsDiscipline, 
 				"_id = " + idDiscipline, null, null, null, null);
 		
+		Discipline disc = new Discipline();
 		if(cursorDiscipline.getCount() > 0){
 			cursorDiscipline.moveToFirst();
 			disc.setId(cursorDiscipline.getLong(0));

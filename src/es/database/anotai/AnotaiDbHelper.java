@@ -29,9 +29,6 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
 
     /** The Constant COLUMN_TEACHER_NAME. */
     public static final String DISCIPLINEENTRY_COLUMN_TEACHER = "teacher";
-    
-    /** The Constant COLUMN_ID_TASK. */
-    public static final String DISCIPLINEENTRY_COLUMN_ID_TASK = "id_task";
 
     /** The Constant SQL_CREATE_DISCIPLINE_TABLE. */
     private static final String SQL_CREATE_DISCIPLINE_TABLE = "CREATE TABLE "
@@ -181,7 +178,6 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
         dbHelper.execSQL(SQL_CREATE_TASK);
         dbHelper.execSQL(SQL_CREATE_CLASSMATE);
         dbHelper.execSQL(SQL_CREATE_PHONE_NUMBERS);
-        dbHelper.execSQL("PRAGMA foreign_keys = ON"); //Activate support on foreign keys constraints
     }
 
     /*
