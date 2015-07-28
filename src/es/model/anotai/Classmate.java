@@ -1,26 +1,30 @@
 package es.model.anotai;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class Classmate implements Serializable {
+public class Classmate implements Serializable{
 
-	private static final long serialVersionUID = -6608657167323953692L;
+    private static final long serialVersionUID = -7402247447080240164L;
 	private long id;
     private String name;
     private Set<String> phoneNumbers;
 
     public Classmate() {
-        setId(0);
-        name = "";
-        phoneNumbers = new HashSet<String>();
+    	this(0, "", new ArrayList<String>());
     }
 
-    public Classmate(String name, String... phoneNumbers) {
-        this.name = name;
-        this.phoneNumbers = new HashSet<String>(Arrays.asList(phoneNumbers));
+    public Classmate(String name, List<String> phoneNumbers) {
+        this(0, name, phoneNumbers);
+    }
+    
+    public Classmate(final long id, String name, List<String> phoneNumbers) {
+    	this.id = id;
+        this.setName(name);
+        this.phoneNumbers = new HashSet<String>(phoneNumbers);
     }
 
     public String getName() {
@@ -28,6 +32,9 @@ public class Classmate implements Serializable {
     }
 
     public void setName(String name) {
+    	if(name == null){
+    		throw new IllegalArgumentException("Name can't be null");
+    	}
         this.name = name;
     }
 
@@ -39,7 +46,7 @@ public class Classmate implements Serializable {
         phoneNumbers.add(number);
     }
 
-    public void rmeovePhoneNumber(Integer number) {
+    public void removePhoneNumber(Integer number) {
         phoneNumbers.remove(number);
     }
 
@@ -75,25 +82,22 @@ public class Classmate implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+    	if(!(obj instanceof Classmate)){
+    		return false;
+    	}
+    	
         Classmate other = (Classmate) obj;
-        if (id != other.id)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (phoneNumbers == null) {
-            if (other.phoneNumbers != null)
-                return false;
-        } else if (!phoneNumbers.equals(other.phoneNumbers))
-            return false;
-        return true;
+        return	this.name.equals(other.name) && 
+        		this.getPhoneNumbers().equals(other.getPhoneNumbers());
+    }
+    
+    public String toString(){
+    	StringBuilder msg = new StringBuilder();
+    	msg.append("Name:\n").append(this.name).append("\nPhones:\n");
+    		for(String phone: this.phoneNumbers){
+    			msg.append(phone).append("\n");
+    		}
+    		
+    	return msg.toString();
     }
 }

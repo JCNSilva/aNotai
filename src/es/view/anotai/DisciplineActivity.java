@@ -1,16 +1,18 @@
 package es.view.anotai;
 
-import es.adapter.anotai.TaskAdapter;
-import es.model.anotai.Discipline;
 import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.ListView;
+import es.adapter.anotai.TaskAdapter;
+import es.database.anotai.TaskPersister;
+import es.model.anotai.Discipline;
 
 public class DisciplineActivity extends Activity {
 	private Discipline discipline;
+	private TaskPersister tPersister;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +23,11 @@ public class DisciplineActivity extends Activity {
 
 		Bundle extras = getIntent().getExtras();
 		discipline = (Discipline) extras.get("discipline");
+		tPersister = new TaskPersister(this); //FIXME Qual contexto deve ser usado aqui?
 		
 		ListView listView = (ListView) findViewById(R.id.list_tasks);
 		
-		TaskAdapter adapter = new TaskAdapter(DisciplineActivity.this, discipline.getTasks());
+		TaskAdapter adapter = new TaskAdapter(DisciplineActivity.this, tPersister.retrieveAll(discipline));
 		listView.setAdapter(adapter);
 	}
 	

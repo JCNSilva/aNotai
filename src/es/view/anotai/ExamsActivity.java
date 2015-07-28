@@ -170,5 +170,4 @@ public class ExamsActivity extends Activity {
         
         spDisciplines.setAdapter(dataAdapter);
 	}
-
 }
