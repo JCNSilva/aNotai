@@ -73,6 +73,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="es.view.anotai.MainActivity" />
         </activity>
+        <activity
+            android:name="es.view.anotai.TaskActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="es.view.anotai.TasksActivity" />
+        </activity>
 
         <receiver
             android:name="es.main.anotai.AnotaiBroadcast"
