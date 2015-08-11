@@ -9,18 +9,21 @@ import java.util.Set;
 public class GroupHomework extends Task {
 
     private Set<Classmate> group;
+    
+    private String title;
 
     public GroupHomework() {
     	this.group = new HashSet<Classmate>();
     }
 
-    public GroupHomework(Discipline discipline, String description, Calendar deadlineDate,
+    public GroupHomework(String title, Discipline discipline, String description, Calendar deadlineDate,
             Priority priority, List<Classmate> mates) {
         super(discipline, description, deadlineDate, priority);
         this.group = new HashSet<Classmate>(mates);
+        this.title = title;
     }
     
-    public GroupHomework(long newId, Discipline discipline, String description, Calendar deadlineDate,
+    public GroupHomework(String title, long newId, Discipline discipline, String description, Calendar deadlineDate,
             Priority priority, Classmate... mates) {
         super(newId, discipline, description, deadlineDate, priority);
         this.group = new HashSet<Classmate>(Arrays.asList(mates));
@@ -41,5 +44,13 @@ public class GroupHomework extends Task {
     public void clearGroup() {
         group.clear();
     }
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 }

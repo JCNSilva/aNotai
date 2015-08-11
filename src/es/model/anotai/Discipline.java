@@ -1,6 +1,7 @@
 package es.model.anotai;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.chart.BarChart.Type;
@@ -8,6 +9,8 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+
+import es.database.anotai.TaskPersister;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -89,14 +92,41 @@ public class Discipline implements Serializable {
 		return this.name.equals(other.getName()) && this.teacher.equals(other.getTeacher());
 	}
 
+	private final List<Task> getTasks(Context context) {
+		TaskPersister tPersister = new TaskPersister(context);
+		return tPersister.retrieveAll(this);
+	}
+	
+	private final double[] getGrades(List<Task> tasks) {
+		double[] grades = new double[tasks.size()];
+		for (int i = 0; i < grades.length; i++) {
+			grades[i] = (float) tasks.get(i).getGrade();
+		}		
+		return grades;
+	}
+	
+	private final int[] getValues(List<Task> tasks) {
+		int[] x = new int[tasks.size()];
+		for (int i = 0; i < x.length; i++) {
+			x[i] = i;
+		}
+		return x;
+	}
+	
+	
 	// VALORES APENAS PARA TESTES.
-	private String[] mNotas = new String[] { "nota 1: ", "nota 2: ", "nota 3: " };
+	String[] mNotas = new String[] { "nota 1: ", "nota 2: ", "nota 3: " };
 
+	
 	public void makeChartLayout(Context context, LinearLayout chartContainer) {
-
 		// VALORES APENAS PARA TESTES.
-		int[] x = { 0, 1, 2 };
-		float[] expense = { 8, 9, 4 };
+//		int[] x = { 0, 1, 2 };
+//		float[] expense = { 8, 9, 4 };
+		
+		List<Task> tasks = getTasks(context);
+		
+		int[] x = getValues(tasks);
+		double[] expense = getGrades(tasks);
 
 		// Creating an XYSeries for Expense
 		XYSeries expenseSeries = new XYSeries("Notas");

@@ -2,6 +2,7 @@
 <resources>
 
     <!-- DISCIPLINA -->
+    <string name="discipline">Disciplina:</string>
     <string name="disciplines">Disciplinas</string>
     <string name="hint_discipline_name">Nome da Disciplina</string>
     <string name="new_discipline">Nova Disciplina</string>
@@ -14,6 +15,8 @@
     <string name="group_homework">Atividade em grupo</string>
     <string name="add_classmate">Adicionar contato</string>
     <string name="next_activity">Proxíma Atividade</string>
+    <string name="title">Título:</string>
+    <string name="obtained_grade">Nota Obtida:</string>
 
     <!-- PROVA -->
     <string name="add_test">Adicionar Prova</string>
