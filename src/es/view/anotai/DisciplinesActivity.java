@@ -60,16 +60,16 @@ public class DisciplinesActivity extends Activity {
 
                     @Override
                     public void onClick(final View v) {
-                        final String nome = editNameContact.getText().toString();
+                        final String name = editNameContact.getText().toString();
 
-                        if (nome.isEmpty()) {
+                        if (name.isEmpty()) {
                          // Mostra mensagem de erro.
                             Toast.makeText(getApplicationContext(),
                                     getResources().getString(R.string.invalid_name),
                                     Toast.LENGTH_LONG).show();
                         } else {
                             DisciplinePersister persister = new DisciplinePersister(v.getContext());
-                        	Discipline discipline = new Discipline(nome, "");
+                        	Discipline discipline = new Discipline(name, "");
                             persister.create(discipline);
                             Log.d(STORAGE_SERVICE, persister.retrieveAll().get(0).getName());
                             disciplines.add(discipline);

@@ -20,8 +20,8 @@ public class MainActivity extends Activity {
 		addClickListenerTasks();
 		addClickListenerExams();
 
-		Button btWhatsApp = (Button) findViewById(R.id.bt_performance);
-		btWhatsApp.setOnClickListener(new OnClickListener() {
+		Button btPerformance = (Button) findViewById(R.id.bt_performance);
+		btPerformance.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
