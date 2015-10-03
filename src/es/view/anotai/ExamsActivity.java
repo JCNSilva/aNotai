@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,8 +60,7 @@ public class ExamsActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				showDialog(DATE_DIALOG_ID);
-				
+				showDialog(DATE_DIALOG_ID);				
 			}
 		});
 		
@@ -73,16 +71,20 @@ public class ExamsActivity extends Activity {
 		btSaveExam.setOnClickListener(new OnClickListener() {
             
             @Override
-            public void onClick(View v) {            	
+            public void onClick(View v) { 
             	Calendar calExam = Calendar.getInstance();
-            	calExam.set(year, month, day);
+            	calExam.set(year, month, day, hour, minute);
+            	
+//            	Log.v("SOBRE OS CALENDARIOS", "atributo calendar: " + "dia: " + calExam.get(Calendar.DAY_OF_MONTH)
+//            	+ " mês: " + calExam.get(Calendar.MONTH) + " year: " + calExam.get(Calendar.YEAR) 
+//            	+ " hora: " + calExam.get(Calendar.HOUR) + " minuto: " + calExam.get(Calendar.MINUTE));
             	
 				if (calExam.after(calendar)) {
 					String description = examDescription.getText().toString();
-					NotificationUtils.createNotifications(calendar, day, month, year, hour, minute, ExamsActivity.this,
-							description);
-					Log.i("ExamsActivity", "setou a notificação");
+					NotificationUtils.createNotifications(calExam, ExamsActivity.this, description);
 				}
+				
+				// TODO salvar a prova criada no banco.
             }
         });
 	}
@@ -106,7 +108,7 @@ public class ExamsActivity extends Activity {
 		public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
 			hour = hourOfDay;
 			minute = minuteOfHour;
-			
+
 			deadDate.setText(new StringBuilder().append(day).append("/")
 					.append(month + 1).append("/")
 					.append(year).append(" ")
@@ -122,7 +124,7 @@ public class ExamsActivity extends Activity {
 			year = selectedYear;
 			month = selectedMonth;
 			day = selectedDay;
-
+			
 			deadDate.setText(new StringBuilder().append(day).append("/")
 					.append(month + 1).append("/")
 					.append(year).append(" ")
