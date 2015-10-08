@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import es.adapter.anotai.DisciplineAdapter;
+import es.database.anotai.DisciplinePersister;
+import es.model.anotai.Discipline;
 import es.model.anotai.Exam;
 import es.model.anotai.GroupHomework;
 import es.model.anotai.IndividualHomework;
@@ -23,9 +26,13 @@ import es.model.anotai.Task;
 import projeto.es.view.anotai.R;
 
 public class TaskActivity extends Activity {
+	private DisciplinePersister dPersister; 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		dPersister = new DisciplinePersister(this);
 
 		setContentView(R.layout.activity_task);
 		Bundle extras = getIntent().getExtras();
@@ -66,7 +73,7 @@ public class TaskActivity extends Activity {
 	private void makeComunLayout(final Task task) {
 		// O valor 1 para o Spinner é apenas para teste e não é definitivo,
 		// a forma como o spiner é preenchido deve mudar.
-		povoateDiscSpinner(1);
+		povoateDiscSpinner(task);
 
 		// descrição da tarefa
 		EditText etDescription = (EditText) findViewById(R.id.et_task_description);
@@ -106,26 +113,18 @@ public class TaskActivity extends Activity {
 
 				// salva a tarefa no banco e volta.
 				task.setGrade(Float.parseFloat(etGrade.getText().toString()));
+				//TODO
 				onBackPressed();
 			}
 		});
 
 	}
 
-	private void povoateDiscSpinner(int position) {
-		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select_ah);
-
-		String[] array_disciplines = { "Português", "Matemática", "História", "Geografia", "Física", "Química",
-				"Biologia", "Ed. Física", "Inglês", "Espanhol", "Sociologia", "Filosofia" };
-
-		List<String> disciplines = new ArrayList<String>(Arrays.asList(array_disciplines));
-
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
-				disciplines);
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		spDisciplines.setSelection(position);
-		spDisciplines.setAdapter(dataAdapter);
+	private void povoateDiscSpinner(Task task) {
+		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select_ta);
+        List<Discipline> disciplines = dPersister.retrieveAll();
+        spDisciplines.setAdapter(new DisciplineAdapter(this, disciplines));
+        spDisciplines.setSelection(0);		
 	}
 
 }

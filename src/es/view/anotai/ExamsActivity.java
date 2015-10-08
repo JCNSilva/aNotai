@@ -23,10 +23,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import es.adapter.anotai.DisciplineAdapter;
 import es.database.anotai.DisciplinePersister;
 import es.database.anotai.TaskPersister;
 import es.model.anotai.Discipline;
 import es.model.anotai.Exam;
+import es.model.anotai.Task.Priority;
 import es.utils.anotai.NotificationUtils;
 
 
@@ -37,6 +39,7 @@ public class ExamsActivity extends Activity {
 	private int day, month, year, hour, minute;
 	private EditText deadDate, examDescription;
 	private TaskPersister tPersister;
+	private DisciplinePersister dPersister;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +47,11 @@ public class ExamsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_exams);
-		povoateDiscSpinner();
 		
 		tPersister = new TaskPersister(this);
+		dPersister = new DisciplinePersister(this);
+		
+		povoateDiscSpinner();
 		
 		deadDate = (EditText) findViewById(R.id.et_deadline_date);
 		final Calendar calendar = Calendar.getInstance();
@@ -91,11 +96,13 @@ public class ExamsActivity extends Activity {
 					NotificationUtils.createNotifications(calExam, ExamsActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada"); 
 					
-					tPersister.create(new Exam()); //FIXME
+					//Recupera disciplina selecionada no Spinner
+					Spinner dSelect = (Spinner) findViewById(R.id.sp_discipline_select);
+					Discipline dSelected = (Discipline) dSelect.getSelectedItem();
+					tPersister.create(new Exam(dSelected, description, calExam, Priority.NORMAL)); //FIXME
+					Log.i("ExamsActivity", "Prova salva");
 
 				}
-				
-				// TODO salvar a prova criada no banco.
             }
         });
 	}
@@ -170,18 +177,7 @@ public class ExamsActivity extends Activity {
 	
 	private void povoateDiscSpinner() {
 		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select);
-        
-        DisciplinePersister dPersister = new DisciplinePersister(this);
         List<Discipline> disciplines = dPersister.retrieveAll();
-        
-        List<String> discNames = new ArrayList<String>();
-        for(Discipline disc: disciplines){
-        	discNames.add(disc.getName());
-        }
-        
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, discNames);  
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        
-        spDisciplines.setAdapter(dataAdapter);
+        spDisciplines.setAdapter(new DisciplineAdapter(this, disciplines));
 	}
 }

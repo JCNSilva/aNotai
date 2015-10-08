@@ -91,6 +91,11 @@ public class Discipline implements Serializable {
 		Discipline other = (Discipline) obj;
 		return this.name.equals(other.getName()) && this.teacher.equals(other.getTeacher());
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 	private final List<Task> getTasks(Context context) {
 		TaskPersister tPersister = new TaskPersister(context);

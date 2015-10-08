@@ -22,12 +22,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import es.adapter.anotai.DisciplineAdapter;
 import es.database.anotai.DisciplinePersister;
+import es.database.anotai.TaskPersister;
 import es.model.anotai.Discipline;
+import es.model.anotai.GroupHomework;
+import es.model.anotai.IndividualHomework;
+import es.model.anotai.Task.Priority;
 import es.utils.anotai.NotificationUtils;
 import projeto.es.view.anotai.R;
 
@@ -38,6 +44,8 @@ public class HomeworkActivity extends Activity {
 	private static final int PICK_CONTACT = 1;
 	private int day, month, year, hour, minute;
 	private EditText deadDate;
+	private TaskPersister tPersister;
+	private DisciplinePersister dPersister;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,9 @@ public class HomeworkActivity extends Activity {
 		setContentView(R.layout.activity_homework);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		tPersister = new TaskPersister(this);
+		dPersister = new DisciplinePersister(this);
 		
 		povoateDiscSpinner();
 		
@@ -77,9 +88,20 @@ public class HomeworkActivity extends Activity {
 					String description = homeWorkDescription.getText().toString();
 					NotificationUtils.createNotifications(calExam, HomeworkActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada");
+					
+					final CheckBox isGroupHomework = (CheckBox) findViewById(R.id.check_group);
+					final Spinner dSelect = (Spinner) findViewById(R.id.sp_discipline_select_ah);
+					final Discipline dSelected = (Discipline) dSelect.getSelectedItem();
+					
+					if(isGroupHomework.isChecked()){
+						tPersister.create(new GroupHomework("", dSelected, description, calExam, Priority.NORMAL)); //FIXME titulo e prioridade
+						Log.i("ExamsActivity", "Novo trabalho em grupo salvo");
+					} else {
+						tPersister.create(new IndividualHomework("", dSelected, description, calExam, Priority.NORMAL)); //FIXME titulo e prioridade
+						Log.i("ExamsActivity", "Novo trabalho individual salvo");
+					}
+					
 				}
-				
-				// TODO salvar a atividade criada no banco.
 			}
 		});
 	}
@@ -186,19 +208,8 @@ public class HomeworkActivity extends Activity {
 	
 	private void povoateDiscSpinner() {
 		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select_ah);
-        
-		DisciplinePersister dPersister = new DisciplinePersister(this);
         List<Discipline> disciplines = dPersister.retrieveAll();
-        
-        List<String> discNames = new ArrayList<String>();
-        for(Discipline disc: disciplines){
-        	discNames.add(disc.getName());
-        }
-        
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, discNames);  
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        
-        spDisciplines.setAdapter(dataAdapter);
+		spDisciplines.setAdapter(new DisciplineAdapter(this, disciplines));
 	}
 
 	@Override

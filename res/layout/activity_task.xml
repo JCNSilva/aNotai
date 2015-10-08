@@ -42,7 +42,7 @@
             android:textSize="20sp" />
 
         <Spinner
-            android:id="@id/sp_discipline_select_ah"
+            android:id="@+id/sp_discipline_select_ta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"

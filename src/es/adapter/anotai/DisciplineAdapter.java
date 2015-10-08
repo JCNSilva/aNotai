@@ -34,8 +34,8 @@ public class DisciplineAdapter extends BaseAdapter{
     }
 
     @Override
-    public long getItemId(int arg0) {
-        return arg0;
+    public long getItemId(int position) {
+        return disciplines.get(position).getId();
     }
 
     @Override
