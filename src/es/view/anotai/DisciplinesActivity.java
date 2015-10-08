@@ -1,5 +1,6 @@
 package es.view.anotai;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import projeto.es.view.anotai.R;
@@ -63,18 +64,18 @@ public class DisciplinesActivity extends Activity {
 
                     @Override
                     public void onClick(final View v) {
-                        final String nome = editNameContact.getText().toString();
+                        final String name = editNameContact.getText().toString();
 
-                        if (nome.isEmpty()) {
+                        if (name.isEmpty()) {
                          // Mostra mensagem de erro.
                             Toast.makeText(getApplicationContext(),
                                     getResources().getString(R.string.invalid_name),
                                     Toast.LENGTH_LONG).show();
                         } else {
-                            Discipline discipline = new Discipline(nome, "");
+                            Discipline discipline = new Discipline(name, "");
                             dPersister.create(discipline);
                             disciplines.add(discipline);
-                            Log.d(STORAGE_SERVICE, "Salva disciplina: " + nome);
+                            Log.d(STORAGE_SERVICE, "Salva disciplina: " + name);
                             
                             // Atualiza a lista.
                             loadList();

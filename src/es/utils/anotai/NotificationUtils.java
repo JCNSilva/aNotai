@@ -6,31 +6,44 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import es.main.anotai.AnotaiBroadcast;
 
 public class NotificationUtils {
 
-	private static final int ZERO_SECOND = 0;
+	public static final int ZERO_SECOND = 0;
 
-	public static void createNotifications(Calendar calendar, int day, int month, int year, int hour, int minute,
-			Context context, String description) {
+	public static void createNotifications(Calendar calendarExam, Context context, String description) {
+		int year, month, day, hour, minute;
+		year = calendarExam.get(Calendar.YEAR);
+		month = calendarExam.get(Calendar.MONTH);
+		day = calendarExam.get(Calendar.DAY_OF_MONTH);
+		hour = calendarExam.get(Calendar.HOUR_OF_DAY);
+		minute = calendarExam.get(Calendar.MINUTE);
+		
+		calendarExam.set(Calendar.SECOND, ZERO_SECOND);
+		
+		Calendar today = Calendar.getInstance();
+		
+		/*
+		 * Talvez fosse mais interessante pedir ao usuário a hora que ele acha 
+		 * mais adequada para receber as notificações para suas atividades, pois 
+		 * hoje, as notificações antecipadas acontecem no mesmo horário da atividade.
+		 */
 
 		Calendar calendar1 = Calendar.getInstance();
 		calendar1.set(year, month, day - 1, hour, minute, ZERO_SECOND);
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.set(year, month, day - 2, hour, minute, ZERO_SECOND);
 
-		calendar.set(year, month, day, hour, minute, ZERO_SECOND);
+		notifyIn(calendarExam, description, context);
 
-		notifyIn(calendar, description, context);
-
-		if (calendar.get(Calendar.DAY_OF_YEAR) < calendar1.get(Calendar.DAY_OF_YEAR)) {
+		if (!calendar1.before(today)) {
 			notifyIn(calendar1, description, context);
-		} else {
-			Calendar calendar2 = Calendar.getInstance();
-			calendar2.set(year, month, day - 2, hour, minute, ZERO_SECOND);
+		}
 
-			if (calendar.get(Calendar.DAY_OF_YEAR) < calendar2.get(Calendar.DAY_OF_YEAR)) {
-				notifyIn(calendar2, description, context);
-			}
+		if (!calendar2.before(today)) {
+			notifyIn(calendar2, description, context);
 		}
 	}
 
@@ -43,6 +56,8 @@ public class NotificationUtils {
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
 		alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+		Log.v("Notity", "NOTIFICAÇÃO SETADA PARA:  " + calendar.toString());
 	}
 
 }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="@string/title"
+            android:textColor="@color/color_big_text"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@id/et_name_homework"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:ems="10"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="@string/discipline"
+            android:textColor="@color/color_big_text"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@id/sp_discipline_select_ah"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.5"
+            android:hint="@string/discipline_select"
+            android:prompt="@string/discipline_select" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/obtained_grade"
+            android:textColor="@color/color_big_text"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/et_grade"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:ems="10"
+            android:inputType="numberDecimal" >
+        </EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.17"
+            android:text="@string/label_date"
+            android:textColor="@color/color_big_text"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@id/et_deadline_date_ah"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.61"
+            android:ems="10"
+            android:inputType="date" >
+        </EditText>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_task_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_field"
+        android:ems="10"
+        android:hint="@string/ask_description"
+        android:inputType="none" />
+
+    <ListView
+        android:id="@id/lv_classmate"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:visibility="gone" >
+    </ListView>
+
+    <Button
+        android:id="@+id/bt_save_task"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.2"
+        android:background="@drawable/button_generic"
+        android:text="@string/save"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,10 +1,10 @@
 package es.view.anotai;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -29,6 +29,7 @@ import android.widget.TimePicker;
 import es.database.anotai.DisciplinePersister;
 import es.model.anotai.Discipline;
 import es.utils.anotai.NotificationUtils;
+import projeto.es.view.anotai.R;
 
 public class HomeworkActivity extends Activity {
 	
@@ -70,15 +71,15 @@ public class HomeworkActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				Calendar calExam = Calendar.getInstance();
-            	calExam.set(year, month, day);
+            	calExam.set(year, month, day, hour, minute);
             	
 				if (calExam.after(calendar)) {
 					String description = homeWorkDescription.getText().toString();
-					// createNotifications();
-					NotificationUtils.createNotifications(calendar, day, month, year, hour, minute, HomeworkActivity.this,
-							description);
+					NotificationUtils.createNotifications(calExam, HomeworkActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada");
 				}
+				
+				// TODO salvar a atividade criada no banco.
 			}
 		});
 	}
@@ -114,8 +115,7 @@ public class HomeworkActivity extends Activity {
 
 	private void setClickListenerDeadlineDate(Calendar calendar) {
 		deadDate = (EditText) findViewById(R.id.et_deadline_date_ah);
-		
-		
+			
 		day = calendar.get(Calendar.DAY_OF_MONTH);
 		month = calendar.get(Calendar.MONTH);
 		year = calendar.get(Calendar.YEAR);
@@ -134,7 +134,6 @@ public class HomeworkActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				showDialog(DATE_DIALOG_ID);
-				
 			}
 		});
 	}
