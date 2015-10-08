@@ -1,7 +1,6 @@
 package es.view.anotai;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -27,6 +26,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import es.database.anotai.DisciplinePersister;
+import es.model.anotai.Discipline;
 import es.utils.anotai.NotificationUtils;
 
 public class HomeworkActivity extends Activity {
@@ -76,7 +77,7 @@ public class HomeworkActivity extends Activity {
 					// createNotifications();
 					NotificationUtils.createNotifications(calendar, day, month, year, hour, minute, HomeworkActivity.this,
 							description);
-					Log.i("ExamsActivity", "setou a notificação");
+					Log.i("ExamsActivity", "Notificação configurada");
 				}
 			}
 		});
@@ -103,8 +104,8 @@ public class HomeworkActivity extends Activity {
 	         // Retrieve the phone number from the DISPLAY_NAME column
 	            int columnDN = cursor.getColumnIndex(Phone.DISPLAY_NAME);
 	            String name = cursor.getString(columnDN);
-	            Log.d("", name);
-	            Log.d("", number);
+	            Log.d("HomeworkActivity", "nome: " + name);
+	            Log.d("HomeworkActivity", "numero: " + number);
 	            
 	            
 			}
@@ -187,15 +188,15 @@ public class HomeworkActivity extends Activity {
 	private void povoateDiscSpinner() {
 		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select_ah);
         
-        String[] array_disciplines = {
-        		"Português", "Matemática", "História", "Geografia",
-        		"Física", "Química", "Biologia", "Ed. Física",
-        		"Inglês", "Espanhol", "Sociologia", "Filosofia"
-        };
+		DisciplinePersister dPersister = new DisciplinePersister(this);
+        List<Discipline> disciplines = dPersister.retrieveAll();
         
-        List<String> disciplines = new ArrayList<String>(Arrays.asList(array_disciplines));
+        List<String> discNames = new ArrayList<String>();
+        for(Discipline disc: disciplines){
+        	discNames.add(disc.getName());
+        }
         
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, disciplines);  
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, discNames);  
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         
         spDisciplines.setAdapter(dataAdapter);

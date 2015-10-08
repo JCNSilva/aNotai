@@ -1,6 +1,5 @@
 package es.view.anotai;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import projeto.es.view.anotai.R;
@@ -24,7 +23,8 @@ import es.database.anotai.DisciplinePersister;
 import es.model.anotai.Discipline;
 
 public class DisciplinesActivity extends Activity {
-    private List<Discipline> disciplines = new ArrayList<Discipline>();
+	private DisciplinePersister dPersister;
+    private List<Discipline> disciplines;
     private ListView lvDisciplines;
     private DisciplineAdapter adapter;
     
@@ -34,6 +34,9 @@ public class DisciplinesActivity extends Activity {
         setContentView(R.layout.activity_disciplines);
         
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        dPersister = new DisciplinePersister(this);
+        disciplines = dPersister.retrieveAll();
         
         // Recuperando a listview de disciplinas.
         lvDisciplines = (ListView) findViewById(R.id.list_disciplines);
@@ -68,11 +71,10 @@ public class DisciplinesActivity extends Activity {
                                     getResources().getString(R.string.invalid_name),
                                     Toast.LENGTH_LONG).show();
                         } else {
-                            DisciplinePersister persister = new DisciplinePersister(v.getContext());
-                        	Discipline discipline = new Discipline(nome, "");
-                            persister.create(discipline);
-                            Log.d(STORAGE_SERVICE, persister.retrieveAll().get(0).getName());
+                            Discipline discipline = new Discipline(nome, "");
+                            dPersister.create(discipline);
                             disciplines.add(discipline);
+                            Log.d(STORAGE_SERVICE, "Salva disciplina: " + nome);
                             
                             // Atualiza a lista.
                             loadList();

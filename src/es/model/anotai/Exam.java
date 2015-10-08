@@ -4,7 +4,9 @@ import java.util.Calendar;
 
 public class Exam extends Task{
     
-    public Exam() {
+    private static final long serialVersionUID = 1392845360047935400L;
+
+	public Exam() {
         super();
     }
     

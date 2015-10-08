@@ -2,8 +2,6 @@ package es.model.anotai;
 
 import java.io.Serializable;
 
-
-
 public class Discipline implements Serializable{
 
     private static final long serialVersionUID = -2699314244245902531L;

@@ -8,7 +8,8 @@ import java.util.Set;
 
 public class GroupHomework extends Task {
 
-    private Set<Classmate> group;
+    private static final long serialVersionUID = 1440088455419678817L;
+	private Set<Classmate> group;
 
     public GroupHomework() {
     	this.group = new HashSet<Classmate>();

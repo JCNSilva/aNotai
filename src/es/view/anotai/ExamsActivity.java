@@ -1,10 +1,10 @@
 package es.view.anotai;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -22,8 +22,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import es.database.anotai.DisciplinePersister;
+import es.database.anotai.TaskPersister;
+import es.model.anotai.Discipline;
+import es.model.anotai.Exam;
 import es.utils.anotai.NotificationUtils;
-import projeto.es.view.anotai.R;
+
 
 public class ExamsActivity extends Activity {
 	
@@ -31,15 +35,17 @@ public class ExamsActivity extends Activity {
 	private static final int TIME_DIALOG_ID = 101;
 	private int day, month, year, hour, minute;
 	private EditText deadDate, examDescription;
+	private TaskPersister tPersister;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
 		setContentView(R.layout.activity_exams);
-		
 		povoateDiscSpinner();
+		
+		tPersister = new TaskPersister(this);
 		
 		deadDate = (EditText) findViewById(R.id.et_deadline_date);
 		final Calendar calendar = Calendar.getInstance();
@@ -61,15 +67,13 @@ public class ExamsActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				showDialog(DATE_DIALOG_ID);
-				
+				showDialog(DATE_DIALOG_ID);				
 			}
 		});
 		
 		examDescription = (EditText) findViewById(R.id.et_exam_description);
 		
 		Button btSaveExam = (Button) findViewById(R.id.bt_create_exam);
-		
 		btSaveExam.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -81,7 +85,11 @@ public class ExamsActivity extends Activity {
 					String description = examDescription.getText().toString();
 					NotificationUtils.createNotifications(calendar, day, month, year, hour, minute, ExamsActivity.this,
 							description);
-					Log.i("ExamsActivity", "setou a notificação");
+					Log.i("ExamsActivity", "Notificação configurada"); 
+					
+					
+					tPersister.create(new Exam()); //FIXME
+					
 				}
             }
         });
@@ -95,8 +103,10 @@ public class ExamsActivity extends Activity {
 			return new DatePickerDialog(this, datePickerListener, year, month, day);
 		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this, timePickerListener, hour, minute, true);
+		default:
+			return null;
 		}
-		return null;
+		
 	}
 	
 	//cria listener para o timePicker
@@ -118,7 +128,7 @@ public class ExamsActivity extends Activity {
 	//cria listener para o datePicker
 	private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
 
-		public void onDateSet(DatePicker view, int selectedYear,int selectedMonth, int selectedDay) {
+		public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
 			year = selectedYear;
 			month = selectedMonth;
 			day = selectedDay;
@@ -135,7 +145,6 @@ public class ExamsActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.exams, menu);
 		return true;
 	}
@@ -157,15 +166,15 @@ public class ExamsActivity extends Activity {
 	private void povoateDiscSpinner() {
 		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select);
         
-        String[] array_disciplines = {
-        		"Portuguï¿½s", "Matemï¿½tica", "Histï¿½ria", "Geografia",
-        		"Fï¿½sica", "Quï¿½mica", "Biologia", "Ed. Fï¿½sica",
-        		"Inglï¿½s", "Espanhol", "Sociologia", "Filosofia"
-        };
+        DisciplinePersister dPersister = new DisciplinePersister(this);
+        List<Discipline> disciplines = dPersister.retrieveAll();
         
-        List<String> disciplines = new ArrayList<String>(Arrays.asList(array_disciplines));
+        List<String> discNames = new ArrayList<String>();
+        for(Discipline disc: disciplines){
+        	discNames.add(disc.getName());
+        }
         
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, disciplines);  
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, discNames);  
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         
         spDisciplines.setAdapter(dataAdapter);

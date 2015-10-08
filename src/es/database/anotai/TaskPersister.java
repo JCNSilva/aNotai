@@ -26,7 +26,7 @@ public class TaskPersister implements AbstractPersister<Task>{
 	public TaskPersister(Context context){
 		AnotaiDbHelper helper = new AnotaiDbHelper(context);
 		db = helper.getWritableDatabase();
-		db.execSQL("PRAGMA foreign_keys = ON"); //Activate support on foreign keys constraints);
+		db.execSQL("PRAGMA foreign_keys = ON"); //Ativa o suporte a restrições de chaves estrangeiras
 	}
 	
 	
@@ -94,8 +94,6 @@ public class TaskPersister implements AbstractPersister<Task>{
 				}
 			}
 		}
-		
-		
 	}
 	
 	

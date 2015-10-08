@@ -1,6 +1,5 @@
 package es.view.anotai;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import projeto.es.view.anotai.R;
@@ -10,11 +9,13 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.ListView;
 import es.adapter.anotai.TaskAdapter;
+import es.database.anotai.TaskPersister;
 import es.model.anotai.Task;
 
 public class TasksActivity extends Activity {
 	
-	private List<Task> tasks = new ArrayList<Task>();
+	private TaskPersister tPersister; 
+	private List<Task> tasks;
 	private ListView lvTasks;
 	private TaskAdapter adapter;
 
@@ -31,6 +32,8 @@ public class TasksActivity extends Activity {
 		
 		//Recupera elementos
 		lvTasks = (ListView) findViewById(R.id.list_tasks);
+		tPersister = new TaskPersister(this);
+		tasks = tPersister.retrieveAll();
 		
 		//Adiciona adapter para linkar a listView ao xml dos elementos da lista
 		adapter = new TaskAdapter(TasksActivity.this, tasks);

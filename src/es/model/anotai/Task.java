@@ -41,7 +41,7 @@ public abstract class Task implements Serializable{
 		this.cadasterDate = new GregorianCalendar();
 		this.setDeadlineDate(deadlineDate);
 		this.priority = priority;
-		this.grade = 0.0;
+		this.setGrade(0);
 	}
 	
 	public Discipline getDiscipline(){
@@ -111,6 +111,8 @@ public abstract class Task implements Serializable{
 	}
 
 	public void setGrade(double grade) {
+		if(grade < 0)
+			throw new IllegalArgumentException("Grades can't be negative");
 		this.grade = grade;
 	}
 	

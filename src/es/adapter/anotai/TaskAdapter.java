@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import es.model.anotai.Discipline;
 import es.model.anotai.Task;
 
 public class TaskAdapter extends BaseAdapter {
@@ -47,7 +46,7 @@ public class TaskAdapter extends BaseAdapter {
 		}
 		
 		TextView tvNameTask = (TextView) viewAux.findViewById(R.id.tv_name_task);
-		tvNameTask.setText(((Discipline) getItem(index)).getName());
+		tvNameTask.setText(((Task) getItem(index)).getDescription());
 		
 		return viewAux;
 	}

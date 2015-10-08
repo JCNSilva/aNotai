@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 public class IndividualHomework extends Task {
     
+	private static final long serialVersionUID = 8679244822728352892L;
+
 	public IndividualHomework() {
         super();
     }
