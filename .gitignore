@@ -13,6 +13,7 @@ local.properties
 .classpath
 *.stackdump
 
+
 # External tool builders
 .externalToolBuilders/
 
