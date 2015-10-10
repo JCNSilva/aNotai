@@ -118,16 +118,16 @@ public class Discipline implements Serializable {
 		return x;
 	}
 	
+	private final String[] getLableGrades(List<Task> tasks) {
+		String[] mNotas = new String[tasks.size()];
+		for (int i = 0; i < mNotas.length; i++) {
+			mNotas[i] = "nota " + i + 1;
+		}		
+		return mNotas;		
+	}
 	
-	// VALORES APENAS PARA TESTES.
-	String[] mNotas = new String[] { "nota 1: ", "nota 2: ", "nota 3: " };
-
 	
 	public void makeChartLayout(Context context, LinearLayout chartContainer) {
-		// VALORES APENAS PARA TESTES.
-//		int[] x = { 0, 1, 2 };
-//		float[] expense = { 8, 9, 4 };
-		
 		List<Task> tasks = getTasks(context);
 		
 		int[] x = getValues(tasks);
@@ -232,9 +232,11 @@ public class Discipline implements Serializable {
 		// setting the margin size for the graph in the order top, left, bottom,
 		// right
 		multiRenderer.setMargins(new int[] { 30, 30, 30, 30 });
-
+		
+		String[] mLabels = getLableGrades(tasks);
+		
 		for (int i = 0; i < x.length; i++) {
-			multiRenderer.addXTextLabel(i, mNotas[i]);
+			multiRenderer.addXTextLabel(i, mLabels[i]);
 		}
 
 		// Adding incomeRenderer and expenseRenderer to multipleRenderer
