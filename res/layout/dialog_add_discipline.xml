@@ -13,20 +13,19 @@
             android:id="@+id/dialog_add_disc_et_name_discipline"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.40"
             android:gravity="top"
             android:hint="@string/hint_discipline_name"
-            android:textColorHint="#808080"
             android:inputType="text"
             android:maxLength="40"
             android:maxLines="1"
             android:padding="10dp"
-            android:textColor="@android:color/black" />
-
+            android:textColor="@android:color/black"
+            android:textColorHint="#808080" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,8 +50,8 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
             android:layout_marginLeft="1dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.5"
             android:background="@android:color/holo_green_light"
             android:text="@string/save"

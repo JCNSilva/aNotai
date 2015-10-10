@@ -14,6 +14,7 @@
             android:id="@+id/activity_homework_tv_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0.17"
             android:text="@string/label_title"
             android:textColor="@color/color_big_text"
@@ -23,14 +24,18 @@
             android:id="@+id/activity_homework_et_name_homework"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.61"
-            android:ems="10" />
+            android:ems="10"
+            android:inputType="text" />
     </LinearLayout>
 
     <Spinner
         android:id="@+id/activity_homework_sp_discipline_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:hint="@string/discipline_select"
         android:prompt="@string/discipline_select" />
@@ -45,6 +50,7 @@
             android:id="@+id/activity_homework_tv_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0.17"
             android:text="@string/label_date"
             android:textColor="@color/color_big_text"
@@ -54,8 +60,13 @@
             android:id="@+id/activity_homework_et_deadline_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.61"
-            android:ems="10" >
+            android:ems="10"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" >
         </EditText>
     </LinearLayout>
 
@@ -65,8 +76,10 @@
         android:id="@+id/activity_homework_et_homework_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/text_field"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
+        android:background="@drawable/text_field"
         android:ems="10"
         android:hint="@string/ask_description"
         android:inputType="textMultiLine" />
@@ -75,6 +88,7 @@
         android:id="@+id/activity_homework_check_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:text="@string/group_homework" />
 
     <LinearLayout
@@ -86,6 +100,7 @@
             android:id="@+id/activity_homework_bt_add_classmate"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0.1"
             android:text="@string/add_classmate" />
 
@@ -93,18 +108,20 @@
             android:id="@+id/activity_homework_lv_classmate"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.7" >
         </ListView>
 
         <Button
             android:id="@+id/activity_homework_bt_create_homework"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
+            android:layout_weight="0.2"
             android:background="@drawable/button_generic"
             android:text="@string/save"
             android:textColor="@android:color/white" />
