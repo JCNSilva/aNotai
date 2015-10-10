@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <ListView
-        android:id="@+id/list_chart"
+        android:id="@+id/activity_performance_list_chart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"

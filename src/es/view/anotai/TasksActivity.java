@@ -36,7 +36,7 @@ public class TasksActivity extends Activity {
 		setContentView(R.layout.activity_tasks);
 
 		// Recupera elementos
-		lvTasks = (ListView) findViewById(R.id.list_tasks);
+		lvTasks = (ListView) findViewById(R.id.activity_tasks_lv_tasks);
 		tPersister = new TaskPersister(this);
 		tasks = tPersister.retrieveAll();
 		

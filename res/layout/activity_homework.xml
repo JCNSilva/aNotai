@@ -11,7 +11,7 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/activity_homework_tv_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.17"
@@ -20,7 +20,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/et_name_homework"
+            android:id="@+id/activity_homework_et_name_homework"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.61"
@@ -28,7 +28,7 @@
     </LinearLayout>
 
     <Spinner
-        android:id="@+id/sp_discipline_select_ah"
+        android:id="@+id/activity_homework_sp_discipline_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -42,7 +42,7 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/activity_homework_tv_2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.17"
@@ -51,7 +51,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/et_deadline_date_ah"
+            android:id="@+id/activity_homework_et_deadline_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.61"
@@ -62,7 +62,7 @@
     <requestFocus />
 
     <EditText
-        android:id="@+id/et_homework_description"
+        android:id="@+id/activity_homework_et_homework_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/text_field"
@@ -72,7 +72,7 @@
         android:inputType="textMultiLine" />
 
     <CheckBox
-        android:id="@+id/check_group"
+        android:id="@+id/activity_homework_check_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/group_homework" />
@@ -83,21 +83,21 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/bt_add_classmate"
+            android:id="@+id/activity_homework_bt_add_classmate"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:text="@string/add_classmate" />
 
         <ListView
-            android:id="@+id/lv_classmate"
+            android:id="@+id/activity_homework_lv_classmate"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7" >
         </ListView>
 
         <Button
-            android:id="@+id/bt_create_homework"
+            android:id="@+id/activity_homework_bt_create_homework"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2"

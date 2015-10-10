@@ -53,7 +53,7 @@ public class ExamsActivity extends Activity {
 		
 		povoateDiscSpinner();
 		
-		deadDate = (EditText) findViewById(R.id.et_deadline_date);
+		deadDate = (EditText) findViewById(R.id.activity_exams_et_deadline_date);
 		final Calendar calendar = Calendar.getInstance();
 		
 		day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -77,9 +77,9 @@ public class ExamsActivity extends Activity {
 			}
 		});
 		
-		examDescription = (EditText) findViewById(R.id.et_exam_description);
+		examDescription = (EditText) findViewById(R.id.activity_exams_et_exam_description);
 		
-		Button btSaveExam = (Button) findViewById(R.id.bt_create_exam);
+		Button btSaveExam = (Button) findViewById(R.id.activity_exams_bt_create_exam);
 		btSaveExam.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -87,17 +87,13 @@ public class ExamsActivity extends Activity {
             	Calendar calExam = Calendar.getInstance();
             	calExam.set(year, month, day, hour, minute);
             	
-//            	Log.v("SOBRE OS CALENDARIOS", "atributo calendar: " + "dia: " + calExam.get(Calendar.DAY_OF_MONTH)
-//            	+ " mês: " + calExam.get(Calendar.MONTH) + " year: " + calExam.get(Calendar.YEAR) 
-//            	+ " hora: " + calExam.get(Calendar.HOUR) + " minuto: " + calExam.get(Calendar.MINUTE));
-            	
-				if (calExam.after(calendar)) {
+            	if (calExam.after(calendar)) {
 					String description = examDescription.getText().toString();
 					NotificationUtils.createNotifications(calExam, ExamsActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada"); 
 					
 					//Recupera disciplina selecionada no Spinner
-					Spinner dSelect = (Spinner) findViewById(R.id.sp_discipline_select);
+					Spinner dSelect = (Spinner) findViewById(R.id.activity_exams_sp_discipline_select);
 					Discipline dSelected = (Discipline) dSelect.getSelectedItem();
 					tPersister.create(new Exam(dSelected, description, calExam, Priority.NORMAL)); //FIXME
 					Log.i("ExamsActivity", "Prova salva");
@@ -176,7 +172,7 @@ public class ExamsActivity extends Activity {
     }
 	
 	private void povoateDiscSpinner() {
-		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select);
+		Spinner spDisciplines = (Spinner) findViewById(R.id.activity_exams_sp_discipline_select);
         List<Discipline> disciplines = dPersister.retrieveAll();
         spDisciplines.setAdapter(new DisciplineAdapter(this, disciplines));
 	}

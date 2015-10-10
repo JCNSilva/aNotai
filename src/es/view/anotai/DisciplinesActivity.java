@@ -1,6 +1,8 @@
 package es.view.anotai;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import projeto.es.view.anotai.R;
@@ -15,16 +17,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import es.adapter.anotai.DisciplineAdapter;
 import es.database.anotai.DisciplinePersister;
+import es.database.anotai.TaskPersister;
 import es.model.anotai.Discipline;
 
 public class DisciplinesActivity extends Activity {
 	private DisciplinePersister dPersister;
+	private TaskPersister tPersister;
     private List<Discipline> disciplines;
     private ListView lvDisciplines;
     private DisciplineAdapter adapter;
@@ -36,15 +43,32 @@ public class DisciplinesActivity extends Activity {
         
         getActionBar().setDisplayHomeAsUpEnabled(true);
         
+        tPersister = new TaskPersister(this);
         dPersister = new DisciplinePersister(this);
         disciplines = dPersister.retrieveAll();
         
-        // Recuperando a listview de disciplinas.
-        lvDisciplines = (ListView) findViewById(R.id.list_disciplines);
+        setOnClickAddDiscipline();
+        
+     // Recuperando a listview de disciplinas.
+        lvDisciplines = (ListView) findViewById(R.id.activity_disciplines_lv_disciplines);
         adapter = new DisciplineAdapter(DisciplinesActivity.this, disciplines);
         lvDisciplines.setAdapter(adapter);
-                
-        Button btAddDiscipline = (Button) findViewById(R.id.bt_add_discipline);
+        lvDisciplines.setOnItemClickListener(new OnItemClickListener() {
+    		@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// Passar a disciplina clicada na intent que vai a tela da disciplina
+				Intent intent = new Intent(DisciplinesActivity.this, DisciplineActivity.class);
+				intent.putExtra("discipline", disciplines.get(position));
+				startActivity(intent);
+			}
+		});
+        
+        
+    }
+
+	private void setOnClickAddDiscipline() {
+		Button btAddDiscipline = (Button) findViewById(R.id.activity_disciplines_bt_add_discipline);
         btAddDiscipline.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -55,10 +79,10 @@ public class DisciplinesActivity extends Activity {
 
                 // recuperando os elementos do dialog
                 final EditText editNameContact = (EditText) dialog
-                        .findViewById(R.id.et_name_discipline);
+                        .findViewById(R.id.dialog_add_disc_et_name_discipline);
                 
-                final Button btOk = (Button) dialog.findViewById(R.id.bt_ok);
-                final Button btCancel = (Button) dialog.findViewById(R.id.bt_Cancel);
+                final Button btOk = (Button) dialog.findViewById(R.id.dialog_add_disc_bt_ok);
+                final Button btCancel = (Button) dialog.findViewById(R.id.dialog_add_disc_bt_cancel);
 
                 btOk.setOnClickListener(new OnClickListener() {
 
@@ -78,7 +102,7 @@ public class DisciplinesActivity extends Activity {
                             Log.d(STORAGE_SERVICE, "Salva disciplina: " + name);
                             
                             // Atualiza a lista.
-                            loadList();
+                            loadList(0);
                             dialog.dismiss();
                         }
                     }
@@ -95,21 +119,43 @@ public class DisciplinesActivity extends Activity {
                 dialog.show();
             }
         });
-        
-        lvDisciplines.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// Passar a disciplina clicada na intent que vai a tela da disciplina
-				Intent intent = new Intent(DisciplinesActivity.this, DisciplineActivity.class);
-				intent.putExtra("discipline", disciplines.get(position));
-				startActivity(intent);
-			}
-		});
-    }
+	}
     
-    private void loadList() {
+    private void loadList(int OrderID) {
+    	final int ALPHABETICAL_ORDER = 0;
+		final int TOTAL_TASKS_ORDER = 1;
+		
+		switch(OrderID){
+		case ALPHABETICAL_ORDER:
+			Collections.sort(disciplines, new Comparator<Discipline>() {
+
+				@Override
+				public int compare(Discipline left, Discipline right) {
+					return left.getName().compareTo(right.getName());
+				}
+			});
+			break;
+			
+		case TOTAL_TASKS_ORDER:
+			Collections.sort(disciplines, new Comparator<Discipline>(){
+
+				@Override
+				public int compare(Discipline left, Discipline right) {
+					int leftTasks = tPersister.retrieveAll(left).size();
+					int rightTasks = tPersister.retrieveAll(right).size();
+					if(leftTasks > rightTasks){
+						return 1;
+					} else if(leftTasks < rightTasks){
+						return -1;
+					} else {
+						return 0;
+					}
+				}
+			});
+			Collections.reverse(disciplines);
+			break;
+		}
+    	
         adapter = new DisciplineAdapter(DisciplinesActivity.this, disciplines);
         lvDisciplines.setAdapter(adapter);
     }

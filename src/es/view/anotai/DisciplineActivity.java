@@ -26,7 +26,7 @@ public class DisciplineActivity extends Activity {
 		discipline = (Discipline) extras.get("discipline");
 		tPersister = new TaskPersister(this);
 		
-		ListView listView = (ListView) findViewById(R.id.list_tasks);
+		ListView listView = (ListView) findViewById(R.id.activity_discipline_lv_tasks);
 		
 		TaskAdapter adapter = new TaskAdapter(DisciplineActivity.this, tPersister.retrieveAll(discipline));
 		listView.setAdapter(adapter);

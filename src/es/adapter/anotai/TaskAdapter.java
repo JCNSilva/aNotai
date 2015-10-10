@@ -45,7 +45,7 @@ public class TaskAdapter extends BaseAdapter {
                     group, false);
 		}
 		
-		TextView tvNameTask = (TextView) viewAux.findViewById(R.id.tv_name_task);
+		TextView tvNameTask = (TextView) viewAux.findViewById(R.id.item_task_tv_name_task);
 		tvNameTask.setText(((Task) getItem(index)).getDescription());
 		
 		return viewAux;

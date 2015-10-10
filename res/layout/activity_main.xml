@@ -36,7 +36,7 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/bt_add_test"
+                android:id="@+id/activity_main_bt_add_test"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -49,7 +49,7 @@
                 android:textColor="@android:color/white" />
 
             <Button
-                android:id="@+id/bt_disciplines"
+                android:id="@+id/activity_main_bt_disciplines"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -69,7 +69,7 @@
             android:orientation="horizontal" >
 
             <Button
-                android:id="@+id/bt_add_homework"
+                android:id="@+id/activity_main_bt_add_homework"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -82,7 +82,7 @@
                 android:textColor="@android:color/white" />
 
             <Button
-                android:id="@+id/bt_tasks"
+                android:id="@+id/activity_main_bt_tasks"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -96,7 +96,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/bt_performance"
+            android:id="@+id/activity_main_bt_performance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"

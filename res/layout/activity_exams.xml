@@ -15,7 +15,7 @@
         android:textStyle="bold" />
 
     <Spinner
-        android:id="@+id/sp_discipline_select"
+        android:id="@+id/activity_exams_sp_discipline_select"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -23,7 +23,7 @@
         android:prompt="@string/discipline_select" />
 
     <EditText
-        android:id="@+id/et_deadline_date"
+        android:id="@+id/activity_exams_et_deadline_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" >
@@ -31,7 +31,7 @@
     </EditText>
 
     <EditText
-        android:id="@+id/et_exam_description"
+        android:id="@+id/activity_exams_et_exam_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/text_field"
@@ -40,7 +40,7 @@
         android:inputType="textMultiLine" />
 
     <Button
-        android:id="@+id/bt_create_exam"
+        android:id="@+id/activity_exams_bt_create_exam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"

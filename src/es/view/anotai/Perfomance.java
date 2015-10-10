@@ -30,7 +30,7 @@ public class Perfomance extends Activity {
 		disciplines.add(new Discipline("geografia", "alguem"));		
 		
 		// Recuperando a listview de disciplinas.
-		lvChart = (ListView) findViewById(R.id.list_chart);
+		lvChart = (ListView) findViewById(R.id.activity_performance_list_chart);
 		adapter = (ChartAdapter) new ChartAdapter(Perfomance.this, disciplines);
 		lvChart.setAdapter(adapter);
 	}

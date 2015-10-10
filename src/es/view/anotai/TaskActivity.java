@@ -49,20 +49,20 @@ public class TaskActivity extends Activity {
 	private void makeLayoutGroupHomeWork(GroupHomework task) {
 		makeComunLayout(task);
 		// nome da atividade e lista de colegas
-		LinearLayout layout = (LinearLayout) findViewById(R.id.layout_title);
+		LinearLayout layout = (LinearLayout) findViewById(R.id.activity_task_layout_title);
 		layout.setVisibility(LinearLayout.VISIBLE);
 
-		EditText etTitle = (EditText) findViewById(R.id.et_name_homework);
+		EditText etTitle = (EditText) findViewById(R.id.activity_task_et_name_homework);
 		etTitle.setText(task.getTitle());
 	}
 
 	private void makeLayoutIndividualHomeWork(IndividualHomework task) {
 		makeComunLayout(task);
 		// nome da atividade.
-		LinearLayout layout = (LinearLayout) findViewById(R.id.layout_title);
+		LinearLayout layout = (LinearLayout) findViewById(R.id.activity_task_layout_title);
 		layout.setVisibility(LinearLayout.VISIBLE);
 
-		EditText etTitle = (EditText) findViewById(R.id.et_name_homework);
+		EditText etTitle = (EditText) findViewById(R.id.activity_task_et_name_homework);
 		etTitle.setText(task.getTitle());
 	}
 
@@ -76,20 +76,20 @@ public class TaskActivity extends Activity {
 		povoateDiscSpinner(task);
 
 		// descrição da tarefa
-		EditText etDescription = (EditText) findViewById(R.id.et_task_description);
+		EditText etDescription = (EditText) findViewById(R.id.activity_task_et_task_description);
 		etDescription.setText(task.getDescription());
 
 		// data de entrega
 		Calendar deadlineDate = task.getDeadlineDate();
-		EditText etDeadLineDate = (EditText) findViewById(R.id.et_deadline_date_ah);
+		EditText etDeadLineDate = (EditText) findViewById(R.id.activity_task_et_deadline_date);
 		etDeadLineDate.setText(new StringBuilder().append(deadlineDate.get(Calendar.DAY_OF_MONTH)).append("/")
 				.append(deadlineDate.get(Calendar.MONTH) + 1).append("/").append(deadlineDate.get(Calendar.YEAR))
 				.append(" ").append(deadlineDate.get(Calendar.HOUR_OF_DAY)).append(":")
 				.append(deadlineDate.get(Calendar.MINUTE)));
 
-		final Button btSave = (Button) findViewById(R.id.bt_save_task);
+		final Button btSave = (Button) findViewById(R.id.activity_task_bt_save_task);
 
-		final EditText etGrade = (EditText) findViewById(R.id.et_grade);
+		final EditText etGrade = (EditText) findViewById(R.id.activity_task_et_grade);
 		etGrade.setText(String.valueOf(task.getGrade()));
 		final String oldValue = etGrade.getText().toString();
 
@@ -121,7 +121,7 @@ public class TaskActivity extends Activity {
 	}
 
 	private void povoateDiscSpinner(Task task) {
-		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select_ta);
+		Spinner spDisciplines = (Spinner) findViewById(R.id.activity_task_sp_discipline_select);
         List<Discipline> disciplines = dPersister.retrieveAll();
         spDisciplines.setAdapter(new DisciplineAdapter(this, disciplines));
         spDisciplines.setSelection(0);		

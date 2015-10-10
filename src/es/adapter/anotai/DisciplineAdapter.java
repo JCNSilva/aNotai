@@ -48,7 +48,7 @@ public class DisciplineAdapter extends BaseAdapter{
         }
         
         TextView tvNameDiscipline = (TextView) viewAux
-                .findViewById(R.id.tv_name_discipline);
+                .findViewById(R.id.item_discipline_tv_name_discipline);
         
         tvNameDiscipline.setText(((Discipline) getItem(position)).getName());
         

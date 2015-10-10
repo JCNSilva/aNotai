@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/layout_title"
+        android:id="@+id/activity_task_layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -20,7 +20,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@id/et_name_homework"
+            android:id="@+id/activity_task_et_name_homework"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.7"
@@ -42,7 +42,7 @@
             android:textSize="20sp" />
 
         <Spinner
-            android:id="@+id/sp_discipline_select_ta"
+            android:id="@+id/activity_task_sp_discipline_select"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -66,7 +66,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/et_grade"
+            android:id="@+id/activity_task_et_grade"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
@@ -90,7 +90,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@id/et_deadline_date_ah"
+            android:id="@+id/activity_task_et_deadline_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.61"
@@ -100,7 +100,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/et_task_description"
+        android:id="@+id/activity_task_et_task_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -110,7 +110,7 @@
         android:inputType="none" />
 
     <ListView
-        android:id="@id/lv_classmate"
+        android:id="@+id/activity_task_lv_classmate"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.7"
@@ -118,7 +118,7 @@
     </ListView>
 
     <Button
-        android:id="@+id/bt_save_task"
+        android:id="@+id/activity_task_bt_save_task"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"

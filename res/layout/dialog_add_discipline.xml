@@ -10,7 +10,7 @@
         android:orientation="vertical" >
 
         <EditText
-            android:id="@+id/et_name_discipline"
+            android:id="@+id/dialog_add_disc_et_name_discipline"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="20dp"
@@ -35,7 +35,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/bt_Cancel"
+            android:id="@+id/dialog_add_disc_bt_cancel"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:textColor="@android:color/white" />
 
         <Button
-            android:id="@+id/bt_ok"
+            android:id="@+id/dialog_add_disc_bt_ok"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -15,7 +15,7 @@
         android:textStyle="bold" />
 
     <ListView
-        android:id="@+id/list_tasks"
+        android:id="@+id/activity_tasks_lv_tasks"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"

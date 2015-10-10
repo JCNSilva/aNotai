@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <LinearLayout
-        android:id="@+id/Layout_chart"
+        android:id="@+id/item_chart_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="350dp"
         android:layout_alignParentBottom="true"

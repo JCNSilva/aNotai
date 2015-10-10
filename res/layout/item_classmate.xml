@@ -7,4 +7,4 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:gravity="center_vertical"
     android:textSize="18sp"
-    android:id="@+id/tv_name_classmate" />
+    android:id="@+id/item_classmate_tv_name_classmate" />

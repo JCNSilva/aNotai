@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
 		addClickListenerTasks();
 		addClickListenerExams();
 
-		Button btPerformance = (Button) findViewById(R.id.bt_performance);
+		Button btPerformance = (Button) findViewById(R.id.activity_main_bt_performance);
 		btPerformance.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		Button btHomework = (Button) findViewById(R.id.bt_add_homework);
+		Button btHomework = (Button) findViewById(R.id.activity_main_bt_add_homework);
 		btHomework.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -45,7 +45,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void addClickListenerExams() {
-		Button btExams = (Button) findViewById(R.id.bt_add_test);
+		Button btExams = (Button) findViewById(R.id.activity_main_bt_add_test);
 		btExams.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void addClickListenerTasks() {
-		Button btTasks = (Button) findViewById(R.id.bt_tasks);
+		Button btTasks = (Button) findViewById(R.id.activity_main_bt_tasks);
 		btTasks.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void addClickListenerDisciplines() {
-		Button btDisciplines = (Button) findViewById(R.id.bt_disciplines);
+		Button btDisciplines = (Button) findViewById(R.id.activity_main_bt_disciplines);
 		btDisciplines.setOnClickListener(new OnClickListener() {
 
 			@Override

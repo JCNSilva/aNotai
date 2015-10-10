@@ -63,7 +63,7 @@ public class HomeworkActivity extends Activity {
 		
 		setClickListenerDeadlineDate(calendar);
 		
-		Button btAddClassmate = (Button) findViewById(R.id.bt_add_classmate);
+		Button btAddClassmate = (Button) findViewById(R.id.activity_homework_bt_add_classmate);
 		btAddClassmate.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -74,9 +74,9 @@ public class HomeworkActivity extends Activity {
 			}
 		});
 		
-		final EditText homeWorkDescription = (EditText) findViewById(R.id.et_homework_description);
+		final EditText homeWorkDescription = (EditText) findViewById(R.id.activity_homework_et_homework_description);
 		
-		Button btSave = (Button) findViewById(R.id.bt_create_homework);
+		Button btSave = (Button) findViewById(R.id.activity_homework_bt_create_homework);
 		btSave.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -89,8 +89,8 @@ public class HomeworkActivity extends Activity {
 					NotificationUtils.createNotifications(calExam, HomeworkActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada");
 					
-					final CheckBox isGroupHomework = (CheckBox) findViewById(R.id.check_group);
-					final Spinner dSelect = (Spinner) findViewById(R.id.sp_discipline_select_ah);
+					final CheckBox isGroupHomework = (CheckBox) findViewById(R.id.activity_homework_check_group);
+					final Spinner dSelect = (Spinner) findViewById(R.id.activity_homework_sp_discipline_select);
 					final Discipline dSelected = (Discipline) dSelect.getSelectedItem();
 					
 					if(isGroupHomework.isChecked()){
@@ -136,7 +136,7 @@ public class HomeworkActivity extends Activity {
 	}
 
 	private void setClickListenerDeadlineDate(Calendar calendar) {
-		deadDate = (EditText) findViewById(R.id.et_deadline_date_ah);
+		deadDate = (EditText) findViewById(R.id.activity_homework_et_deadline_date);
 			
 		day = calendar.get(Calendar.DAY_OF_MONTH);
 		month = calendar.get(Calendar.MONTH);
@@ -207,7 +207,7 @@ public class HomeworkActivity extends Activity {
 	};
 	
 	private void povoateDiscSpinner() {
-		Spinner spDisciplines = (Spinner) findViewById(R.id.sp_discipline_select_ah);
+		Spinner spDisciplines = (Spinner) findViewById(R.id.activity_homework_sp_discipline_select);
         List<Discipline> disciplines = dPersister.retrieveAll();
 		spDisciplines.setAdapter(new DisciplineAdapter(this, disciplines));
 	}

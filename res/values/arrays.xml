@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string-array name="sort_options">
+            <item>Alfabética</item>
+            <item>Atividades</item>
+        </string-array>
+        
+        <string-array name="priorities">
+            <item>Alta</item>
+            <item>Normal</item>
+            <item>Baixa</item>
+        </string-array>
+    </resources>

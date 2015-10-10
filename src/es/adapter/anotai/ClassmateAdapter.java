@@ -46,7 +46,7 @@ public class ClassmateAdapter extends BaseAdapter {
         }
         
         TextView tvNameDiscipline = (TextView) viewAux
-                .findViewById(R.id.tv_name_classmate);
+                .findViewById(R.id.item_classmate_tv_name_classmate);
         
         tvNameDiscipline.setText(((Classmate) getItem(position)).getName());
         

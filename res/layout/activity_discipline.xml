@@ -21,7 +21,7 @@
             android:textColor="@color/color_big_text"/>
         
         <ListView 
-            android:id="@+id/list_tasks"
+            android:id="@+id/activity_discipline_lv_tasks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="3dp"

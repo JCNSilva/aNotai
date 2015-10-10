@@ -47,7 +47,7 @@ public class ChartAdapter extends BaseAdapter {
 			viewAux = mInflater.inflate(R.layout.item_chart, viewGroup, false);
 		}
 		
-		disciplines.get(position).makeChartLayout(context, (LinearLayout) viewAux.findViewById(R.id.Layout_chart));
+		disciplines.get(position).makeChartLayout(context, (LinearLayout) viewAux.findViewById(R.id.item_chart_linear_layout));
 		
 		return viewAux;
 	}

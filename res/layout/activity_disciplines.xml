@@ -4,26 +4,61 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/list_disciplines"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="0.9" >
-    </ListView>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/bt_add_discipline"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/disciplines"
+            android:textColor="@color/color_big_text"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/activity_discipline_bt_sort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.5"
+            android:background="@color/transparent_background"
+            android:text="@string/more"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/button_generic"
-        android:text="@string/add_discipline"
-        android:textColor="@android:color/white" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/activity_disciplines_lv_disciplines"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="0.9" >
+        </ListView>
+
+        <Button
+            android:id="@+id/activity_disciplines_bt_add_discipline"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.1"
+            android:background="@drawable/button_generic"
+            android:text="@string/add_discipline"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
 </LinearLayout>

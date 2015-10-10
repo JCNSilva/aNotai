@@ -44,5 +44,7 @@
     <drawable name="actionbar_background">#81F7BE</drawable>
     <color name="color_title">#FFFFFF</color>
     <color name="color_big_text">#6E6E6E</color>
+    <string name="order">Ordem</string>
+    <string name="more">&amp;#x02C5;</string>
 
 </resources>
