@@ -14,6 +14,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0.3"
             android:text="@string/title"
             android:textColor="@color/color_big_text"
@@ -23,6 +24,7 @@
             android:id="@+id/activity_task_et_name_homework"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.7"
             android:ems="10"
             android:inputType="text" />
@@ -36,6 +38,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0.3"
             android:text="@string/discipline"
             android:textColor="@color/color_big_text"
@@ -45,6 +48,7 @@
             android:id="@+id/activity_task_sp_discipline_select"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
             android:hint="@string/discipline_select"
@@ -60,6 +64,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0.4"
             android:text="@string/obtained_grade"
             android:textColor="@color/color_big_text"
@@ -69,6 +74,7 @@
             android:id="@+id/activity_task_et_grade"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.6"
             android:ems="10"
             android:inputType="numberDecimal" >
@@ -84,6 +90,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_weight="0.17"
             android:text="@string/label_date"
             android:textColor="@color/color_big_text"
@@ -93,6 +100,7 @@
             android:id="@+id/activity_task_et_deadline_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:layout_weight="0.61"
             android:ems="10"
             android:inputType="date" >
@@ -103,6 +111,8 @@
         android:id="@+id/activity_task_et_task_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/text_field"
         android:ems="10"
@@ -113,8 +123,11 @@
         android:id="@+id/activity_task_lv_classmate"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
-        android:visibility="gone" >
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.8"
+        android:visibility="invisible" >
     </ListView>
 
     <Button
