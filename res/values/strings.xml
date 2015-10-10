@@ -17,6 +17,7 @@
     <string name="next_activity">Proxíma Atividade</string>
     <string name="title">Título:</string>
     <string name="obtained_grade">Nota Obtida:</string>
+    <string name="error_message">Data ou descrição invalida, por favor verifique os dados.</string>
 
     <!-- PROVA -->
     <string name="add_test">Adicionar Prova</string>
