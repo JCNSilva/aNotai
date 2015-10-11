@@ -1,10 +1,9 @@
 package es.view.anotai;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -20,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -35,7 +33,6 @@ import es.model.anotai.GroupHomework;
 import es.model.anotai.IndividualHomework;
 import es.model.anotai.Task.Priority;
 import es.utils.anotai.NotificationUtils;
-import projeto.es.view.anotai.R;
 
 public class HomeworkActivity extends Activity {
 	

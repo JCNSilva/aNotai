@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/menu_ordering_alphabetical"
+        android:title="@string/alphabetical_order" />
+
+    <item 
+        android:id="@+id/menu_ordering_total_tasks"
+        android:title="@string/total_tasks_order" />
+</menu>

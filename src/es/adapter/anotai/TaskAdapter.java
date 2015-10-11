@@ -33,7 +33,7 @@ public class TaskAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int index) {
-		return index;
+		return tasks.get(index).getId();
 	}
 
 	@Override

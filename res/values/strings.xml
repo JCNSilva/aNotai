@@ -30,13 +30,7 @@
     <string name="invalid_name">Invalid name</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
-    <string name="label_tasks">Atividades</string>
-    <string name="title_activity_tasks">TasksActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_exams">ExamsActivity</string>
-    <string name="exam_placeholder">Quais os assuntos da prova?</string>
-    <string name="title_activity_homework">HomeworkActivity</string>
+    <string name="action_settings">Opções</string>
     <string name="ask_description">Adicione uma descrição</string>
     <string name="label_title">Título:</string>
     <string name="label_date">Data:</string>
@@ -44,7 +38,12 @@
     <drawable name="actionbar_background">#81F7BE</drawable>
     <color name="color_title">#FFFFFF</color>
     <color name="color_big_text">#6E6E6E</color>
-    <string name="order">Ordem</string>
-    <string name="more">&amp;#x02C5;</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Excluir</string>
+    <string name="confirm_delete_discipline">Deseja remover esta disciplina?</string>
+    <string name="confirm">OK</string>
+    <string name="alphabetical_order">Ordem Alfabética</string>
+    <string name="total_tasks_order">Quantidade de Tarefas</string>
+    <string name="activities">Atividades</string>
 
 </resources>
