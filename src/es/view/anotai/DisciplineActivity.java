@@ -1,15 +1,23 @@
 package es.view.anotai;
 
 import projeto.es.view.anotai.R;
+
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import es.adapter.anotai.TaskAdapter;
 import es.database.anotai.TaskPersister;
 import es.model.anotai.Discipline;
+import es.model.anotai.Task;
 
 public class DisciplineActivity extends Activity {
 	private Discipline discipline;
@@ -28,8 +36,20 @@ public class DisciplineActivity extends Activity {
 		
 		ListView listView = (ListView) findViewById(R.id.activity_discipline_lv_tasks);
 		
-		TaskAdapter adapter = new TaskAdapter(DisciplineActivity.this, tPersister.retrieveAll(discipline));
+		final List<Task> tasks = tPersister.retrieveAll(discipline);
+		TaskAdapter adapter = new TaskAdapter(DisciplineActivity.this, tasks);
 		listView.setAdapter(adapter);
+		
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+				// a tela que exibe os detalhes da tarefa
+				Intent intent = new Intent(DisciplineActivity.this, TaskActivity.class);
+				intent.putExtra("TASK", tasks.get(position));
+				startActivity(intent);
+			}
+		});
 	}
 	
 	@Override

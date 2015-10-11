@@ -1,15 +1,13 @@
 package es.view.anotai;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -17,12 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import es.adapter.anotai.DisciplineAdapter;
 import es.database.anotai.DisciplinePersister;
 import es.database.anotai.TaskPersister;
@@ -30,6 +28,7 @@ import es.model.anotai.Discipline;
 import es.model.anotai.Exam;
 import es.model.anotai.Task.Priority;
 import es.utils.anotai.NotificationUtils;
+import projeto.es.view.anotai.R;
 
 
 public class ExamsActivity extends Activity {
@@ -85,10 +84,10 @@ public class ExamsActivity extends Activity {
             @Override
             public void onClick(View v) { 
             	Calendar calExam = Calendar.getInstance();
-            	calExam.set(year, month, day, hour, minute);
+            	calExam.set(year, month, day, hour, minute, 0);
+            	String description = examDescription.getText().toString();
             	
-            	if (calExam.after(calendar)) {
-					String description = examDescription.getText().toString();
+            	if (calExam.after(calendar) && !description.isEmpty()) {
 					NotificationUtils.createNotifications(calExam, ExamsActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada"); 
 					
@@ -97,10 +96,20 @@ public class ExamsActivity extends Activity {
 					Discipline dSelected = (Discipline) dSelect.getSelectedItem();
 					tPersister.create(new Exam(dSelected, description, calExam, Priority.NORMAL)); //FIXME
 					Log.i("ExamsActivity", "Prova salva");
-
-				}
+					startTasksActivity();
+					finish();
+				} else {
+					Toast.makeText(ExamsActivity.this, getResources().getString(R.string.error_message),
+							Toast.LENGTH_SHORT).show();
+				}            	
             }
         });
+	}
+	
+	private void startTasksActivity() {
+		Intent i = new Intent();
+		i.setClass(ExamsActivity.this, TasksActivity.class);
+		startActivity(i);
 	}
 	
 	@Override

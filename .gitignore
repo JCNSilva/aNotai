@@ -12,6 +12,7 @@ local.properties
 .loadpath
 .classpath
 *.stackdump
+*.orig
 
 
 # External tool builders

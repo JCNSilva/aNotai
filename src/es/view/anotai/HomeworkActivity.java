@@ -25,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import es.adapter.anotai.DisciplineAdapter;
 import es.database.anotai.DisciplinePersister;
 import es.database.anotai.TaskPersister;
@@ -80,9 +81,9 @@ public class HomeworkActivity extends Activity {
 			public void onClick(View arg0) {
 				Calendar calExam = Calendar.getInstance();
             	calExam.set(year, month, day, hour, minute);
+            	String description = homeWorkDescription.getText().toString();
             	
-				if (calExam.after(calendar)) {
-					String description = homeWorkDescription.getText().toString();
+				if (calExam.after(calendar)  && !description.isEmpty()) {
 					NotificationUtils.createNotifications(calExam, HomeworkActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada");
 					
@@ -98,9 +99,21 @@ public class HomeworkActivity extends Activity {
 						Log.i("ExamsActivity", "Novo trabalho individual salvo");
 					}
 					
+					startTasksActivity();
+					finish();
+					
+				} else {
+					Toast.makeText(HomeworkActivity.this, getResources().getString(R.string.error_message),
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
+	}
+	
+	private void startTasksActivity() {
+		Intent i = new Intent();
+		i.setClass(HomeworkActivity.this, TasksActivity.class);
+		startActivity(i);
 	}
 	
 	@Override

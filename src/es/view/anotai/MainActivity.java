@@ -1,47 +1,50 @@
 package es.view.anotai;
 
-import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import projeto.es.view.anotai.R;
 
 public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_main);
 
 		addClickListenerDisciplines();
 		addClickListenerTasks();
 		addClickListenerExams();
+		addClickListenerPerformance();
+		addClickListenerHomeWork();
 
-		Button btPerformance = (Button) findViewById(R.id.activity_main_bt_performance);
-		btPerformance.setOnClickListener(new OnClickListener() {
+	}
 
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this,
-						Perfomance.class);
-				startActivity(intent);
-			}
-		});
-
+	private void addClickListenerHomeWork() {
 		Button btHomework = (Button) findViewById(R.id.activity_main_bt_add_homework);
 		btHomework.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this,
-						HomeworkActivity.class);
+				Intent intent = new Intent(MainActivity.this, HomeworkActivity.class);
 				startActivity(intent);
 			}
 		});
+	}
 
+	private void addClickListenerPerformance() {
+		Button btPerformance = (Button) findViewById(R.id.activity_main_bt_performance);
+		btPerformance.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, PerfomanceActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void addClickListenerExams() {
@@ -50,8 +53,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this,
-						ExamsActivity.class);
+				Intent intent = new Intent(MainActivity.this, ExamsActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -63,8 +65,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this,
-						TasksActivity.class);
+				Intent intent = new Intent(MainActivity.this, TasksActivity.class);
 				startActivity(intent);
 			}
 		});
@@ -77,8 +78,7 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this,
-						DisciplinesActivity.class);
+				Intent intent = new Intent(MainActivity.this, DisciplinesActivity.class);
 				startActivity(intent);
 			}
 		});
