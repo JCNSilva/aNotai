@@ -1,8 +1,8 @@
-package es.view.anotai;
+	package es.view.anotai;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import projeto.es.view.anotai.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import android.widget.ListView;
 import es.adapter.anotai.TaskAdapter;
 import es.database.anotai.TaskPersister;
 import es.model.anotai.Task;
-import projeto.es.view.anotai.R;
 
 public class TasksActivity extends Activity {
 	

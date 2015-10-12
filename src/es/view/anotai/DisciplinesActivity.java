@@ -40,74 +40,40 @@ public class DisciplinesActivity extends Activity {
 	private TaskPersister tPersister;
     private List<Discipline> disciplines;
     private ListView lvDisciplines;
-    private DisciplineAdapter adapter;
+    private SortOrder currentSortEstrat;
     private ActionMode mActionMode;
     private ActionMode.Callback mActionModeCallback;
-    private SortOrder currentSortEstrat;
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_disciplines);
         
         getActionBar().setDisplayHomeAsUpEnabled(true);
         
-        tPersister = new TaskPersister(this);
+        initializeFields();
+        
+        addClickListenerAddDiscipline();
+        initializeActionModeCallback();
+        addClickListenerSortButton();
+        addClickListenerLvDisciplines();
+        addContextMenuLvDisciplines();
+        
+        loadList();         
+    }
+
+	private void initializeFields() {
+		tPersister = new TaskPersister(this);
         dPersister = new DisciplinePersister(this);
         disciplines = dPersister.retrieveAll();
-        currentSortEstrat = SortOrder.ALPHABETICAL_ASC;
-        
-        setOnClickAddDiscipline();
-        intializeActionModeCallback();
-        
-        ImageButton sortButton = (ImageButton) findViewById(R.id.activity_disciplines_ibt_sort);
-        sortButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				PopupMenu popup = new PopupMenu(DisciplinesActivity.this, v);
-				
-				popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-					
-					@Override
-					public boolean onMenuItemClick(MenuItem item) {
-						switch(item.getItemId()){
-						case R.id.menu_ordering_alphabetical:
-							loadList(SortOrder.ALPHABETICAL);
-							return true;
-						case R.id.menu_ordering_total_tasks:
-							loadList(SortOrder.TOTAL_TASKS);
-							return true;
-						default:
-							return false;
-						}
-					}
-				});
-				
-				popup.inflate(R.menu.ordering);
-				popup.show();
-			}
-		});
-        
-        // Recuperando a listview de disciplinas.
+        currentSortEstrat = SortOrder.TOTAL_TASKS_DESC;
         lvDisciplines = (ListView) findViewById(R.id.activity_disciplines_lv_disciplines);
-        
-        //Configurando adapter
-        adapter = new DisciplineAdapter(DisciplinesActivity.this, disciplines);
-        lvDisciplines.setAdapter(adapter);
-        lvDisciplines.setOnItemClickListener(new OnItemClickListener() {
-    		@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// Passar a disciplina clicada na intent que vai a tela da disciplina
-				Intent intent = new Intent(DisciplinesActivity.this, DisciplineActivity.class);
-				intent.putExtra("discipline", disciplines.get(position));
-				startActivity(intent);
-			}
-		});
-        
-        //Linkando menu de contexto ao listview
-        lvDisciplines.setOnItemLongClickListener(new OnItemLongClickListener() {
+	}
+
+	private void addContextMenuLvDisciplines() {
+		lvDisciplines.setOnItemLongClickListener(new OnItemLongClickListener() {
   			
   			@Override
 			public boolean onItemLongClick(AdapterView<?> parent,
@@ -122,13 +88,56 @@ public class DisciplinesActivity extends Activity {
   		        return true;
 			}
   		});
-        
-        
-    }
+	}
 
+	private void addClickListenerLvDisciplines() {
+		lvDisciplines.setOnItemClickListener(new OnItemClickListener() {
+    		@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// Passar a disciplina clicada na intent que vai a tela da disciplina
+				Intent intent = new Intent(DisciplinesActivity.this, DisciplineActivity.class);
+				intent.putExtra("discipline", disciplines.get(position));
+				startActivity(intent);
+			}
+		});
+	}
+
+	private void addClickListenerSortButton() {
+		ImageButton sortButton = (ImageButton) findViewById(R.id.activity_disciplines_ibt_sort);
+        sortButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				PopupMenu popup = new PopupMenu(DisciplinesActivity.this, v);
+				
+				popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+					
+					@Override
+					public boolean onMenuItemClick(MenuItem item) {
+						switch(item.getItemId()){
+						case R.id.menu_ordering_alphabetical:
+							changeSortEstrat(SortOrder.ALPHABETICAL);
+							loadList();
+							return true;
+						case R.id.menu_ordering_total_tasks:
+							changeSortEstrat(SortOrder.TOTAL_TASKS);
+							loadList();
+							return true;
+						default:
+							return false;
+						}
+					}
+				});
+				
+				popup.inflate(R.menu.ordering);
+				popup.show();
+			}
+		});
+	}
     
     // Criando menu de contexto para listview
-    private void intializeActionModeCallback() {
+    private void initializeActionModeCallback() {
 		mActionModeCallback = new ActionMode.Callback() {
 			
 			@Override
@@ -154,7 +163,7 @@ public class DisciplinesActivity extends Activity {
 				case R.id.menu_options_edit:
 					mode.finish();
 					//TODO edit activity
-					loadList(currentSortEstrat);
+					loadList();
 					return true;
 				case R.id.menu_options_delete:
 					ConfirmDeleteDialogFragment myConfirmDelDF = 
@@ -169,7 +178,7 @@ public class DisciplinesActivity extends Activity {
 		};
 	}
 
-	private void setOnClickAddDiscipline() {
+	private void addClickListenerAddDiscipline() {
 		Button btAddDiscipline = (Button) findViewById(R.id.activity_disciplines_bt_add_discipline);
         btAddDiscipline.setOnClickListener(new OnClickListener() {
 
@@ -204,7 +213,7 @@ public class DisciplinesActivity extends Activity {
                             Log.d(STORAGE_SERVICE, "Salva disciplina: " + name);
                             
                             // Atualiza a lista.
-                            loadList(currentSortEstrat);
+                            loadList();
                             dialog.dismiss();
                         }
                     }
@@ -222,6 +231,53 @@ public class DisciplinesActivity extends Activity {
             }
         });
 	}
+    
+    private void changeSortEstrat(SortOrder newSortEstrat){
+    	if(newSortEstrat == SortOrder.ALPHABETICAL) {
+    		
+    		if(currentSortEstrat == SortOrder.ALPHABETICAL_ASC){
+    			currentSortEstrat = SortOrder.ALPHABETICAL_DESC;
+	    	} else {
+	    		currentSortEstrat = SortOrder.ALPHABETICAL_ASC;	    		
+	    	}
+    		
+	    } else {
+	    	
+	    	if(currentSortEstrat == SortOrder.TOTAL_TASKS_DESC){
+	    		currentSortEstrat = SortOrder.TOTAL_TASKS_ASC;
+			} else {
+				currentSortEstrat = SortOrder.TOTAL_TASKS_DESC;
+			}
+    	}
+    }
+    
+    private void loadList() {
+    	switch(currentSortEstrat){
+    	case ALPHABETICAL_ASC:
+    		Collections.sort(disciplines, new AlphabeticalComparator());
+    		Log.d("DisciplinesActivity", "Ordenação alfabética crescente");
+    		break;
+    	case ALPHABETICAL_DESC:
+    		Collections.sort(disciplines, new AlphabeticalComparator());
+			Collections.reverse(disciplines);
+			Log.d("DisciplinesActivity", "Ordenação alfabética decrescente");
+    		break;
+    	case TOTAL_TASKS_ASC:
+    		Collections.sort(disciplines, new TotalTasksComparator());
+    		Log.d("DisciplinesActivity", "Ordenação por tarefas crescente");
+			break;
+    	case TOTAL_TASKS_DESC:
+    		Collections.sort(disciplines, new TotalTasksComparator());
+			Collections.reverse(disciplines);
+			Log.d("DisciplinesActivity", "Ordenação por tarefas decrescente");
+			break;
+		default:
+			break;
+    	}
+    	
+    	DisciplineAdapter adapter = new DisciplineAdapter(DisciplinesActivity.this, disciplines);
+        lvDisciplines.setAdapter(adapter);
+    }
 	
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -232,36 +288,8 @@ public class DisciplinesActivity extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-    } 
+    }  
     
-    private void loadList(SortOrder newSortEstrat) {
-    	if(newSortEstrat == SortOrder.ALPHABETICAL) {
-    		
-    		if(currentSortEstrat == SortOrder.ALPHABETICAL_ASC){
-    			Collections.sort(disciplines, new AlphabeticalComparator());
-	    		Collections.reverse(disciplines);
-	    		currentSortEstrat = SortOrder.ALPHABETICAL_DESC;
-	    	} else {
-	    		Collections.sort(disciplines, new AlphabeticalComparator());
-    			currentSortEstrat = SortOrder.ALPHABETICAL_ASC;	    		
-	    	}
-    		
-	    } else {
-	    	
-	    	if(currentSortEstrat == SortOrder.TOTAL_TASKS_ASC){
-	    		Collections.sort(disciplines, new TotalTasksComparator());
-				currentSortEstrat = SortOrder.TOTAL_TASKS_DESC;
-			} else {
-				Collections.sort(disciplines, new TotalTasksComparator());
-				Collections.reverse(disciplines);
-				currentSortEstrat = SortOrder.TOTAL_TASKS_ASC;
-			}
-    	}
-    	
-        adapter = new DisciplineAdapter(DisciplinesActivity.this, disciplines);
-        lvDisciplines.setAdapter(adapter);
-    }
-      
     
     private enum SortOrder {
     	ALPHABETICAL, ALPHABETICAL_ASC, ALPHABETICAL_DESC, 
@@ -288,7 +316,7 @@ public class DisciplinesActivity extends Activity {
                 	   @Override
                        public void onClick(DialogInterface dialog, int id) {
                     	   	dPersister.delete(discSelected);
-                    	   	loadList(currentSortEstrat);
+                    	   	loadList();
        					}
                    });
             
@@ -324,7 +352,7 @@ public class DisciplinesActivity extends Activity {
 			} else if(leftTasks < rightTasks){
 				return -1;
 			} else {
-				return 0;
+				return new AlphabeticalComparator().compare(left, right);
 			}
 		}
     }
