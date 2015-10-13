@@ -10,7 +10,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     private static AnotaiDbHelper instance;
 
     /** The database version constant DATABASE_VERSION. */
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
 
     /** The database file name constant DATABASE_NAME. */
     public static final String DATABASE_NAME = "Anotai.db";
@@ -49,6 +49,9 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
 
     /** The Constant COLUMN_ID. */
     public static final String TASKENTRY_COLUMN_ID = "_id";
+    
+    /** The Constant COLUMN_ID. */
+    public static final String TASKENTRY_COLUMN_TITLE = "title";
 
     /** The Constant COLUMN_NAME. */
     public static final String TASKENTRY_COLUMN_DESCRIPTION = "description";
@@ -75,6 +78,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_TASK = "CREATE TABLE "
             + TASKENTRY_TABLE_NAME + "(" 
     		+ TASKENTRY_COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+    		+ TASKENTRY_COLUMN_TITLE + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_DESCRIPTION + " TEXT NOT NULL, "
             + TASKENTRY_COLUMN_CADASTER_DATE + " INTEGER NOT NULL, "
             + TASKENTRY_COLUMN_DEADLINE_DATE + " INTEGER NOT NULL, "

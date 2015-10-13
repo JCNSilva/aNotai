@@ -52,6 +52,7 @@ public class TaskPersister implements AbstractPersister<Task>{
 		}
 		
 		ContentValues valuesTask = new ContentValues();
+		valuesTask.put(TASKENTRY_COLUMN_TITLE, newTask.getTitle());
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, newTask.getDescription());
 		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, newTask.getCadasterDateMillis());
 		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, newTask.getDeadlineDateMillis());
@@ -104,6 +105,7 @@ public class TaskPersister implements AbstractPersister<Task>{
 		}
 		
 		ContentValues valuesTask = new ContentValues();
+		valuesTask.put(TASKENTRY_COLUMN_TITLE, taskUpdated.getTitle());
 		valuesTask.put(TASKENTRY_COLUMN_DESCRIPTION, taskUpdated.getDescription());
 		valuesTask.put(TASKENTRY_COLUMN_CADASTER_DATE, taskUpdated.getCadasterDateMillis());
 		valuesTask.put(TASKENTRY_COLUMN_DEADLINE_DATE, taskUpdated.getDeadlineDateMillis());
@@ -175,6 +177,7 @@ public class TaskPersister implements AbstractPersister<Task>{
 		String[] columns = {
 				TASKENTRY_COLUMN_SUBCLASS,
 				TASKENTRY_COLUMN_ID,
+				TASKENTRY_COLUMN_TITLE,
 				TASKENTRY_COLUMN_DESCRIPTION,
 				TASKENTRY_COLUMN_CADASTER_DATE,
 				TASKENTRY_COLUMN_DEADLINE_DATE,
@@ -191,9 +194,10 @@ public class TaskPersister implements AbstractPersister<Task>{
 		}
 	
 		cursorTask.moveToFirst();
+		int currentColumnTask = 0;		
 		
 		//Decide qual o tipo de tarefa a ser criada
-		String type = cursorTask.getString(0);
+		String type = cursorTask.getString(currentColumnTask++);
 		if(type.equals("exam")) {
 			target = new Exam();
 		} else if(type.equals("grouphomework")) {
@@ -205,22 +209,23 @@ public class TaskPersister implements AbstractPersister<Task>{
 		}
 			
 		//Adiciona informações da tarefa
-		target.setId(cursorTask.getLong(1));
-		target.setDescription(cursorTask.getString(2));
+		target.setId(cursorTask.getLong(currentColumnTask++));
+		target.setTitle(cursorTask.getString(currentColumnTask++));
+		target.setDescription(cursorTask.getString(currentColumnTask++));
 		
 		GregorianCalendar cadaster = new GregorianCalendar();
-		cadaster.setTimeInMillis(cursorTask.getLong(3));
+		cadaster.setTimeInMillis(cursorTask.getLong(currentColumnTask++));
 		target.setCadasterDate(cadaster);
 		
 		GregorianCalendar deadline = new GregorianCalendar();
-		deadline.setTimeInMillis(cursorTask.getLong(4));
+		deadline.setTimeInMillis(cursorTask.getLong(currentColumnTask++));
 		target.setDeadlineDate(deadline);
 		
-		target.setPriority(retrievePriority(cursorTask.getString(5)));
-		target.setGrade(cursorTask.getDouble(6));
+		target.setPriority(retrievePriority(cursorTask.getString(currentColumnTask++)));
+		target.setGrade(cursorTask.getDouble(currentColumnTask++));
 		
 		//Adiciona as informações referentes à Disciplina
-		long idDiscipline = cursorTask.getLong(7);
+		long idDiscipline = cursorTask.getLong(currentColumnTask++);
 		String[] columnsDiscipline = {
 				DISCIPLINEENTRY_COLUMN_ID,
 				DISCIPLINEENTRY_COLUMN_NAME,
