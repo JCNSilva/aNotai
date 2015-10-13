@@ -10,6 +10,7 @@ public abstract class Task implements Serializable{
 	
     private static final long serialVersionUID = 3784704156437126356L;
 	private long id;
+	private String title;
     private Discipline discipline;
 	private String description;
 	private Calendar cadasterDate;
@@ -20,28 +21,34 @@ public abstract class Task implements Serializable{
 	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
 	
     public Task() {
-    	this(0, new Discipline("", ""), "", new GregorianCalendar(), Priority.NORMAL);
+    	this(0, "", new Discipline("", ""), "", new GregorianCalendar(), Priority.NORMAL);
     }
     
-    public Task(Discipline discipline, String description, Calendar deadlineDate, Priority priority){
-		this(0, discipline, description, deadlineDate, priority);
+    public Task(String title, Discipline discipline, String description, Calendar deadlineDate, Priority priority){
+		this(0, title, discipline, description, deadlineDate, priority);
 	}
 	
-	public Task(final long newId, Discipline discipline, String description,
+	public Task(final long newId, String title, Discipline discipline, String description,
 			Calendar deadlineDate, Priority priority){
-		if(deadlineDate == null)
-			throw new IllegalArgumentException("Deadline date can't empty");
-		if(discipline == null)
-			throw new IllegalArgumentException("A task must be related with a discipline");
-		
 		
 		this.setId(newId);
+		this.setTitle(title);
 		this.setDiscipline(discipline);
 		this.setDescription(description);
 		this.cadasterDate = new GregorianCalendar();
 		this.setDeadlineDate(deadlineDate);
 		this.priority = priority;
 		this.setGrade(0);
+	}
+	
+	public String getTitle(){
+		return title;
+	}
+	
+	public void setTitle(String newTitle){
+		if(newTitle == null)
+			throw new IllegalArgumentException("A task must have a title");
+		this.title = newTitle;
 	}
 	
 	public Discipline getDiscipline(){

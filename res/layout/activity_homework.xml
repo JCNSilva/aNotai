@@ -37,8 +37,9 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:hint="@string/discipline_select"
-        android:prompt="@string/discipline_select" />
+        android:hint="@string/discipline"
+        android:prompt="@string/discipline"
+        android:spinnerMode="dialog" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,14 +65,27 @@
             android:layout_marginRight="5dp"
             android:layout_weight="0.61"
             android:ems="10"
+            android:inputType="date"
             android:padding="10dp"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-	    android:inputType="date" >
+            android:textSize="16sp" >
+            <requestFocus />
         </EditText>
+
+        
     </LinearLayout>
 
-    <requestFocus />
+    <Spinner
+            android:id="@+id/activity_homework_sp_priority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:entries="@array/priorities"
+            android:hint="@string/priority"
+            android:prompt="@string/priority"
+            android:spinnerMode="dialog" />
 
     <EditText
         android:id="@+id/activity_homework_et_homework_description"
@@ -118,11 +132,11 @@
             android:id="@+id/activity_homework_bt_create_homework"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.2"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
+            android:layout_weight="0.2"
             android:background="@drawable/button_generic"
             android:text="@string/save"
             android:textColor="@android:color/white" />

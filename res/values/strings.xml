@@ -2,12 +2,14 @@
 <resources>
 
     <!-- DISCIPLINA -->
-    <string name="discipline">Disciplina:</string>
+    <string name="discipline">Disciplina</string>
     <string name="disciplines">Disciplinas</string>
     <string name="hint_discipline_name">Nome da Disciplina</string>
     <string name="new_discipline">Nova Disciplina</string>
     <string name="add_discipline">Adicionar Disciplina</string>
-    <string name="discipline_select">Selecione uma disciplina</string>
+    <string name="confirm_delete_discipline">Deseja remover esta disciplina?</string>
+    <string name="alphabetical_order">Ordem Alfabética</string>
+    <string name="total_tasks_order">Quantidade de Tarefas</string>
 
     <!-- ATIVIDADE -->
     <string name="add_homework">Adicionar Trabalho</string>
@@ -36,16 +38,16 @@
     <string name="ask_description">Adicione uma descrição</string>
     <string name="label_title">Título:</string>
     <string name="label_date">Data:</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Excluir</string>
+    <string name="confirm">OK</string>    
+    <string name="priority">Prioridade</string>
     
     <drawable name="actionbar_background">#81F7BE</drawable>
     <color name="color_title">#FFFFFF</color>
     <color name="color_big_text">#6E6E6E</color>
-    <string name="edit">Editar</string>
-    <string name="delete">Excluir</string>
-    <string name="confirm_delete_discipline">Deseja remover esta disciplina?</string>
-    <string name="confirm">OK</string>
-    <string name="alphabetical_order">Ordem Alfabética</string>
-    <string name="total_tasks_order">Quantidade de Tarefas</string>
+    
+    
     <string name="activities">Atividades</string>
 
 </resources>

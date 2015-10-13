@@ -35,6 +35,7 @@ import es.model.anotai.IndividualHomework;
 import es.model.anotai.Task.Priority;
 import es.utils.anotai.NotificationUtils;
 
+//TODO Refatorar
 public class HomeworkActivity extends Activity {
 	
 	private static final int DATE_DIALOG_ID = 100;
@@ -87,15 +88,19 @@ public class HomeworkActivity extends Activity {
 					NotificationUtils.createNotifications(calExam, HomeworkActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada");
 					
+					final EditText titleET = (EditText) findViewById(R.id.activity_homework_et_name_homework);
+					final String title = titleET.getText().toString();
 					final CheckBox isGroupHomework = (CheckBox) findViewById(R.id.activity_homework_check_group);
 					final Spinner dSelect = (Spinner) findViewById(R.id.activity_homework_sp_discipline_select);
 					final Discipline dSelected = (Discipline) dSelect.getSelectedItem();
+					final Spinner prioritySelect = (Spinner) findViewById(R.id.activity_homework_sp_priority);
+					final String prioritySelected = (String) prioritySelect.getSelectedItem();
 					
 					if(isGroupHomework.isChecked()){
-						tPersister.create(new GroupHomework("", dSelected, description, calExam, Priority.NORMAL)); //FIXME titulo e prioridade
+						tPersister.create(new GroupHomework(title, dSelected, description, calExam, getPriority(prioritySelected)));
 						Log.i("ExamsActivity", "Novo trabalho em grupo salvo");
 					} else {
-						tPersister.create(new IndividualHomework("", dSelected, description, calExam, Priority.NORMAL)); //FIXME titulo e prioridade
+						tPersister.create(new IndividualHomework(title, dSelected, description, calExam, getPriority(prioritySelected)));
 						Log.i("ExamsActivity", "Novo trabalho individual salvo");
 					}
 					
@@ -114,6 +119,18 @@ public class HomeworkActivity extends Activity {
 		Intent i = new Intent();
 		i.setClass(HomeworkActivity.this, TasksActivity.class);
 		startActivity(i);
+	}
+	
+	private Priority getPriority(String selectedPriority) {
+		Priority newPriority = Priority.NORMAL;
+		
+		if(selectedPriority.equalsIgnoreCase("alta")){
+			newPriority = Priority.HIGH;
+		} else if (selectedPriority.equalsIgnoreCase("baixa")) {
+			newPriority = Priority.LOW;
+		}
+		
+		return newPriority;
 	}
 	
 	@Override

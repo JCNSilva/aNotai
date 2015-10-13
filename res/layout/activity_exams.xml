@@ -14,6 +14,21 @@
         android:textColor="@color/color_big_text"
         android:textSize="26sp"
         android:textStyle="bold" />
+    
+    <EditText
+        android:id="@+id/activity_exams_et_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+		android:inputType="textCapSentences" >
+    </EditText>
 
     <Spinner
         android:id="@+id/activity_exams_sp_discipline_select"
@@ -22,8 +37,9 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
-        android:hint="@string/discipline_select"
-        android:prompt="@string/discipline_select" />
+        android:spinnerMode="dialog"
+        android:hint="@string/discipline"
+        android:prompt="@string/discipline" />
 
     <EditText
         android:id="@+id/activity_exams_et_deadline_date"
@@ -37,10 +53,23 @@
         android:padding="10dp"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-	android:inputType="date" >
+		android:inputType="date" >
 
         <requestFocus />
     </EditText>
+    
+    <Spinner 
+        android:id="@+id/activity_exams_sp_priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
+        android:spinnerMode="dialog"
+        android:entries="@array/priorities"
+        android:hint="@string/priority"
+        android:prompt="@string/priority"
+        />
 
     <EditText
         android:id="@+id/activity_exams_et_exam_description"
@@ -52,7 +81,7 @@
         android:background="@drawable/text_field"
         android:ems="10"
         android:hint="@string/ask_description"
-        android:inputType="textMultiLine"
+        android:inputType="textCapSentences"
         android:gravity="top"
         android:padding="10dp"
         android:textColor="@android:color/black"

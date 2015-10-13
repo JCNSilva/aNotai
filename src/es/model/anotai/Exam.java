@@ -10,12 +10,12 @@ public class Exam extends Task{
         super();
     }
     
-    public Exam(Discipline discipline, String subject, Calendar deadlineDate, Priority priority) {
-		super(discipline, subject, deadlineDate, priority);
+    public Exam(String title, Discipline discipline, String description, Calendar deadlineDate, Priority priority) {
+		super(title, discipline, description, deadlineDate, priority);
 	}
     
-	public Exam(final long newId, Discipline discipline, String subject,
+	public Exam(final long newId, String title, Discipline discipline, String description,
 			Calendar deadlineDate, Priority priority) {
-		super(newId, discipline, subject, deadlineDate, priority);
+		super(newId, title, discipline, description, deadlineDate, priority);
 	}
 }

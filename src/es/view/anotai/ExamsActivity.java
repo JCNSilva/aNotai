@@ -30,13 +30,14 @@ import es.model.anotai.Task.Priority;
 import es.utils.anotai.NotificationUtils;
 import projeto.es.view.anotai.R;
 
-
+//TODO Refatorar
 public class ExamsActivity extends Activity {
 	
 	private static final int DATE_DIALOG_ID = 100;
 	private static final int TIME_DIALOG_ID = 101;
 	private int day, month, year, hour, minute;
 	private EditText deadDate, examDescription;
+	private Spinner prioritySelect;
 	private TaskPersister tPersister;
 	private DisciplinePersister dPersister;
 
@@ -94,7 +95,16 @@ public class ExamsActivity extends Activity {
 					//Recupera disciplina selecionada no Spinner
 					Spinner dSelect = (Spinner) findViewById(R.id.activity_exams_sp_discipline_select);
 					Discipline dSelected = (Discipline) dSelect.getSelectedItem();
-					tPersister.create(new Exam(dSelected, description, calExam, Priority.NORMAL)); //FIXME
+					
+					//Recupera prioridade
+					Spinner prioritySelect = (Spinner) findViewById(R.id.activity_exams_sp_priority);
+					String selectedPriority = (String) prioritySelect.getSelectedItem();
+					Priority newPriority = getPriority(selectedPriority);
+					
+					EditText titleET = (EditText) findViewById(R.id.activity_exams_et_title);
+					String title = titleET.getText().toString();
+					
+					tPersister.create(new Exam(title, dSelected, description, calExam, newPriority)); //FIXME
 					Log.i("ExamsActivity", "Prova salva");
 					startTasksActivity();
 					finish();
@@ -103,7 +113,24 @@ public class ExamsActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 				}            	
             }
+
+			
         });
+		
+		prioritySelect = (Spinner) findViewById(R.id.activity_exams_sp_priority);
+		
+	}
+	
+	private Priority getPriority(String selectedPriority) {
+		Priority newPriority = Priority.NORMAL;
+		
+		if(selectedPriority.equalsIgnoreCase("alta")){
+			newPriority = Priority.HIGH;
+		} else if (selectedPriority.equalsIgnoreCase("baixa")) {
+			newPriority = Priority.LOW;
+		}
+		
+		return newPriority;
 	}
 	
 	private void startTasksActivity() {
