@@ -40,7 +40,7 @@ public class DisciplinesActivity extends Activity {
 	private TaskPersister tPersister;
     private List<Discipline> disciplines;
     private ListView lvDisciplines;
-    private SortOrder currentSortEstrat;
+    private SortOrderDiscipline currentSortEstrat; //TODO Strategy
     private ActionMode mActionMode;
     private ActionMode.Callback mActionModeCallback;
     
@@ -68,7 +68,7 @@ public class DisciplinesActivity extends Activity {
 		tPersister = new TaskPersister(this);
         dPersister = new DisciplinePersister(this);
         disciplines = dPersister.retrieveAll();
-        currentSortEstrat = SortOrder.TOTAL_TASKS_DESC;
+        currentSortEstrat = SortOrderDiscipline.TOTAL_TASKS_DESC;
         lvDisciplines = (ListView) findViewById(R.id.activity_disciplines_lv_disciplines);
 	}
 
@@ -116,12 +116,12 @@ public class DisciplinesActivity extends Activity {
 					@Override
 					public boolean onMenuItemClick(MenuItem item) {
 						switch(item.getItemId()){
-						case R.id.menu_ordering_alphabetical:
-							changeSortEstrat(SortOrder.ALPHABETICAL);
+						case R.id.ordering_disciplines_alphabetical:
+							changeSortEstrat(SortOrderDiscipline.ALPHABETICAL);
 							loadList();
 							return true;
-						case R.id.menu_ordering_total_tasks:
-							changeSortEstrat(SortOrder.TOTAL_TASKS);
+						case R.id.ordering_disciplines_total_tasks:
+							changeSortEstrat(SortOrderDiscipline.TOTAL_TASKS);
 							loadList();
 							return true;
 						default:
@@ -130,7 +130,7 @@ public class DisciplinesActivity extends Activity {
 					}
 				});
 				
-				popup.inflate(R.menu.ordering);
+				popup.inflate(R.menu.ordering_disciplines);
 				popup.show();
 			}
 		});
@@ -232,21 +232,21 @@ public class DisciplinesActivity extends Activity {
         });
 	}
     
-    private void changeSortEstrat(SortOrder newSortEstrat){
-    	if(newSortEstrat == SortOrder.ALPHABETICAL) {
+    private void changeSortEstrat(SortOrderDiscipline newSortEstrat){
+    	if(newSortEstrat == SortOrderDiscipline.ALPHABETICAL) {
     		
-    		if(currentSortEstrat == SortOrder.ALPHABETICAL_ASC){
-    			currentSortEstrat = SortOrder.ALPHABETICAL_DESC;
+    		if(currentSortEstrat == SortOrderDiscipline.ALPHABETICAL_ASC){
+    			currentSortEstrat = SortOrderDiscipline.ALPHABETICAL_DESC;
 	    	} else {
-	    		currentSortEstrat = SortOrder.ALPHABETICAL_ASC;	    		
+	    		currentSortEstrat = SortOrderDiscipline.ALPHABETICAL_ASC;	    		
 	    	}
     		
 	    } else {
 	    	
-	    	if(currentSortEstrat == SortOrder.TOTAL_TASKS_DESC){
-	    		currentSortEstrat = SortOrder.TOTAL_TASKS_ASC;
+	    	if(currentSortEstrat == SortOrderDiscipline.TOTAL_TASKS_DESC){
+	    		currentSortEstrat = SortOrderDiscipline.TOTAL_TASKS_ASC;
 			} else {
-				currentSortEstrat = SortOrder.TOTAL_TASKS_DESC;
+				currentSortEstrat = SortOrderDiscipline.TOTAL_TASKS_DESC;
 			}
     	}
     }
@@ -291,7 +291,7 @@ public class DisciplinesActivity extends Activity {
     }  
     
     
-    private enum SortOrder {
+    private enum SortOrderDiscipline {
     	ALPHABETICAL, ALPHABETICAL_ASC, ALPHABETICAL_DESC, 
     	TOTAL_TASKS, TOTAL_TASKS_ASC, TOTAL_TASKS_DESC
     }

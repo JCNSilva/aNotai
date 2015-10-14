@@ -19,6 +19,14 @@
             android:text="@string/label_title"
             android:textColor="@color/color_big_text"
             android:textSize="20sp" />
+        
+        <TextView
+            android:id="@+id/activity_homework_tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="0.17"
+            android:text="@string/title" />
 
         <EditText
             android:id="@+id/activity_homework_et_name_homework"

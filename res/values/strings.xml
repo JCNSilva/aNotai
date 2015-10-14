@@ -8,19 +8,21 @@
     <string name="new_discipline">Nova Disciplina</string>
     <string name="add_discipline">Adicionar Disciplina</string>
     <string name="confirm_delete_discipline">Deseja remover esta disciplina?</string>
-    <string name="alphabetical_order">Ordem Alfabética</string>
-    <string name="total_tasks_order">Quantidade de Tarefas</string>
+    <string name="alphabetical_order">Ordenar alfabeticamente</string>
+    <string name="total_tasks_order">Ordenar por tarefas</string>
 
     <!-- ATIVIDADE -->
     <string name="add_homework">Adicionar Trabalho</string>
     <string name="tasks">Atividades</string>
     <string name="group_homework">Atividade em grupo</string>
     <string name="add_classmate">Adicionar contato</string>
-    <string name="next_activity">Proxíma Atividade:</string>
+    <string name="next_activity">Próxima Atividade:</string>
     <string name="title">Título:</string>
     <string name="obtained_grade">Nota Obtida:</string>
-    <string name="error_message">Data ou descrição invalida, por favor verifique os dados.</string>
-    <string name="no_next_activity">Não há atividades próximas.</string>
+    <string name="error_message">Data ou descrição invalida, por favor verifique os dados</string>
+    <string name="no_next_activity">Não há atividades próximas</string>
+    <string name="date_order">Ordenar por data</string>
+    <string name="priority_order">Ordenar por prioridade</string>
 
     <!-- PROVA -->
     <string name="add_test">Adicionar Prova</string>

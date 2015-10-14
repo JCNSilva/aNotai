@@ -21,7 +21,7 @@
             android:gravity="top"
             android:hint="@string/hint_discipline_name"
             android:textColorHint="#808080"
-            android:inputType="text"
+            android:inputType="textCapWords"
             android:maxLength="40"
             android:maxLines="1"
             android:padding="10dp"
@@ -45,7 +45,8 @@
             android:layout_weight="0.5"
             android:background="@android:color/holo_green_dark"
             android:text="@string/cancel"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="2dp" />
 
         <Button
             android:id="@+id/dialog_add_disc_bt_ok"
@@ -59,7 +60,8 @@
             android:layout_weight="0.5"
             android:background="@android:color/holo_green_light"
             android:text="@string/save"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="2dp" />
     </LinearLayout>
 
 </LinearLayout>
