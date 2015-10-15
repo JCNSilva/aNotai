@@ -1,102 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
-        android:text="@string/new_exam"
-        android:textColor="@color/color_big_text"
-        android:textSize="26sp"
-        android:textStyle="bold" />
-    
-    <EditText
-        android:id="@+id/activity_exams_et_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:ems="10"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-		android:inputType="textCapSentences" >
-    </EditText>
+        android:orientation="vertical" >
 
-    <Spinner
-        android:id="@+id/activity_exams_sp_discipline_select"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp"
-        android:spinnerMode="dialog"
-        android:hint="@string/discipline"
-        android:prompt="@string/discipline" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/new_exam"
+            android:textColor="@color/color_big_text"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/activity_exams_et_deadline_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:ems="10"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-		android:inputType="date" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
 
-        <requestFocus />
-    </EditText>
-    
-    <Spinner 
-        android:id="@+id/activity_exams_sp_priority"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="10dp"
-        android:spinnerMode="dialog"
-        android:entries="@array/priorities"
-        android:hint="@string/priority"
-        android:prompt="@string/priority"
-        />
+            <TextView
+                android:id="@+id/activity_exams_tv_title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.17"
+                android:text="@string/title"
+                android:textColor="@color/color_big_text"
+                android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/activity_exams_et_exam_description"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_weight="0.77"
-        android:background="@drawable/text_field"
-        android:ems="10"
-        android:hint="@string/ask_description"
-        android:inputType="textCapSentences"
-        android:gravity="top"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp" />
+            <EditText
+                android:id="@+id/activity_exams_et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:inputType="textCapSentences"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" >
+            </EditText>
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/activity_exams_bt_create_exam"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/button_generic"
-        android:text="@string/save"
-        android:textColor="@android:color/white" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" >
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/activity_exams_tv_discipline"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.17"
+                android:text="@string/discipline"
+                android:textColor="@color/color_big_text"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/activity_exams_sp_discipline_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:hint="@string/discipline"
+                android:prompt="@string/discipline"
+                android:spinnerMode="dialog" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/activity_exams_tv_date"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.17"
+                android:text="@string/date"
+                android:textColor="@color/color_big_text"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/activity_exams_et_deadline_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:ems="10"
+                android:inputType="date"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" >
+
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/activity_exams_tv_priority"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="0.17"
+                android:text="@string/priority"
+                android:textColor="@color/color_big_text"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/activity_exams_sp_priority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"
+                android:entries="@array/priorities"
+                android:hint="@string/priority"
+                android:prompt="@string/priority"
+                android:spinnerMode="dialog" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/activity_exams_et_exam_description"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.77"
+            android:background="@drawable/text_field"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="@string/ask_description"
+            android:inputType="textCapSentences"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/activity_exams_bt_create_exam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button_generic"
+            android:text="@string/save"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</ScrollView>

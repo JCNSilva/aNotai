@@ -5,9 +5,11 @@
     <string name="discipline">Disciplina</string>
     <string name="disciplines">Disciplinas</string>
     <string name="hint_discipline_name">Nome da Disciplina</string>
+    <string name="hint_teacher_name">Nome do Professor</string>
     <string name="new_discipline">Nova Disciplina</string>
     <string name="add_discipline">Adicionar Disciplina</string>
     <string name="confirm_delete_discipline">Deseja remover esta disciplina?</string>
+    <string name="edit_discipline">Editar Disciplina</string>
     <string name="alphabetical_order">Ordenar alfabeticamente</string>
     <string name="total_tasks_order">Ordenar por tarefas</string>
 
@@ -17,12 +19,14 @@
     <string name="group_homework">Atividade em grupo</string>
     <string name="add_classmate">Adicionar contato</string>
     <string name="next_activity">Próxima Atividade:</string>
-    <string name="title">Título:</string>
-    <string name="obtained_grade">Nota Obtida:</string>
+    <string name="title">Título</string>
+    <string name="priority">Prioridade</string>
+    <string name="obtained_grade">Nota</string>
     <string name="error_message">Data ou descrição invalida, por favor verifique os dados</string>
     <string name="no_next_activity">Não há atividades próximas</string>
     <string name="date_order">Ordenar por data</string>
     <string name="priority_order">Ordenar por prioridade</string>
+    <string name="new_homework">Novo Trabalho</string>
 
     <!-- PROVA -->
     <string name="add_test">Adicionar Prova</string>
@@ -38,12 +42,11 @@
     <string name="save">Salvar</string>
     <string name="action_settings">Opções</string>
     <string name="ask_description">Adicione uma descrição</string>
-    <string name="label_title">Título:</string>
-    <string name="label_date">Data:</string>
+    <string name="label_title">Título</string>
+    <string name="date">Data</string>
     <string name="edit">Editar</string>
     <string name="delete">Excluir</string>
     <string name="confirm">OK</string>    
-    <string name="priority">Prioridade</string>
     
     <drawable name="actionbar_background">#81F7BE</drawable>
     <color name="color_title">#FFFFFF</color>
