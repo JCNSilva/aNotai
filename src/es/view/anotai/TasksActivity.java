@@ -4,26 +4,31 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import projeto.es.view.anotai.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.ActionMode;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.PopupMenu.OnMenuItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import es.adapter.anotai.TaskAdapter;
 import es.database.anotai.TaskPersister;
 import es.model.anotai.Task;
 import es.model.anotai.Task.Priority;
+import projeto.es.view.anotai.R;
 
 public class TasksActivity extends Activity {
 
@@ -38,6 +43,8 @@ public class TasksActivity extends Activity {
 	private SortOrderTask currentSortEstrat; // TODO Strategy
 	private ActionMode mActionMode;
 	private ActionMode.Callback mActionModeCallback;
+
+	private Task taskSelected = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +62,12 @@ public class TasksActivity extends Activity {
 		tPersister = new TaskPersister(this);
 		tasks = tPersister.retrieveAll();
 		currentSortEstrat = SortOrderTask.DATE_ASC;
-		
+
 		loadList();
 
 		// Cria menu de contexto
 		ImageButton sortButton = (ImageButton) findViewById(R.id.activity_tasks_ibt_sort);
-		sortButton.setOnClickListener(new OnClickListener() {
+		sortButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -84,7 +91,6 @@ public class TasksActivity extends Activity {
 						}
 					}
 
-					
 				});
 
 				popup.inflate(R.menu.ordering_tasks);
@@ -95,16 +101,23 @@ public class TasksActivity extends Activity {
 		lvTasks.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 				// a tela que exibe os detalhes da tarefa
-				Intent intent = new Intent(TasksActivity.this,
-						TaskActivity.class);
+				Intent intent = new Intent(TasksActivity.this, TaskActivity.class);
 				intent.putExtra("TASK", tasks.get(position));
 				startActivity(intent);
 			}
 		});
 
+		registerForContextMenu(lvTasks);
+		lvTasks.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+				taskSelected = (Task) adapterView.getItemAtPosition(position);
+				return false;
+			}
+		});
 	}
 
 	@Override
@@ -117,9 +130,9 @@ public class TasksActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	private void loadList() {
-		switch(currentSortEstrat) {
+		switch (currentSortEstrat) {
 		case DATE_ASC:
 			Collections.sort(tasks, new DateComparator());
 			Log.d("TasksActivity", "Ordenaçao por data crescente");
@@ -141,76 +154,124 @@ public class TasksActivity extends Activity {
 		default:
 			break;
 		}
-		
+
 		adapter = new TaskAdapter(TasksActivity.this, tasks);
 		lvTasks.setAdapter(adapter);
 	}
 
 	private void changeSortEstrat(SortOrderTask newSortEstrat) {
-		if(newSortEstrat == SortOrderTask.DATE) {
-			if(currentSortEstrat == SortOrderTask.DATE_DESC){
+		if (newSortEstrat == SortOrderTask.DATE) {
+			if (currentSortEstrat == SortOrderTask.DATE_DESC) {
 				currentSortEstrat = SortOrderTask.DATE_ASC;
 			} else {
 				currentSortEstrat = SortOrderTask.DATE_DESC;
 			}
-			
+
 		} else {
-			if(currentSortEstrat == SortOrderTask.PRIORITY_DESC) {
+			if (currentSortEstrat == SortOrderTask.PRIORITY_DESC) {
 				currentSortEstrat = SortOrderTask.PRIORITY_ASC;
 			} else {
 				currentSortEstrat = SortOrderTask.PRIORITY_DESC;
 			}
 		}
 	}
-	
-	
+
 	private class DateComparator implements Comparator<Task> {
 
 		@Override
 		public int compare(Task left, Task right) {
-			 if(left.getDeadlineDateMillis() < right.getDeadlineDateMillis()){
-				 return -1;
-			 } else if (left.getDeadlineDateMillis() > right.getDeadlineDateMillis()) {
-				 return 1;
-			 } else {
-				 return new PriorityComparator().compare(left, right);
-			 }
+			if (left.getDeadlineDateMillis() < right.getDeadlineDateMillis()) {
+				return -1;
+			} else if (left.getDeadlineDateMillis() > right.getDeadlineDateMillis()) {
+				return 1;
+			} else {
+				return new PriorityComparator().compare(left, right);
+			}
 		}
 	}
-	
-	
+
 	private class PriorityComparator implements Comparator<Task> {
 
 		@Override
 		public int compare(Task left, Task right) {
-			if(left.getPriority() == Priority.LOW) {
-				
-				if(right.getPriority() == Priority.LOW){
+			if (left.getPriority() == Priority.LOW) {
+
+				if (right.getPriority() == Priority.LOW) {
 					return 0;
 				} else {
 					return -1;
 				}
-				
+
 			} else if (left.getPriority() == Priority.HIGH) {
-				
-				if(right.getPriority() == Priority.HIGH){
+
+				if (right.getPriority() == Priority.HIGH) {
 					return 0;
 				} else {
 					return 1;
 				}
-				
+
 			} else {
-				
-				if(right.getPriority() == Priority.LOW) {
+
+				if (right.getPriority() == Priority.LOW) {
 					return 1;
 				} else if (right.getPriority() == Priority.NORMAL) {
 					return 0;
 				} else {
 					return -1;
 				}
-				
+
 			}
 		}
-		
+
+	}
+
+	@Override
+	public final void onCreateContextMenu(final ContextMenu menu, final View view, final ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, view, menuInfo);
+
+		getMenuInflater().inflate(R.menu.menu_task, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.it_delet:
+			deleteTask();
+			break;
+		case R.id.it_edit:
+			Intent intent = new Intent(TasksActivity.this, TaskActivity.class);
+			intent.putExtra("TASK", taskSelected);
+			startActivity(intent);
+
+			break;
+		default:
+			break;
+		}
+
+		return super.onContextItemSelected(item);
+	}
+
+	private void deleteTask() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setMessage(
+				getResources().getString(R.string.confirm_delete_task) + " \"" + taskSelected.getTitle() + "\"");
+
+		builder.setPositiveButton(R.string.yes, new OnClickListener() {
+
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+
+				// TODO Remover do banco
+				tasks.remove(taskSelected);
+				loadList();
+				taskSelected = null;
+			}
+		});
+
+		builder.setNegativeButton(R.string.not, null);
+		final AlertDialog dialog = builder.create();
+		// dialog.setTitle(getResources().getString(R.string.confirmation));
+		dialog.show();
 	}
 }
