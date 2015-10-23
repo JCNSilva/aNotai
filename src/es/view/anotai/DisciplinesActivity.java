@@ -39,7 +39,7 @@ import es.model.anotai.Discipline;
 
 public class DisciplinesActivity extends Activity {
 	public static final String CLASS_TAG = "DisciplinesActivity";
-	
+
 	private DisciplinePersister dPersister;
 	private TaskPersister tPersister;
 	private List<Discipline> disciplines;
@@ -70,10 +70,9 @@ public class DisciplinesActivity extends Activity {
 	private void initializeFields() {
 		tPersister = new TaskPersister(this);
 		dPersister = new DisciplinePersister(this);
-		disciplines = dPersister.retrieveAll();
 		currentSortEstrat = SortOrderDiscipline.TOTAL_TASKS_DESC;
 		lvDisciplines = (ListView) findViewById(R.id.activity_disciplines_lv_disciplines);
-		lvDisciplines.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);		
+		lvDisciplines.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
 	}
 
 	private void addContextMenuLvDisciplines() {
@@ -88,7 +87,7 @@ public class DisciplinesActivity extends Activity {
 
 				// Start the CAB using the ActionMode.Callback defined above
 				lvDisciplines.setItemChecked(position, true);
-				mActionMode = startActionMode(mActionModeCallback);				
+				mActionMode = startActionMode(mActionModeCallback);
 				return true;
 			}
 		});
@@ -168,16 +167,15 @@ public class DisciplinesActivity extends Activity {
 				switch (item.getItemId()) {
 				case R.id.menu_options_edit:
 					EditDisciplineDialogFragment myEditDiscDF = new EditDisciplineDialogFragment();
-					myEditDiscDF.show(getFragmentManager(), myEditDiscDF.getTag());
+					myEditDiscDF.show(getFragmentManager(),
+							myEditDiscDF.getTag());
 					mode.finish();
-					loadList();
 					return true;
 				case R.id.menu_options_delete:
-					ConfirmDeleteDialogFragment myConfirmDelDF = new ConfirmDeleteDialogFragment(); 
+					ConfirmDeleteDialogFragment myConfirmDelDF = new ConfirmDeleteDialogFragment();
 					myConfirmDelDF.show(getFragmentManager(),
 							myConfirmDelDF.getTag());
 					mode.finish();
-					loadList();
 					return true;
 				default:
 					return false;
@@ -222,12 +220,10 @@ public class DisciplinesActivity extends Activity {
 						} else {
 							Discipline discipline = new Discipline(name, "");
 							dPersister.create(discipline);
-							disciplines.add(discipline);
-							Log.d(CLASS_TAG, "Salva disciplina: " + name);
+							Log.i(CLASS_TAG, "Salva disciplina: " + name);
 
-							// Atualiza a lista.
-							loadList();
 							dialog.dismiss();
+							loadList();
 						}
 					}
 				});
@@ -265,6 +261,8 @@ public class DisciplinesActivity extends Activity {
 	}
 
 	private void loadList() {
+		disciplines = dPersister.retrieveAll();
+
 		switch (currentSortEstrat) {
 		case ALPHABETICAL_ASC:
 			Collections.sort(disciplines, new AlphabeticalComparator());
@@ -288,8 +286,7 @@ public class DisciplinesActivity extends Activity {
 			break;
 		}
 
-		DisciplineAdapter adapter = new DisciplineAdapter(
-				DisciplinesActivity.this, disciplines);
+		DisciplineAdapter adapter = new DisciplineAdapter(this, disciplines);
 		lvDisciplines.setAdapter(adapter);
 	}
 
@@ -309,53 +306,61 @@ public class DisciplinesActivity extends Activity {
 	}
 
 	private class EditDisciplineDialogFragment extends DialogFragment {
-		
+
 		private int checkedPosition = lvDisciplines.getCheckedItemPosition();
-		private Discipline discSelected = (Discipline) lvDisciplines.getItemAtPosition(checkedPosition);
-		
+		private Discipline discSelected = (Discipline) lvDisciplines
+				.getItemAtPosition(checkedPosition);
+
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			LayoutInflater inflater = getActivity().getLayoutInflater();
-			
-			builder.setView(inflater.inflate(R.layout.dialog_edit_discipline, null));
+			final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			final LayoutInflater inflater = getActivity().getLayoutInflater();
+			final View dialogView = inflater.inflate(R.layout.dialog_edit_discipline, null);
+			final EditText etNameDiscipline = (EditText) dialogView
+					.findViewById(R.id.dialog_edit_disc_et_name);
+			final EditText etNameTeacher = (EditText) dialogView
+					.findViewById(R.id.dialog_edit_disc_et_teacher);
+
+			builder.setView(dialogView);
 			builder.setTitle(R.string.edit_discipline);
 
-			AlertDialog newAlert = builder.create();
-			final EditText etNameDiscipline = (EditText) newAlert.findViewById(R.id.dialog_edit_disc_et_name);
-			final EditText etNameTeacher = (EditText) newAlert.findViewById(R.id.dialog_edit_disc_et_teacher);
-			
-			
-			builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-						discSelected.setName(etNameDiscipline.getText().toString());	
-						discSelected.setTeacher(etNameTeacher.getText().toString());
-						dPersister.update(discSelected);
-						Log.i(CLASS_TAG, "Disciplina atualizada: " + discSelected.getName());
-				}
-			});
-			
-			builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// Não fazer nada
-					
-				}
-			});
-			
+			builder.setPositiveButton(R.string.confirm,
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							discSelected.setName(etNameDiscipline.getText()
+									.toString());
+							discSelected.setTeacher(etNameTeacher.getText()
+									.toString());
+							dPersister.update(discSelected);
+							loadList();
+							Log.i(CLASS_TAG, "Disciplina atualizada: "
+									+ discSelected.getName());
+						}
+					});
+
+			builder.setNegativeButton(R.string.cancel,
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// Não fazer nada
+
+						}
+					});
+
 			return builder.create();
-			
+
 		}
 	}
-	
+
 	private class ConfirmDeleteDialogFragment extends DialogFragment {
 
 		private int checkedPosition = lvDisciplines.getCheckedItemPosition();
-		private Discipline discSelected = (Discipline) lvDisciplines.getItemAtPosition(checkedPosition);
-		
+		private Discipline discSelected = (Discipline) lvDisciplines
+				.getItemAtPosition(checkedPosition);
+
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -367,7 +372,9 @@ public class DisciplinesActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int id) {
 							dPersister.delete(discSelected);
-							Log.i(CLASS_TAG, "Disciplina Removida: " + discSelected.getName());						
+							loadList();
+							Log.i(CLASS_TAG, "Disciplina Removida: "
+									+ discSelected.getName());
 						}
 					});
 
