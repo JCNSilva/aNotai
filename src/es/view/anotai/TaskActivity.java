@@ -1,17 +1,25 @@
 package es.view.anotai;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import projeto.es.view.anotai.R;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 import es.adapter.anotai.DisciplineAdapter;
 import es.database.anotai.DisciplinePersister;
 import es.database.anotai.TaskPersister;
@@ -24,8 +32,13 @@ import es.model.anotai.Task.Priority;
 
 public class TaskActivity extends Activity {
 	private static final String CLASS_TAG = "TaskActivity";
+	private static final int DATE_DIALOG_ID = 100;
+	private static final int TIME_DIALOG_ID = 101;
 	private DisciplinePersister dPersister;
 	private TaskPersister tPersister; 
+	private EditText etDeadLineDate;
+	private Calendar deadDateCalendar = Calendar.getInstance();
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +72,18 @@ public class TaskActivity extends Activity {
 		final EditText etTitle = (EditText) findViewById(R.id.activity_task_et_title_task);
 		etTitle.setText(task.getTitle());
 
+		etDeadLineDate = (EditText) findViewById(R.id.activity_task_et_deadline_date);
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
 		Calendar deadlineDate = task.getDeadlineDate();
-		final EditText etDeadLineDate = (EditText) findViewById(R.id.activity_task_et_deadline_date);
-		etDeadLineDate.setText(new StringBuilder().append(deadlineDate.get(Calendar.DAY_OF_MONTH)).append("/")
-				.append(deadlineDate.get(Calendar.MONTH) + 1).append("/").append(deadlineDate.get(Calendar.YEAR))
-				.append(" ").append(deadlineDate.get(Calendar.HOUR_OF_DAY)).append(":")
-				.append(deadlineDate.get(Calendar.MINUTE)));
+		etDeadLineDate.setText(formatter.format(deadlineDate.getTime()));
+		etDeadLineDate.setInputType(InputType.TYPE_NULL);
+		etDeadLineDate.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				showDialog(DATE_DIALOG_ID);
+			}
+		}); 
 
 		final EditText etGrade = (EditText) findViewById(R.id.activity_task_et_grade);
 		etGrade.setText(String.valueOf(task.getGrade()));
@@ -85,17 +104,13 @@ public class TaskActivity extends Activity {
 				task.setGrade(Float.parseFloat(etGrade.getText().toString()));
 				int rowsAffected = tPersister.update(task);
 				Log.i(CLASS_TAG, rowsAffected + " campos foram alterados em " + task.getTitle());
-				
 				finish();
 			}
-
-			
 		});
-
 	}
 	
 	private Calendar createCalendar(String string) {
-		String pattern = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,4}\\s[0-9]{1,2}:[0-9]{1,2}"; //FIXME
+		String pattern = "[0-9]{2,2}/[0-9]{2,2}/[0-9]{4,4}\\s[0-9]{2,2}:[0-9]{2,2}";
 		Calendar newCalendar = Calendar.getInstance();
 		
 		if(string.matches(pattern)){
@@ -121,6 +136,48 @@ public class TaskActivity extends Activity {
 		
 		return newPriority;
 	}
+	
+	@Override
+	protected Dialog onCreateDialog(int id) {
+
+		switch (id) {
+		case DATE_DIALOG_ID:
+			int year = deadDateCalendar.get(Calendar.YEAR);
+			int month = deadDateCalendar.get(Calendar.MONTH);
+			int day = deadDateCalendar.get(Calendar.DAY_OF_MONTH);
+			return new DatePickerDialog(this, datePickerListener, year, month, day);
+			
+		case TIME_DIALOG_ID:
+			int hour = deadDateCalendar.get(Calendar.HOUR_OF_DAY);
+			int minute = deadDateCalendar.get(Calendar.MINUTE);
+			return new TimePickerDialog(this, timePickerListener, hour, minute, true);
+			
+		default: 
+			return null;
+		}
+	}
+	
+	private TimePickerDialog.OnTimeSetListener timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+
+		@Override
+		public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
+			deadDateCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+			deadDateCalendar.set(Calendar.MINUTE, minuteOfHour);
+			etDeadLineDate.setText(formatter.format(deadDateCalendar.getTime()));
+		}
+	};
+
+	private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+
+		public void onDateSet(DatePicker view, int selectedYear,int selectedMonth, int selectedDay) {
+			deadDateCalendar.set(Calendar.YEAR, selectedYear);
+			deadDateCalendar.set(Calendar.MONTH, selectedMonth);
+			deadDateCalendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+			etDeadLineDate.setText(formatter.format(deadDateCalendar.getTime()));
+			
+			showDialog(TIME_DIALOG_ID);
+		}
+	};
 
 	private void povoateDiscSpinner(Task task) {
 		Spinner spDisciplines = (Spinner) findViewById(R.id.activity_task_sp_discipline_select);

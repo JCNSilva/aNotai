@@ -98,8 +98,7 @@ public class DisciplinesActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				// Passar a disciplina clicada na intent que vai a tela da
-				// disciplina
+				
 				Intent intent = new Intent(DisciplinesActivity.this,
 						DisciplineActivity.class);
 				intent.putExtra("discipline", disciplines.get(position));

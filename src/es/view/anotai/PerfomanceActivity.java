@@ -22,7 +22,7 @@ public class PerfomanceActivity extends Activity {
 		DisciplinePersister dPersister = new DisciplinePersister(this);
 		
 		lvChart = (ListView) findViewById(R.id.activity_performance_list_chart);
-		adapter = (ChartAdapter) new ChartAdapter(PerfomanceActivity.this, dPersister.retrieveAll());
+		adapter = new ChartAdapter(PerfomanceActivity.this, dPersister.retrieveAll());
 		lvChart.setAdapter(adapter);
 	}
 }

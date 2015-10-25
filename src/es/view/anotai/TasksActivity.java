@@ -262,16 +262,14 @@ public class TasksActivity extends Activity {
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {
 
-				// TODO Remover do banco
-				tasks.remove(taskSelected);
+				tPersister.delete(taskSelected);
 				loadList();
 				taskSelected = null;
 			}
 		});
 
 		builder.setNegativeButton(R.string.not, null);
-		final AlertDialog dialog = builder.create();
-		// dialog.setTitle(getResources().getString(R.string.confirmation));
+		final AlertDialog dialog = builder.create();;
 		dialog.show();
 	}
 }

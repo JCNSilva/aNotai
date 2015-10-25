@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.support.v4.app.NavUtils;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,8 +25,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -48,17 +52,18 @@ public class HomeworkActivity extends Activity {
 	private static final int DATE_DIALOG_ID = 100;
 	private static final int TIME_DIALOG_ID = 101;
 	private static final int PICK_CONTACT = 1;
-	private int day, month, year, hour, minute;
 	private EditText deadDate;
 	private TaskPersister tPersister;
 	private DisciplinePersister dPersister;
 	private List<Classmate> classmateList = new ArrayList<Classmate>();
     private Calendar deadDateCalendar = Calendar.getInstance();
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);	
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_homework);
 		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -83,19 +88,32 @@ public class HomeworkActivity extends Activity {
 			}
 		});
 		
-		final EditText homeWorkDescription = (EditText) findViewById(R.id.activity_homework_et_homework_description);
+		CheckBox cbGroup = (CheckBox) findViewById(R.id.activity_homework_check_group);
+		cbGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				LinearLayout groupLayout = (LinearLayout) findViewById(R.id.activity_homework_group_layout);
+				
+				if(isChecked){
+					groupLayout.setVisibility(View.VISIBLE);
+				} else {
+					groupLayout.setVisibility(View.GONE);
+				}			
+			}
+		});
 		
 		Button btSave = (Button) findViewById(R.id.activity_homework_bt_create_homework);
 		btSave.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
-				Calendar calExam = Calendar.getInstance();
-            	calExam.set(year, month, day, hour, minute);
-            	String description = homeWorkDescription.getText().toString();
+			public void onClick(View view) {
+				
+				EditText homeWorkDescription = (EditText) findViewById(R.id.activity_homework_et_homework_description);
+				String description = homeWorkDescription.getText().toString();
             	
-				if (calExam.after(calendar)  && !description.isEmpty()) {
-					NotificationUtils.createNotifications(calExam, HomeworkActivity.this, description);
+				if (deadDateCalendar.after(calendar)  && !description.isEmpty()) {
+					NotificationUtils.createNotifications(deadDateCalendar, HomeworkActivity.this, description);
 					Log.i("ExamsActivity", "Notificação configurada");
 					
 					final EditText titleET = (EditText) findViewById(R.id.activity_homework_et_name_homework);
@@ -108,12 +126,12 @@ public class HomeworkActivity extends Activity {
 					
 					if(isGroupHomework.isChecked()){
 						List<Classmate> mates = new ArrayList<Classmate>();
-						GroupHomework gHomework = 	new GroupHomework(title, dSelected, description, calExam,
+						GroupHomework gHomework = 	new GroupHomework(title, dSelected, description, deadDateCalendar,
 													getPriority(prioritySelected), mates);
 						tPersister.create(gHomework);
 						Log.i("ExamsActivity", "Novo trabalho em grupo salvo");
 					} else {
-						tPersister.create(new IndividualHomework(title, dSelected, description, calExam, getPriority(prioritySelected)));
+						tPersister.create(new IndividualHomework(title, dSelected, description, deadDateCalendar, getPriority(prioritySelected)));
 						Log.i("ExamsActivity", "Novo trabalho individual salvo");
 					}
 					
@@ -167,10 +185,9 @@ public class HomeworkActivity extends Activity {
 	            Log.d(CLASS_TAG, "nome: " + name);
 	            Log.d(CLASS_TAG, "numero: " + number);
 	            
-
-	        	List<String> numbers = new ArrayList<String>();
+	            List<String> numbers = new ArrayList<String>();
 	            numbers.add(number);
-	            Classmate newClassmate = new Classmate(name, numbers); //FIXME receber mais de um telefone
+	            Classmate newClassmate = new Classmate(name, numbers);
 	            classmateList.add(newClassmate);
 	            
 			}
@@ -182,10 +199,10 @@ public class HomeworkActivity extends Activity {
 	}
 
 	private void setClickListenerDeadlineDate(Calendar calendar) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
-		
 		deadDate = (EditText) findViewById(R.id.activity_homework_et_deadline_date);
+		deadDate.setInputType(InputType.TYPE_NULL);
 		deadDate.setText(formatter.format(calendar.getTime()));
+		
 		deadDate.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -200,42 +217,38 @@ public class HomeworkActivity extends Activity {
 
 		switch (id) {
 		case DATE_DIALOG_ID:
+			int year = deadDateCalendar.get(Calendar.YEAR);
+			int month = deadDateCalendar.get(Calendar.MONTH);
+			int day = deadDateCalendar.get(Calendar.DAY_OF_MONTH);
 			return new DatePickerDialog(this, datePickerListener, year, month, day);
+			
 		case TIME_DIALOG_ID:
+			int hour = deadDateCalendar.get(Calendar.HOUR_OF_DAY);
+			int minute = deadDateCalendar.get(Calendar.MINUTE);
 			return new TimePickerDialog(this, timePickerListener, hour, minute, true);
+			
+		default: 
+			return null;
 		}
-		return null;
 	}
 	
-	//cria listener para o timePicker
 	private TimePickerDialog.OnTimeSetListener timePickerListener = new TimePickerDialog.OnTimeSetListener() {
 
 		@Override
 		public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
-			hour = hourOfDay;
-			minute = minuteOfHour;
-			
-			deadDate.setText(new StringBuilder().append(day).append("/")
-					.append(month + 1).append("/")
-					.append(year).append(" ")
-					.append(hour).append(":")
-					.append(minute));
+			deadDateCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+			deadDateCalendar.set(Calendar.MINUTE, minuteOfHour);
+			deadDate.setText(formatter.format(deadDateCalendar.getTime()));
 		}
 	};
 
-	//cria listener para o datePicker
 	private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
 
 		public void onDateSet(DatePicker view, int selectedYear,int selectedMonth, int selectedDay) {
-			year = selectedYear;
-			month = selectedMonth;
-			day = selectedDay;
-
-			deadDate.setText(new StringBuilder().append(day).append("/")
-					.append(month + 1).append("/")
-					.append(year).append(" ")
-					.append(hour).append(":")
-					.append(minute));
+			deadDateCalendar.set(Calendar.YEAR, selectedYear);
+			deadDateCalendar.set(Calendar.MONTH, selectedMonth);
+			deadDateCalendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+			deadDate.setText(formatter.format(deadDateCalendar.getTime()));
 			
 			showDialog(TIME_DIALOG_ID);
 		}
@@ -264,5 +277,5 @@ public class HomeworkActivity extends Activity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-    }	
+	}
 }

@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:layout_width="match_parent"
-	    android:layout_height="match_parent">
-	<TextView
-	    
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:minHeight="?android:attr/listPreferredItemHeight"
-	    android:gravity="center_vertical"
-	    android:textSize="18sp"
-	    android:id="@+id/item_discipline_tv_name_discipline" />
-	
-	<TextView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:minHeight="?android:attr/listPreferredItemHeight"
-	    android:gravity="center_vertical"
-	    android:textSize="14sp"
-	    android:id="@+id/item_discipline_tv_tasks_discipline" />
-</FrameLayout>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_discipline_tv_name_discipline"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:textSize="18sp" 
+    />

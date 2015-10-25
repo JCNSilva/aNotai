@@ -47,11 +47,13 @@
             android:id="@+id/activity_task_sp_discipline_select"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.5"
             android:hint="@string/discipline"
-            android:prompt="@string/discipline" />
+            android:prompt="@string/discipline"
+            android:spinnerMode="dialog" />
     </LinearLayout>
 
     <LinearLayout
