@@ -1,7 +1,10 @@
 package es.view.anotai;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import projeto.es.view.anotai.R;
 import android.app.Activity;
@@ -23,12 +26,15 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import es.adapter.anotai.ClassmateAdapter;
 import es.adapter.anotai.DisciplineAdapter;
 import es.database.anotai.DisciplinePersister;
 import es.database.anotai.TaskPersister;
+import es.model.anotai.Classmate;
 import es.model.anotai.Discipline;
 import es.model.anotai.GroupHomework;
 import es.model.anotai.IndividualHomework;
@@ -38,6 +44,7 @@ import es.utils.anotai.NotificationUtils;
 //TODO Refatorar
 public class HomeworkActivity extends Activity {
 	
+	private static final String CLASS_TAG = "HomeworkActivity";
 	private static final int DATE_DIALOG_ID = 100;
 	private static final int TIME_DIALOG_ID = 101;
 	private static final int PICK_CONTACT = 1;
@@ -45,6 +52,9 @@ public class HomeworkActivity extends Activity {
 	private EditText deadDate;
 	private TaskPersister tPersister;
 	private DisciplinePersister dPersister;
+	private List<Classmate> classmateList = new ArrayList<Classmate>();
+    private Calendar deadDateCalendar = Calendar.getInstance();
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +107,10 @@ public class HomeworkActivity extends Activity {
 					final String prioritySelected = (String) prioritySelect.getSelectedItem();
 					
 					if(isGroupHomework.isChecked()){
-						tPersister.create(new GroupHomework(title, dSelected, description, calExam, getPriority(prioritySelected)));
+						List<Classmate> mates = new ArrayList<Classmate>();
+						GroupHomework gHomework = 	new GroupHomework(title, dSelected, description, calExam,
+													getPriority(prioritySelected), mates);
+						tPersister.create(gHomework);
 						Log.i("ExamsActivity", "Novo trabalho em grupo salvo");
 					} else {
 						tPersister.create(new IndividualHomework(title, dSelected, description, calExam, getPriority(prioritySelected)));
@@ -138,46 +151,41 @@ public class HomeworkActivity extends Activity {
 		switch(requestCode){
 		case PICK_CONTACT:
 			if(resultCode == RESULT_OK){
-				// Get the URI that points to the selected contact
-	            Uri contactUri = data.getData();
-	            // We only need the NUMBER column, because there will be only one row in the result
+				
+				Uri contactUri = data.getData();
 	            String[] projection = {Phone.DISPLAY_NAME, Phone.NUMBER};
 
 	            Cursor cursor = getContentResolver()
 	                    .query(contactUri, projection, null, null, null);
 	            cursor.moveToFirst();
 
-	            // Retrieve the phone number from the NUMBER column
 	            int column = cursor.getColumnIndex(Phone.NUMBER);
 	            String number = cursor.getString(column);
-	            
-	         // Retrieve the phone number from the DISPLAY_NAME column
 	            int columnDN = cursor.getColumnIndex(Phone.DISPLAY_NAME);
 	            String name = cursor.getString(columnDN);
-	            Log.d("HomeworkActivity", "nome: " + name);
-	            Log.d("HomeworkActivity", "numero: " + number);
 	            
+	            Log.d(CLASS_TAG, "nome: " + name);
+	            Log.d(CLASS_TAG, "numero: " + number);
+	            
+
+	        	List<String> numbers = new ArrayList<String>();
+	            numbers.add(number);
+	            Classmate newClassmate = new Classmate(name, numbers); //FIXME receber mais de um telefone
+	            classmateList.add(newClassmate);
 	            
 			}
+			
+			ListView classmates = (ListView) findViewById(R.id.activity_homework_lv_classmate);
+            ClassmateAdapter cAdapter = new ClassmateAdapter(this, classmateList);
+            classmates.setAdapter(cAdapter);
 		}
 	}
 
 	private void setClickListenerDeadlineDate(Calendar calendar) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US);
+		
 		deadDate = (EditText) findViewById(R.id.activity_homework_et_deadline_date);
-			
-		day = calendar.get(Calendar.DAY_OF_MONTH);
-		month = calendar.get(Calendar.MONTH);
-		year = calendar.get(Calendar.YEAR);
-		hour = calendar.get(Calendar.HOUR_OF_DAY);
-		minute = calendar.get(Calendar.MINUTE);
-		
-		deadDate.setText(new StringBuilder()
-				.append(day).append("/")
-				.append(month + 1).append("/")
-				.append(year).append(" ")
-				.append(hour).append(":")
-				.append(minute));
-		
+		deadDate.setText(formatter.format(calendar.getTime()));
 		deadDate.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -241,7 +249,6 @@ public class HomeworkActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.homework, menu);
 		return true;
 	}

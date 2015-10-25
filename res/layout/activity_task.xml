@@ -8,8 +8,7 @@
         android:id="@+id/activity_task_layout_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone" >
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="0dp"
@@ -21,7 +20,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/activity_task_et_name_homework"
+            android:id="@+id/activity_task_et_title_task"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -39,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_weight="0.3"
+            android:layout_weight="0.5"
             android:text="@string/discipline"
             android:textColor="@color/color_big_text"
             android:textSize="20sp" />
@@ -107,6 +106,40 @@
         </EditText>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/activity_task_tv_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/priority"
+            android:textColor="@color/color_big_text"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/activity_task_sp_priority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:entries="@array/priorities"
+            android:hint="@string/priority"
+            android:prompt="@string/priority"
+            android:spinnerMode="dialog" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical" >
+
     <EditText
         android:id="@+id/activity_task_et_task_description"
         android:layout_width="match_parent"
@@ -117,31 +150,29 @@
         android:background="@drawable/text_field"
         android:ems="10"
         android:hint="@string/ask_description"
-        android:inputType="none" />
+        android:inputType="textCapSentences" />
 
     <ListView
         android:id="@+id/activity_task_lv_classmate"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="0.8"
-        android:visibility="invisible" >
+        android:visibility="gone" >
     </ListView>
 
     <Button
         android:id="@+id/activity_task_bt_save_task"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="0.2"
         android:background="@drawable/button_generic"
         android:text="@string/save"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+        android:textColor="@android:color/white" />
+    </LinearLayout>
 
 </LinearLayout>

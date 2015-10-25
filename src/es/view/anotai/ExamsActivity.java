@@ -104,7 +104,7 @@ public class ExamsActivity extends Activity {
 					EditText titleET = (EditText) findViewById(R.id.activity_exams_et_title);
 					String title = titleET.getText().toString();
 					
-					tPersister.create(new Exam(title, dSelected, description, calExam, newPriority)); //FIXME
+					tPersister.create(new Exam(title, dSelected, description, calExam, newPriority)); 
 					Log.i("ExamsActivity", "Prova salva");
 					startTasksActivity();
 					finish();

@@ -1,8 +1,8 @@
 package es.model.anotai;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class GroupHomework extends Task {
@@ -16,15 +16,15 @@ public class GroupHomework extends Task {
     }
 
     public GroupHomework(String title, Discipline discipline, String description, Calendar deadlineDate,
-            Priority priority, Classmate... mates) {
+            Priority priority, List<Classmate> mates) {
         super(title, discipline, description, deadlineDate, priority);
-        this.group = new HashSet<Classmate>(Arrays.asList(mates));
+        this.group = new HashSet<Classmate>(mates);
     }
     
     public GroupHomework(String title, long newId, Discipline discipline, String description, Calendar deadlineDate,
-            Priority priority, Classmate... mates) {
+            Priority priority, List<Classmate> mates) {
         super(newId, title, discipline, description, deadlineDate, priority);
-        this.group = new HashSet<Classmate>(Arrays.asList(mates));
+        this.group = new HashSet<Classmate>(mates);
     }
 
     public Set<Classmate> getGroup() {
