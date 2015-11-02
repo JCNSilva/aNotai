@@ -24,56 +24,56 @@ public class Discipline implements Serializable {
 
 	private static final long serialVersionUID = -2699314244245902531L;
 	private long id;
-    private String name;
-    private String teacher;
+	private String name;
+	private String teacher;
 
-    public Discipline() {
-        this(0,"","");
-    }
-    
-    public Discipline(String name, String teacher) {
-        this(0, name, teacher);
-    }
+	public Discipline() {
+		this(0, "", "");
+	}
 
-    //TODO refactor
-    public Discipline(final long newId, String name, String teacher) {
-        if (name == null)
-            throw new IllegalArgumentException("Name can't be null");
-        if (teacher == null)
-            throw new IllegalArgumentException("Teacher can't be null");
+	public Discipline(String name, String teacher) {
+		this(0, name, teacher);
+	}
 
-        this.setId(newId);
-        this.name = name;
-        this.teacher = teacher;
-    }
+	// TODO refactor
+	public Discipline(final long newId, String name, String teacher) {
+		if (name == null)
+			throw new IllegalArgumentException("Name can't be null");
+		if (teacher == null)
+			throw new IllegalArgumentException("Teacher can't be null");
 
-    public long getId() {
-        return id;
-    }
+		this.setId(newId);
+		this.name = name;
+		this.teacher = teacher;
+	}
 
-    public void setId(long iDisciplineId) {
-        if (id >= 0) {
-            this.id = iDisciplineId;
-        }
-    }
+	public long getId() {
+		return id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setId(long iDisciplineId) {
+		if (id >= 0) {
+			this.id = iDisciplineId;
+		}
+	}
 
-    public String getTeacher() {
-        return teacher;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
+	public String getTeacher() {
+		return teacher;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
 
-    @Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -91,7 +91,7 @@ public class Discipline implements Serializable {
 		Discipline other = (Discipline) obj;
 		return this.name.equals(other.getName()) && this.teacher.equals(other.getTeacher());
 	}
-	
+
 	@Override
 	public String toString() {
 		return getName();
@@ -101,15 +101,15 @@ public class Discipline implements Serializable {
 		TaskPersister tPersister = new TaskPersister(context);
 		return tPersister.retrieveAll(this);
 	}
-	
+
 	private final double[] getGrades(List<Task> tasks) {
 		double[] grades = new double[tasks.size()];
 		for (int i = 0; i < grades.length; i++) {
 			grades[i] = (float) tasks.get(i).getGrade();
-		}		
+		}
 		return grades;
 	}
-	
+
 	private final int[] getValues(List<Task> tasks) {
 		int[] x = new int[tasks.size()];
 		for (int i = 0; i < x.length; i++) {
@@ -117,24 +117,28 @@ public class Discipline implements Serializable {
 		}
 		return x;
 	}
-	
+
 	private final String[] getLableGrades(List<Task> tasks) {
 		String[] mNotas = new String[tasks.size()];
 		for (int i = 0; i < mNotas.length; i++) {
-			mNotas[i] = "nota " + i + 1;
-		}		
-		return mNotas;		
+			mNotas[i] = "" + tasks.get(i).getGrade();
+		}
+		return mNotas;
 	}
-	
-	
+
 	public void makeChartLayout(Context context, LinearLayout chartContainer) {
 		List<Task> tasks = getTasks(context);
-		
+
 		int[] x = getValues(tasks);
 		double[] expense = getGrades(tasks);
 
 		// Creating an XYSeries for Expense
 		XYSeries expenseSeries = new XYSeries("Notas");
+
+		if (x.length == 0) {
+			expenseSeries.setTitle(getName() + context.getResources().getString(R.string.no_grades));
+		}
+
 		// Adding data to Income and Expense Series
 		for (int i = 0; i < x.length; i++) {
 			expenseSeries.add(i, expense[i]);
@@ -148,16 +152,16 @@ public class Discipline implements Serializable {
 
 		// Creating XYSeriesRenderer to customize expenseSeries
 		XYSeriesRenderer expenseRenderer = new XYSeriesRenderer();
-		expenseRenderer.setColor(Color.CYAN);
+		expenseRenderer.setColor(Color.DKGRAY);
 		expenseRenderer.setFillPoints(true);
 		expenseRenderer.setLineWidth(2);
 		expenseRenderer.setDisplayChartValues(true);
 
 		// Creating a XYMultipleSeriesRenderer to customize the whole chart
 		XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
+		multiRenderer.setChartTitle(getName());
 		multiRenderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
 		multiRenderer.setXLabels(0);
-		multiRenderer.setChartTitle(getName());
 
 		/***
 		 * Customizing graphs
@@ -168,10 +172,10 @@ public class Discipline implements Serializable {
 		multiRenderer.setAxisTitleTextSize(20);
 		// setting text size of the graph lable
 		multiRenderer.setLabelsTextSize(20);
-		
+
 		multiRenderer.setLegendTextSize(25);
 
-		multiRenderer.setXLabelsColor(Color.RED);
+		multiRenderer.setXLabelsColor(Color.DKGRAY);
 
 		// setting zoom buttons visiblity
 		multiRenderer.setZoomButtonsVisible(true);
@@ -221,7 +225,7 @@ public class Discipline implements Serializable {
 		// setting bar size or space between two bars
 		multiRenderer.setBarSpacing(1);
 
-		multiRenderer.setBarWidth(50);
+		multiRenderer.setBarWidth(55);
 
 		// Setting background color of the graph to transparent
 		multiRenderer.setBackgroundColor(Color.TRANSPARENT);
@@ -231,10 +235,10 @@ public class Discipline implements Serializable {
 
 		// setting the margin size for the graph in the order top, left, bottom,
 		// right
-		multiRenderer.setMargins(new int[] { 30, 30, 30, 30 });
-		
+		multiRenderer.setMargins(new int[] { 45, 30, 30, 30 });
+
 		String[] mLabels = getLableGrades(tasks);
-		
+
 		for (int i = 0; i < x.length; i++) {
 			multiRenderer.addXTextLabel(i, mLabels[i]);
 		}
@@ -246,11 +250,12 @@ public class Discipline implements Serializable {
 		multiRenderer.addSeriesRenderer(expenseRenderer);
 
 		// this part is used to display graph on the xml
-		//LinearLayout chartContainer = (LinearLayout) ((Activity) context).findViewById(R.id.Layout_chart);
-						
+		// LinearLayout chartContainer = (LinearLayout) ((Activity)
+		// context).findViewById(R.id.Layout_chart);
+
 		// remove any views before u paint the chart
 		chartContainer.removeAllViews();
-		
+
 		// drawing bar chart
 		View viewAux = ChartFactory.getBarChartView(context, dataset, multiRenderer, Type.DEFAULT);
 		// adding the view to the linearlayout

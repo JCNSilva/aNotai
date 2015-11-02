@@ -12,6 +12,7 @@
     <string name="edit_discipline">Editar Disciplina</string>
     <string name="alphabetical_order">Ordenar alfabeticamente</string>
     <string name="total_tasks_order">Ordenar por tarefas</string>
+    <string name="no_grades">, Ainda está sem notas</string>
 
     <!-- ATIVIDADE -->
     <string name="add_homework">Adicionar Trabalho</string>
