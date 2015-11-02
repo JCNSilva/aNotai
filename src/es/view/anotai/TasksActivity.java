@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
@@ -41,9 +40,6 @@ public class TasksActivity extends Activity {
 	private ListView lvTasks;
 	private TaskAdapter adapter;
 	private SortOrderTask currentSortEstrat; // TODO Strategy
-	private ActionMode mActionMode;
-	private ActionMode.Callback mActionModeCallback;
-
 	private Task taskSelected = null;
 
 	@Override
@@ -132,6 +128,7 @@ public class TasksActivity extends Activity {
 	}
 
 	private void loadList() {
+		tasks = tPersister.retrieveAll();
 		switch (currentSortEstrat) {
 		case DATE_ASC:
 			Collections.sort(tasks, new DateComparator());
@@ -269,7 +266,8 @@ public class TasksActivity extends Activity {
 		});
 
 		builder.setNegativeButton(R.string.not, null);
-		final AlertDialog dialog = builder.create();;
+		final AlertDialog dialog = builder.create();
+		;
 		dialog.show();
 	}
 }

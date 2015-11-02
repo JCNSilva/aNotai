@@ -43,11 +43,17 @@ public class MainActivity extends Activity {
 			tvInfoTask.setText(getResources().getString(R.string.next_activity));
 
 			TextView tvNameTask = (TextView) findViewById(R.id.activity_main_tv_name_task);
-			tvNameTask.setText(task.getDescription());
+			tvNameTask.setText(getResources().getString(R.string.title) + ": " + task.getTitle());
+
+			TextView tvDescription = (TextView) findViewById(R.id.activity_main_tv_description);
+			tvDescription.setText(getResources().getString(R.string.description) + task.getDescription());
 
 			TextView tvNameDiscipline = (TextView) findViewById(R.id.activity_main_tv_related_discipline);
-			tvNameDiscipline.setText(getResources().getString(R.string.discipline) +
-					" " + task.getDiscipline().getName());
+			tvNameDiscipline
+					.setText(getResources().getString(R.string.discipline) + ": " + task.getDiscipline().getName());
+
+			TextView tvDeadLine = (TextView) findViewById(R.id.activity_main_tv_deadline);
+			tvDeadLine.setText(getResources().getString(R.string.date) + ": " + task.getDeadlineDateText());
 		} else {
 			tvInfoTask.setText(getResources().getString(R.string.no_next_activity));
 		}

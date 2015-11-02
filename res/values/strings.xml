@@ -29,6 +29,7 @@
     <string name="priority_order">Ordenar por prioridade</string>
     <string name="new_homework">Novo Trabalho</string>
     <string name="confirm_delete_task">Deseja remover a atividade?</string>
+    <string name="description">Descrição: </string>
 
     <!-- PROVA -->
     <string name="add_test">Adicionar Prova</string>
