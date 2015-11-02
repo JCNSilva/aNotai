@@ -1,5 +1,10 @@
 package es.database.anotai;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -10,7 +15,7 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
     private static AnotaiDbHelper instance;
 
     /** The database version constant DATABASE_VERSION. */
-    public static final int DATABASE_VERSION = 12;
+    public static final int DATABASE_VERSION = 13;
 
     /** The database file name constant DATABASE_NAME. */
     public static final String DATABASE_NAME = "Anotai.db";
@@ -182,6 +187,30 @@ public class AnotaiDbHelper extends SQLiteOpenHelper {
         dbHelper.execSQL(SQL_CREATE_TASK);
         dbHelper.execSQL(SQL_CREATE_CLASSMATE);
         dbHelper.execSQL(SQL_CREATE_PHONE_NUMBERS);
+        
+        Map<String, String> nameAndTeacher = new HashMap<String, String>();
+        nameAndTeacher.put("Português", "");
+        nameAndTeacher.put("Matemática", "");
+        nameAndTeacher.put("Física", "");
+        nameAndTeacher.put("Química", "");
+        nameAndTeacher.put("Biologia", "");
+        nameAndTeacher.put("Inglês", "");
+        nameAndTeacher.put("Espanhol", "");
+        nameAndTeacher.put("Educação Física", "");
+        nameAndTeacher.put("História", "");
+        nameAndTeacher.put("Geografia", "");
+        nameAndTeacher.put("Sociologia", "");
+        nameAndTeacher.put("Filosofia", "");
+        
+        for (Iterator<String> it = nameAndTeacher.keySet().iterator(); it.hasNext();) {
+			String currentKey = it.next();
+			
+			ContentValues disciplinesValues = new ContentValues();
+			disciplinesValues.put(DISCIPLINEENTRY_COLUMN_NAME, currentKey);
+			disciplinesValues.put(DISCIPLINEENTRY_COLUMN_TEACHER, nameAndTeacher.get(currentKey));
+			dbHelper.insert(DISCIPLINEENTRY_TABLE_NAME, null, disciplinesValues);
+		}  
+        
     }
 
     /*
